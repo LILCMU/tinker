@@ -1,0 +1,501 @@
+@charset "UTF-8";
+/* CSS Document */
+
+.contentSpatial * {
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+body {
+	background-color: white;
+	/*color: white;*/
+}
+
+a {
+	cursor: pointer;
+}
+
+animation-prototype {
+	-webkit-transition: all 0.3s ease-in-out;
+	   -moz-transition: all 0.3s ease-in-out;
+	     -o-transition: all 0.3s ease-in-out;
+	        transition: all 0.3s ease-in-out;
+}
+
+.currentArea {
+	-webkit-transition: all 0.05s linear;
+	   -moz-transition: all 0.05s linear;
+	     -o-transition: all 0.05s linear;
+	        transition: all 0.05s linear;
+}
+
+#spatialWrapper {
+	position: absolute;
+	background-color: white;
+	top: 150px;
+	left: 300px;
+	border: 1px solid #333;
+	border-radius: 4px;
+	width: 500px;
+	height: 500px;
+	box-shadow: 2px 3px 4px rgba(0, 0, 0, 0.53);
+}
+
+#submitSpatial {
+	position: absolute;
+	bottom: 10px;
+	right: 20px;
+	border: 1px solid #333;
+	padding: 5px 15px;
+	border-radius: 4px;
+}
+
+.contentSpatial a:hover {
+	color: white;
+}
+
+.contentSpatial .mainArea {
+	position: absolute;
+	width: 480px;
+}
+
+.contentSpatial .mainArea p {
+	padding-left: 20px;
+}
+
+.contentSpatial .wrapper {
+	position: relative;
+	width: 480px;
+	height: 460px;
+}
+
+.contentSpatial .control {
+	text-align: right;
+	padding-top: 20px;
+}
+.contentSpatial .control a {
+	margin: 20px 20px 0 0;
+	padding: 10px;
+	background-color: rgb(123, 170, 241);
+	box-shadow: 0 1px 2px black;
+	border-radius: 4px;
+}
+
+.contentSpatial .procedure {
+	position: relative;
+	left: 520px;
+	width: 600px;
+	min-height: 150px;
+	padding: 1px 0;
+	/*border: 1px solid #333;*/
+}
+
+#mappingExBlock, 
+.exBlock {
+	position: relative;
+	left: 520px;
+	width: 650px;
+	height: 400px;
+	/*border: 1px solid #333;*/
+}
+
+#spatialContentTemplate {
+	display: none;
+}
+
+.mappingBlock {
+	background-image: url(mappingBlock.png);
+	color: white;
+	display: inline-block;
+	width: 118px;
+	height: 51px;
+	font-size: 0.9em;
+	text-align: center;
+	line-height: 25px;
+	margin: 0px 7px 5px 0px;
+}
+
+.graphBlock {
+	background-image: url(graphBlock.png);
+	color: white;
+	display: inline-block;
+	width: 127px;
+	height: 76px;
+	font-size: 0.9em;
+	text-align: center;
+	line-height: 25px;
+	margin: 0px 7px 5px 0px;
+}
+
+
+
+
+
+#mainMenu {
+	position: absolute;
+	top: 10px;
+	left: 30px;
+	font-size: 16px;
+	color: rgb(102, 129, 167);
+}
+
+
+.spatialWrapper {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 800px;
+	height: 700px;
+}
+
+.canvasGraphic, .graphArea {
+	position: absolute;
+}
+
+.controlArea {
+	width: 100%;
+	height: 100%;
+}
+
+.toggleGrid {
+	position: absolute;
+	background-color: rgb(102, 129, 167);
+	left: 40%;
+	top: 10px;
+	padding: 7px 10px;
+	font-size: 0.9em;
+	display: none;
+}
+
+#ssScale {
+	position: relative;
+	width: 100%;
+	height: 100%;
+}
+
+.ssScale {	
+	position: absolute;
+	top: 0;
+	left: 0;
+	background-color: rgba(255, 0, 0, 0.71);
+}
+.ssScale.disabled {
+	display: none;
+}
+
+#ssScale-v {
+	height: 100%;
+	width: 1px;
+}
+
+#ssScale-h {
+	width: 100%;
+	height: 1px;
+}
+
+#sensor-1 {
+	position: absolute;
+	background-color: rgb(102, 129, 167);
+	top: 40%;
+	left: 10px;
+	padding: 7px 10px;
+	font-size: 0.9em;
+}
+
+#sensor-2 {
+	position: absolute;
+	background-color: rgb(102, 129, 167);
+	left: 40%;
+	bottom: 10px;
+	padding: 7px 10px;
+	font-size: 0.9em;
+}
+
+.sensorY {
+	position: absolute;
+	background-color: rgb(102, 129, 167);
+	/*padding: 7px 10px;*/
+	font-size: 0.9em;
+	text-align: center;
+	color: white;
+	line-height: 50px;
+}
+
+.sensorX {
+	position: absolute;
+	background-color: rgb(102, 129, 167);
+	/*padding: 7px 10px;*/
+	font-size: 0.9em;
+	text-align: center;
+	color: white;
+	line-height: 25px;
+}
+
+.sensorX.disabledd,
+.sensorY.disabledd {
+	background-color: rgb(157, 157, 157);
+}
+
+.toggleGrid.gridOn,
+#sensor-1.sensorOn,
+#sensor-2.sensorOn,
+.sensorX.sensorOn,
+.sensorY.sensorOn {
+	background-color: rgb(42, 128, 245);
+}
+
+.area {
+	position: absolute;
+	background-color: rgba(101, 152, 221, 0.67);
+}
+
+.currentArea {	
+	/*border: 1px solid #1c5eb5;*/
+	background-color: rgba(42, 128, 245, 0.78);
+}
+
+.areaSide {
+	position: absolute;
+}
+.areaSide:hover {
+	/*background-color: #1c5eb5;*/
+}
+
+.areaSide.TT,
+.areaSide.BB {
+	height: 8px;
+	width: 100%;
+}
+.areaSide.TT {
+	top: 0;
+	border-top: 1px solid #1c5eb5;
+}
+.areaSide.TT:hover {
+	border-top: 4px solid #1c5eb5;
+}
+.areaSide.BB {
+	bottom: 0;
+	border-bottom: 1px solid #1c5eb5;
+}
+.areaSide.BB:hover {
+	border-bottom: 4px solid #1c5eb5;
+}
+
+.areaSide.LL,
+.areaSide.RR {
+	width: 8px;
+	height: 100%;
+}
+.areaSide.LL {
+	left: 0;
+	border-left: 1px solid #1c5eb5;
+}
+.areaSide.LL:hover {
+	border-left: 4px solid #1c5eb5;
+}
+.areaSide.RR {
+	right: 0;
+	border-right: 1px solid #1c5eb5;
+}
+.areaSide.RR:hover {
+	border-right: 4px solid #1c5eb5;
+}
+
+.areaCorner {
+	position: absolute;
+	/*background-color: white;*/
+	width: 8px;
+	height: 8px;	
+}
+.areaCorner:hover {
+	width: 14px;
+	height: 14px;
+}
+
+.areaCorner.TL {
+	top: 0;
+	left: 0;
+	border-top: 1px solid #1c5eb5;
+	border-left: 1px solid #1c5eb5;
+}
+.areaCorner.TL:hover {
+	top: -2px;
+	left: -2px;
+	border-top: 4px solid #1c5eb5;
+	border-left: 4px solid #1c5eb5;
+}
+
+.areaCorner.TR {
+	top: 0;
+	right: 0;
+	border-top: 1px solid #1c5eb5;
+	border-right: 1px solid #1c5eb5;
+}
+.areaCorner.TR:hover {
+	top: -2px;
+	right: -2px;
+	border-top: 4px solid #1c5eb5;
+	border-right: 4px solid #1c5eb5;
+}
+
+.areaCorner.BL {
+	bottom: 0;
+	left: 0;
+	border-bottom: 1px solid #1c5eb5;
+	border-left: 1px solid #1c5eb5;
+}
+.areaCorner.BL:hover {
+	bottom: -2px;
+	left: -2px;
+	border-bottom: 4px solid #1c5eb5;
+	border-left: 4px solid #1c5eb5;
+}
+
+.areaCorner.BR {
+	bottom: 0;
+	right: 0;
+	border-bottom: 1px solid #1c5eb5;
+	border-right: 1px solid #1c5eb5;
+}
+.areaCorner.BR:hover {
+	bottom: -2px;
+	right: -2px;
+	border-bottom: 4px solid #1c5eb5;
+	border-right: 4px solid #1c5eb5;
+}
+
+
+/****  Converter  ****/
+
+.converter {
+	position: absolute;
+	/*top: 20px;*/
+	/*left: 50px;*/
+	width: 480px;
+	height: 460px;
+}
+
+.converter .controlArea {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+}
+
+.converter .result {
+	position: absolute;
+	top: 460px;
+	height: 24px;
+	color: black;
+}
+
+.converter .canvasGraphic, 
+.converter .graphArea {
+	position: absolute;
+}
+
+.converter .hDash, 
+.converter .vDash {
+	position: absolute;
+	width: 0;
+	height: 0;
+	top: 0;
+	left: 0;
+}
+.converter .hDash {
+	border-top: 1px dashed #ee4433;
+}
+.converter .vDash {
+	border-left: 1px dashed #ee4433;
+}
+
+.converter .popupPoint {
+	padding: 0px 8px;
+	/*margin-bottom: 10px;*/
+	/*border: 1px solid #333;*/
+	background-color: #ccdddd;
+	box-shadow: 2px -2px 2px rgba(0, 0, 0, 0.5);
+	border-radius: 6px;
+	position: absolute;
+	color: #006666;
+	width: 86px;
+	text-align: center;
+	pointer-events: none;
+	z-index: 25;
+	font-size: 12px;
+}
+.converter .popupPoint::after {
+	content: "";
+	position: absolute;
+	border-top: 16px solid #ccdddd;
+	border-left: 8px solid rgba(255, 0, 255, 0);
+	border-right: 8px solid rgba(0, 255, 255, 0);
+	/*background-color: #eee;*/
+	width: 0px;
+	height: 0px;
+	top: 16px;
+	left: 46px;
+	pointer-events: none;
+	/*box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5);*/
+}
+
+.converter .point {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	border: 5px solid #3399ee;
+	margin: -5px;
+	border-radius: 5px;
+	z-index: 20;
+}
+.converter .point:hover,
+.converter .point.selected{
+	border-color:#ee4433;
+}
+
+.converter .line {
+	position: absolute;
+	height: 4px;
+	background-color: #3399ee;
+	-webkit-transform-origin: 0px 0px;
+	-webkit-transition: opacity 0.5s linear;
+	opacity: 1;
+	z-index: 15;
+	margin: -1px;
+}
+.converter .line:hover {
+	background-color: #ee4433;
+}
+
+.converter .controllInput {
+	position: absolute;
+	width: 40px;
+	height: 20px;
+	border: 1px solid #dff;
+	text-align: right;
+}
+.converter .controllInput1:focus {
+	text-align: left;
+}
+
+.converter .controllInput.maxY {
+	
+}
+
+.converter .controllInput.minX {
+	text-align: left;
+}
+
+
+
+
+
+
+
+
+

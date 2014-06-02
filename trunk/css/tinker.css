@@ -1,0 +1,488 @@
+html, body {
+  background-color: #fff;
+  margin: 0;
+  padding:0;
+  overflow: hidden;
+  font-family: sans-serif;
+}
+
+div {
+	position: relative;
+}
+
+#warningMessage {
+	position: absolute;
+	display: block;
+	top: 0;
+	left: 45%;
+	background-color: #f6f6bb;
+	padding: 5px 10px;
+	z-index: 2000;
+	font-size: 13px;
+}
+
+.blocklySvg {
+  height: 100%;
+  width: 100%;
+}
+
+.selectNone, .commandBTN {
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+}
+
+.anime {
+	-webkit-transition: all 301ms ease;
+	-moz-transition: all 301ms ease;
+	-ms-transition: all 301ms ease;
+	-o-transition: all 301ms ease;
+	transition: all 301ms ease;
+}
+.anime12 {
+	-webkit-transition: all 51ms ease;
+	-moz-transition: all 51ms ease;
+	-ms-transition: all 51ms ease;
+	-o-transition: all 51ms ease;
+	transition: all 51ms ease;
+}
+
+.c10 {
+	color: hsl(10, 80%, 30%);
+}
+
+.c90 {
+	color: hsl(90, 80%, 30%);
+}
+
+.c210 {
+	color: hsl(210, 80%, 30%);
+}
+
+.c250 {
+	color: hsl(250, 80%, 30%);
+}
+
+.c220 {
+	color: hsl(220, 80%, 30%);
+}
+
+.c200 {
+	color: hsl(200, 80%, 30%);
+}
+
+.c120 {
+	color: hsl(120, 80%, 30%);
+}
+
+.c290 {
+	color: hsl(290, 80%, 30%);
+}
+
+.c316 {
+	color: hsl(316, 80%, 30%);
+}
+
+.c330 {
+	color: hsl(330, 80%, 30%);
+}
+
+.commandBTN, #setMotorPower select {
+	position: relative;
+	display: block;
+	float: right;
+	padding: 3px 10px;
+	margin:5px 7px 2px;
+	/*width: 70px;*/
+	text-align: center;
+	background-color: #468FC3;
+	cursor: pointer;
+	color: white;
+	border: 2px solid #377AA9;
+	border-left: 1px solid #65A2CD;
+	border-top: 1px solid #65A2CD;
+	-webkit-border-radius: 4px;
+	border-radius: 4px;
+	/*-webkit-box-shadow:  2px 2px 8px 1px rgba(111, 111, 111, 0.5);
+	box-shadow:  2px 2px 8px 1px rgba(111, 111, 111, 0.5);*/
+}
+.commandBTN:first-child {
+	/*margin-left: 10px;*/
+}
+.commandBTN:hover {
+	border-width: 1px;
+	border-left-width: 2px;
+	border-top-width: 2px;
+}
+.commandBTN:active {
+	border-width: 0px;
+	border-left-width: 3px;
+	border-top-width: 3px;
+	border-color: #94d0fb;
+	background-color: #6abefa;
+}
+#alertCode {
+	width: 127px;
+}
+#xmlCode {
+	width: 121px;
+	display: none;
+}
+
+#alertCode:hover,
+#xmlCode:hover {
+	/*-webkit-box-shadow:  1px 1px 3px 1px rgba(111, 111, 111, 0.5);
+	box-shadow:  1px 1px 3px 1px rgba(111, 111, 111, 0.5);*/
+}
+
+/*#alertCode {
+	top: 10px;
+	right: 15px;
+}
+#alertCode:hover {
+	top: 11px;
+	right: 14px;
+}
+
+#xmlCode {
+	bottom: 15px;
+	left: 15px;
+}
+#xmlCode {
+	bottom: 14px;
+	left: 16px;
+}*/
+
+#showCodeArea {
+	position: absolute;
+	display: none;
+	width: 400px;
+	padding: 0px;
+	left: 190px;
+	bottom: 30px;
+	opacity: 0;
+	z-index: 50;
+	-webkit-box-shadow:  2px 2px 8px 1px rgba(111, 111, 111, 0.5);
+	box-shadow:  2px 2px 8px 1px rgba(111, 111, 111, 0.5);
+	max-height: 500px;
+	z-index: 1000 !important;
+	border: 1px solid #333;
+	background-color: white;
+}
+
+#codeAreaWrapper {
+	position: relative;
+	overflow-y: scroll;
+	max-height: 430px;
+}
+
+#codeTextArea {
+	/*font-family: sans-serif;*/
+	font-family: "Courier New", Courier, mono;
+	font-size: 14px;
+	width: 370px;
+	margin: 8px 15px;
+}
+
+#menuArea {
+	position: absolute;
+	z-index: 50;
+	top: 0;
+	right: 0;
+	overflow: hidden;
+	/*width: 700px;*/
+	height: 80px;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+	/*background-color: #74ABD2;*/
+	
+}
+
+#menuContainer {
+	position: relative;
+	
+	height: 40px;
+	background-color: #74ABD2;
+	border-bottom: 2px solid #326F9A;
+	border-left: 3px solid #93BEDC;
+	-webkit-border-bottom-left-radius: 10px;
+	-moz-border-radius-bottomleft: 10px;
+	border-bottom-left-radius: 10px;
+	-webkit-box-shadow:  2px 1px 2px 1px rgba(111, 111, 111, 0.5);
+	box-shadow:  2px 1px 2px 1px rgba(111, 111, 111, 0.5);
+}
+#menuContainer.hide {
+	top: -44px;
+}
+
+#menuBTN {
+	position: absolute;
+	top: 40px;
+	right: 35px;
+	height: 30px;
+	width: 120px;
+	z-index: 60;
+	text-align: center;
+	font-size: 1.1em;
+	color: white;
+	font-weight: bold;
+	line-height: 160%;
+	cursor: pointer;
+	background-color: #74ABD2;
+	border-bottom: 2px solid #326F9A;
+	border-right:  2px solid #326F9A;
+	border-left: 2px solid #93BEDC;
+	-webkit-border-bottom-right-radius: 10px;
+	-webkit-border-bottom-left-radius: 10px;
+	-moz-border-radius-bottomright: 10px;
+	-moz-border-radius-bottomleft: 10px;
+	border-bottom-right-radius: 10px;
+	border-bottom-left-radius: 10px;
+	-webkit-box-shadow:  2px 2px 2px 1px rgba(111, 111, 111, 0.5);
+	box-shadow:  2px 2px 2px 1px rgba(111, 111, 111, 0.5);
+}
+#menuBTN:hover {
+	padding-top: 4px;
+}
+
+.clearfix{ clear:both; visibility: hidden;line-height: 0; height: 0;}
+.clearfix:after { 
+   content: "."; 
+   visibility: hidden; 
+   display: block; 
+   height: 0; 
+   clear: both;
+}
+
+#gogoMonitor {
+	/*position: absolute;
+	z-index: 1000;
+	bottom: 20px;
+	left: 200px;
+	background-color: white;
+	-moz-box-shadow: 1px 1px 7px rgba(15, 51, 90, 0.4);
+	-webkit-box-shadow: 1px 1px 7px rgba(15, 51, 90, 0.4);
+	box-shadow: 1px 1px 7px rgba(15, 51, 90, 0.4);
+	opacity: 1;
+	border: 1px solid #333;*/
+	width: 500px;
+	margin: 10px auto 0;
+}
+
+#gogoMonitorHeader,
+#gogoCodeHeader {
+	position: relative;
+	width: 100%;
+	height: 25px;
+	cursor: move;
+	background-color: #54adec;
+	border-bottom: 1px solid #ffffff;
+	color: white;
+	text-align: center;
+	line-height: 160%;
+}
+
+#gogoMonitorCloseBTN,
+#gogoCodeCloseBTN {
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 25px;
+	height: 25px;
+	background-color: #df5959;
+	border-left: 1px solid #ffffff;
+	color: white;
+	text-align: center;
+	font-size: 42px;
+	line-height: 40%;
+	cursor: pointer;
+}
+
+#gogoMonitor .border {
+	margin: 2px;
+	padding: 2px;
+	border: 1px solid #74ABD2;
+}
+
+#gogoMonitor .commandBTN {
+	position: relative;
+	/*display: inline-block;*/
+	float: left;
+}
+
+#gogoMonitor p {
+	padding: 0;
+	margin: 0;
+	float: left;
+	padding-top: 8px;
+	line-height: 140%;
+}
+
+#gogoStatus {
+	/*border: 1px solid #66dd66;*/
+	display: inline-box;
+	padding: 0 0 0 12px;
+	/*margin: 3px;*/
+	position: relative;
+}
+#gogoStatus::after {
+	font-weight: bold;
+	font-size: 30px;
+	position: relative;
+	content: "◎";
+	color: #6f716f;
+}
+#gogoStatus.on::after {
+	content: "◉";
+	color: #29c129;
+}
+
+#motorBreak {
+	display: none;
+}
+
+#selectMotor div.selected {
+	background-color: #6abefa;
+	color: black;
+	border-left-color: #6abefa;
+	border-top-color: #6abefa;
+}
+
+#setMotorPower select {
+	background-color: #468FC3;
+	font-size: 16px;
+}
+
+#sensorOptionBTN {
+	background-color: #b0b0b0;
+	border-color: #707070;
+	width: 40px;
+}
+
+#sensorOptionBTN.selected {
+	background-color: #6abefa;
+	border-color: #279cef;
+}
+
+#output {
+	position: relative;
+	height: 35px;
+}
+
+#sensor {
+	position: relative;
+}
+
+#sensor .sensor {
+	position: relative;
+	margin: 5px 5px 0 5px;
+	float: left;
+	height: 200px;
+	width: 40px;
+	border: 1px solid #333;
+	background-color: #3388cc;
+}
+
+#sensor .sensor .gate {
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+/*	background-color: #38c;*/
+}
+
+#sensor .sensor .gate .inner {
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 200px;
+	background-color: #ffffff;
+}
+
+#sensor .sensor .sensorValue {
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	text-align: center;
+	font-weight: bold;
+	color: #ffffff;
+/*	text-shadow: 0 0 4px #3388cc;*/
+/*	-webkit-text-fill-color: white;*/
+/*	-webkit-text-stroke-color: #3388cc;*/
+/*	-webkit-text-stroke-width: 0.50px;*/
+}
+
+#sensor .sensor .gate .sensorValue {
+	color: #3388cc;
+}
+
+#sensorLabel .label {
+	position: relative;
+	float: left;
+	width: 42px;
+	margin: 0 5px 5px 5px;
+	text-align: center;
+}
+
+#gogoBTN {
+	float: none;
+	position: absolute;
+	left: 0px;
+	bottom: 15px;
+	z-index: 1000;
+}
+
+#alertCode {
+	float: none;
+	position: absolute;
+	left: 0px;
+	bottom: 50px;
+	z-index: 1000;
+}
+
+#byteBTN {
+	float: none;
+	position: absolute;
+	left: 0px;
+	bottom: 85px;
+	z-index: 1000;
+	letter-spacing: -1px;
+	text-indent: -1px;
+}
+
+#pseudoBTN {
+	float: none;
+	position: absolute;
+	left: 0px;
+	bottom: 120px;
+	z-index: 1000;
+	display: none;
+}
+
+.blocklyTooltipText {
+	font-size: 11pt !important;
+	padding: 5px 10px !important;
+	line-height: 140% !important;
+}
+
+.blocklyTooltipBackground {
+	fill: #e3f1fb !important;
+	stroke: #e3f1fb !important;
+	stroke-width: 5px !important;
+}
+
+.displayNone {
+	display: none !important;
+	background-color: #e3f1fb;
+}
