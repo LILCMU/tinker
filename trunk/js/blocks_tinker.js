@@ -60,6 +60,27 @@ Blockly.Blocks['display_showtext'] = {
   }
 };
 
+/***
+
+
+Blockly.Blocks['display_showtext'] = {
+  init: function() {
+    this.setHelpUrl('http://www.example.com/');
+    this.setColour(330);
+	this.appendDummyInput()
+	    .appendField("show   \"");
+	this.appendValueInput("value")
+	    .setCheck("null")
+	this.appendDummyInput()
+	    .appendField("\"")
+    this.setInputsInline(true);
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+/***/
+
 Blockly.Blocks['display_movecursor'] = {
   init: function() {
     this.setHelpUrl('http://www.example.com/');
@@ -197,6 +218,7 @@ Blockly.Blocks.action_led = {
   }
 };
 
+/***
 Blockly.Blocks.action_wait = {
   category: 'Action',
   helpUrl: 'http://www.example.com/',
@@ -210,6 +232,26 @@ Blockly.Blocks.action_wait = {
     this.setTooltip('Waits for specified time period.');
   }
 };
+/***/
+
+//***
+Blockly.Blocks['action_wait'] = {
+  init: function() {
+    this.setHelpUrl('http://www.example.com/');
+    this.setColour(290);
+    this.appendDummyInput()
+        .appendField("wait");
+    this.appendValueInput("NAME")
+        .setCheck("Number");
+    this.appendDummyInput()
+        .appendField("second");
+    this.setInputsInline(true);
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('Waits for specified time period.');
+  }
+};
+/***/
 
 Blockly.Blocks.action_gettimer = {
   category: 'Action',
@@ -277,11 +319,16 @@ Blockly.Blocks.motor_action_onfor = {
   helpUrl: 'http://www.example.com/',
   init: function() {
     this.setColour(316);
-    this.appendDummyInput().appendField("turn on for")
-    //var input =  this.appendValueInput( "right", "motor");
-    .appendField(new Blockly.FieldTextInput("1"), "second")
-    .appendField("second(s)");
-    //this.setOutput(true, "motor");
+//    this.appendDummyInput().appendField("turn on for")
+//    .appendField(new Blockly.FieldTextInput("1"), "second")
+//    .appendField("second(s)");
+    this.appendDummyInput()
+        .appendField("turn on for");
+    this.appendValueInput("value")
+        .setCheck("Number");
+    this.appendDummyInput()
+        .appendField("second(s)");
+    this.setInputsInline(true);
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setTooltip('Turns on selected motor(s) for specified period of time.');

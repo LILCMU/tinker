@@ -321,6 +321,7 @@ Blockly.ByteCode.action_led = function() {
   return code;
 };
 
+/***
 Blockly.ByteCode.action_wait = function() {
   var text_name = this.getFieldValue('NAME');
   text_name *= 10;
@@ -328,6 +329,16 @@ Blockly.ByteCode.action_wait = function() {
   var code = '<%num'+((text_name > 255) ? '16' : '' )+'> ' + splitNumber(text_name) + ' <wait> ';
   return code;
 };
+/***/
+
+//***
+Blockly.ByteCode['action_wait'] = function(block) {
+  var value_name = Blockly.ByteCode.valueToCode(block, 'NAME', Blockly.ByteCode.ORDER_ATOMIC);
+  //value_name *= 10;
+  var code = value_name+' <%num> 10 * <wait> ';
+  return code;
+};
+/***/
 
 Blockly.ByteCode.action_gettimer = function() {
   var code = '<timer> ';
@@ -360,11 +371,12 @@ Blockly.ByteCode.motor_action_turn = function() {
   return code;
 };
 
-Blockly.ByteCode.motor_action_onfor = function() {
-  var text_second = this.getFieldValue('second');
+Blockly.ByteCode.motor_action_onfor = function(block) {
+  var text_second = Blockly.ByteCode.valueToCode(block, 'value', Blockly.ByteCode.ORDER_ATOMIC);
   text_second *= 10;
   text_second = isNaN(text_second) ? 0 : text_second;
   var code = '<%num'+((text_second > 255) ? '16' : '' )+'> ' + splitNumber(text_second) + ' <onfor> ';
+  var code = text_second +' <%num> 10 * <onfor> ';
   return code;
 };
 

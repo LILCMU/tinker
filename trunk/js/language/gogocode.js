@@ -298,11 +298,21 @@ Blockly.GogoCode.action_led = function() {
   return code;
 };
 
+/***
 Blockly.GogoCode.action_wait = function() {
   var text_name = this.getFieldValue('NAME');
   // TODO: Assemble GogoCode into code variable.
   text_name *= 10;
   var code = '<span class="c290">wait ' + (isNaN(text_name) ? 0 : text_name) + '</span> \n';
+  return code;
+};
+/***/
+
+Blockly.GogoCode['action_wait'] = function(block) {
+  var value_name = Blockly.GogoCode.valueToCode(block, 'NAME', Blockly.GogoCode.ORDER_ATOMIC);
+  value_name = value_name.replace('<span class="c10">', '').replace('</span>', '').toInt()
+  value_name *= 10;
+  var code = '<span class="c290">wait ' + (isNaN(value_name) ? 0 : value_name) + '</span> \n';
   return code;
 };
 
@@ -341,9 +351,10 @@ Blockly.GogoCode.motor_action_turn = function() {
   return code;
 };
 
-Blockly.GogoCode.motor_action_onfor = function() {
+Blockly.GogoCode.motor_action_onfor = function(block) {
   //var value_right = Blockly.GogoCode.valueToCode(this, 'right', Blockly.GogoCode.ORDER_ATOMIC);
-  var text_second = this.getFieldValue('second');
+  var text_second = Blockly.GogoCode.valueToCode(block, 'value', Blockly.GogoCode.ORDER_ATOMIC);
+  text_second = text_second.replace('<span class="c10">', '').replace('</span>', '').toInt();
   // TODO: Assemble GogoCode into code variable.
   text_second *= 10;
   text_second = isNaN(text_second) ? 0 : text_second;

@@ -62,9 +62,14 @@
   	<block type="action_led" x="32" y="138">
   		<title name="onoff">on</title>
   	</block>
-  	<block type="action_wait" x="33" y="181">
-  		<title name="NAME">0.1</title>
+  	<block type="action_wait">
+  		<value name="NAME">
+  		  <block type="math_number">
+  		    <title name="number">1</title>
+  		  </block>
+  		</value>
   	</block>
+  	
   	<block type="action_motor" x="26" y="265">
   		<title name="a">a</title>
   		<title name="b"></title>
@@ -110,8 +115,12 @@
   	    <block type="action_led" x="132" y="115">
   	      <title name="onoff">on</title>
   	    </block>
-  	    <block type="action_wait" x="130" y="176">
-  	      <title name="NAME">0.1</title>
+  	    <block type="action_wait">
+  	    	<value name="NAME">
+  	    	  <block type="math_number">
+  	    	    <title name="number">1</title>
+  	    	  </block>
+  	    	</value>
   	    </block>
   	    
   	    <block type="action_motor" x="133" y="331">
@@ -123,8 +132,15 @@
   	    <block type="motor_action_turn" x="122" y="51">
   	      <title name="turn">on</title>
   	    </block>
-  	    <block type="motor_action_onfor" x="120" y="102">
+  	    <!--<block type="motor_action_onfor" x="120" y="102">
   	      <title name="second">1</title>
+  	    </block>-->
+  	    <block type="motor_action_onfor">
+  	    	<value name="value">
+  	    	  <block type="math_number">
+  	    	    <title name="number">1</title>
+  	    	  </block>
+  	    	</value>
   	    </block>
   	    <block type="motor_action_thisway" x="119" y="159">
   	      <title name="thisway">thisway</title>
@@ -295,7 +311,11 @@
   	        <block type="action_beep">
   	          <next>
   	            <block type="action_wait">
-  	              <title name="NAME">1</title>
+  	            	<value name="NAME">
+  	            	  <block type="math_number">
+  	            	    <title name="number">1</title>
+  	            	  </block>
+  	            	</value>
   	            </block>
   	          </next>
   	        </block>
