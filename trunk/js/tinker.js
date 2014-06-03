@@ -65,6 +65,7 @@ var byteCodeObj = {
 	'<switch8>': 84,
 	'<ledon>': 85,
 	'<ledoff>': 86,
+	'<talkto>': 90,
 	'<serial>': 95,
 	'<newserial>': 96,
 	'>': 29,
@@ -261,8 +262,9 @@ var initTinker = function() {
 	
 	$$('#setMotorPower select')[0].addEvent('change', function(){
 		var power = this.get('value');
-		ws.send(3);
-		ws.send(String.fromCharCode((power*4+64+32),0));
+		ws.send('command::setPower::'+power)
+//		ws.send(3);
+//		ws.send(String.fromCharCode((power*4+64+32),0));
 	});
 	$$('#motorOn, #motorOff, #motorBreak, #motorCoast, #motorThisway, #motorRD, #motorThatway, #beep, #ledOn, #ledOff').addEvent('click', function(){
 		switch (this.get('id')) {

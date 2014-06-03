@@ -326,6 +326,7 @@ Blockly.GogoCode.action_motor = function() {
   var dropdown_d = this.getFieldValue('d');
   //var value_name = Blockly.GogoCode.valueToCode(this, 'NAME', Blockly.GogoCode.ORDER_ATOMIC);
   // TODO: Assemble GogoCode into code variable.
+
   var code = '<span class="c316">'+dropdown_a+dropdown_b+dropdown_c+dropdown_d+',</span> \n';//+value_name.slice(1, value_name.length-1)+'\n';
   return code;
 };

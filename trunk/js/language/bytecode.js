@@ -344,8 +344,13 @@ Blockly.ByteCode.action_motor = function() {
   var dropdown_b = this.getFieldValue('b');
   var dropdown_c = this.getFieldValue('c');
   var dropdown_d = this.getFieldValue('d');
-  var code = '<'+dropdown_a+dropdown_b+dropdown_c+dropdown_d+'> ';
-  var code = ''+dropdown_a+dropdown_b+dropdown_c+dropdown_d+', ';
+  //var code = '<'+dropdown_a+dropdown_b+dropdown_c+dropdown_d+'> ';
+  if (dropdown_a == 'a') { dropdown_a = 1; }
+  if (dropdown_a == '') { dropdown_a = 0; }
+  if (dropdown_b == '') { dropdown_b = 0; }
+  if (dropdown_c == '') { dropdown_c = 0; }
+  if (dropdown_d == '') { dropdown_d = 0; }
+  var code = '<%num> '+ (dropdown_a+dropdown_b+dropdown_c+dropdown_d).toString()+' <talkto> ';
   return code;
 };
 
