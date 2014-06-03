@@ -28,6 +28,8 @@ var byteCodeObj = {
 	'/': 26,
 	'%': 27,
 	'=': 28,
+	'<setglobal>': 35,
+	'<global>': 36,
 	'<record>': 39,
 	'<recall>': 40,
 	'<setdp>': 42,
@@ -150,9 +152,26 @@ function showTextArea(){
 	onWorkspaceChange();
 }
 
+function genGlobalVar(code){
+	var codeArr = code.split('(main');
+	var variables = codeArr[0].split('[vo]');
+	var varArr = [];
+	variables.shift();
+	variables.each(function(item2){
+		varArr.include(item2.split('[vc]')[0]);
+	});
+	code = codeArr[1].split('end)')[0]+' 0';
+	alert(code);
+	
+	varArr.each(function(item, index){
+		code = code.split('[vo]'+item+'[vc]').join(index);
+	});
+	return code;
+}
+
 function filterCode(code) {
 	var codeArr;
-	
+	alert(code);
 	codeArr = code.split('[p]');
 	codeArr.shift();
 	

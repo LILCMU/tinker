@@ -29,6 +29,7 @@ BlocklyApps.LANGUAGES =
      'ro', 'ru', 'sco', 'sr', 'sv', 'th', 'tlh', 'tr', 'uk', 'vi', 'zh-hans',
      'zh-hant'];
 BlocklyApps.LANG = BlocklyApps.getLang();
+BlocklyApps.LANG = 'en';
 
 document.write('<script type="text/javascript" src="generated/' +
                BlocklyApps.LANG + '.js"></script>\n');
@@ -253,6 +254,7 @@ Code.runJS = function() {
 Code.writeToGogoBoard = function() {
 	var code = Blockly.ByteCode.workspaceToCode().clean();
 	//alert(code);
+	code = genGlobalVar(code);
 	var byteCode = code.replaceObj(byteCodeObj);
 	//alert(byteCode);
 	//return;

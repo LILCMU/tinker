@@ -128,11 +128,11 @@ Blockly.ByteCode.init = function() {
     var defvars = [];
     var variables = Blockly.Variables.allVariables();
     for (var x = 0; x < variables.length; x++) {
-      defvars[x] = 'make "' +
+      defvars[x] = '[vo]' +
           Blockly.ByteCode.variableDB_.getName(variables[x],
-          Blockly.Variables.NAME_TYPE) + ' 0';
+          Blockly.Variables.NAME_TYPE) + '[vc]';
     }
-    defvars = [];
+    //defvars = [];
     Blockly.ByteCode.definitions_['variables'] = defvars.join('\n');
   }
 };
@@ -235,12 +235,16 @@ Blockly.ByteCode['display_showtext'] = function(block) {
   var text_input = block.getFieldValue('text');
   var code = '';
   if (isNaN(text_input.toInt())) {
-  	for (var i = 0; i < text_input.length; i++) {
-  		code += '1 '+text_input.charCodeAt(text_input.length - i - 1)+' ';
-  	}
+  	
   	if (text_input.length > 4) {
+  		for (var i = 0; i < text_input.length; i++) {
+  			code += '1 '+text_input.charCodeAt(text_input.length - i - 1)+' ';
+  		}
   		code += '1 '+text_input.length+' 1 5 99 ';
   	} else {
+  		for (var i = 0; i < text_input.length; i++) {
+  			code += '1 '+text_input.charCodeAt(i)+' ';
+  		}
   		code += '1 3 99 ';
   	}
   } else {
@@ -263,28 +267,28 @@ Blockly.ByteCode['display_clearscreen'] = function(block) {
 };
 
 Blockly.ByteCode['recorder_play'] = function(block) {
-  var code = '1 6 1 1 1 '+String.fromCharCode(0xb8)+' 107 ';
+  var code = '1 6 1 1 1 184 107 ';
   return code;
 };
 
 Blockly.ByteCode['recorder_next'] = function(block) {
-  var code = '1 9 1 1 1 '+String.fromCharCode(0xb8)+' 107 ';
+  var code = '1 9 1 1 1 184 107 ';
   return code;
 };
 
 Blockly.ByteCode['recorder_prev'] = function(block) {
-  var code = '1 18 1 1 1 '+String.fromCharCode(0xb8)+' 107 ';
+  var code = '1 18 1 1 1 184 107 ';
   return code;
 };
 
 Blockly.ByteCode['recorder_select'] = function(block) {
   var num_track = block.getFieldValue('track');
-  var code = '1 '+((isNaN(num_track) ? 0 : num_track % 32) + 48)+' 1 1 1 '+String.fromCharCode(0xb8)+' 107 ';
+  var code = '1 '+((isNaN(num_track) ? 0 : num_track % 32) + 48)+' 1 1 1 184 107 ';
   return code;
 };
 
 Blockly.ByteCode['recorder_eraseall'] = function(block) {
-  var code = '1 12 1 1 1 '+String.fromCharCode(0xb8)+' 107 ';
+  var code = '1 12 1 1 1 184 107 ';
   return code;
 };
 
@@ -541,16 +545,18 @@ Blockly.ByteCode.math_not = function() {
 
 Blockly.ByteCode.variables_get = function() {
   // Variable getter.
-  //var code = '[:]:'+Blockly.ByteCode.variableDB_.getName(this.getFieldValue('VAR'), Blockly.Variables.NAME_TYPE)+'[;]';
-  var code = '';//'<--->';
+  var code = '[:]:'+Blockly.ByteCode.variableDB_.getName(this.getFieldValue('VAR'), Blockly.Variables.NAME_TYPE)+'[;]';
+  var varName = Blockly.ByteCode.variableDB_.getName(this.getFieldValue('VAR'), Blockly.Variables.NAME_TYPE);
+  var code = '<%num> [vo]'+varName+'[vc] <global> ';
   return [code, Blockly.ByteCode.ORDER_ATOMIC];
 };
 
 Blockly.ByteCode.variables_set = function() {
-  //var argument0 = Blockly.ByteCode.valueToCode(this, 'VALUE', Blockly.ByteCode.ORDER_ASSIGNMENT) || '0';
-  //var varName = Blockly.ByteCode.variableDB_.getName(this.getFieldValue('VAR'), Blockly.ByteCode.NAME_TYPE);
-  //var code = 'make "' + varName + ' ' + argument0 + '\n';
-  var code = '';//'<--->';
+  var argument = Blockly.ByteCode.valueToCode(this, 'VALUE', Blockly.ByteCode.ORDER_ASSIGNMENT) || '<%num> 0 ';
+  var varName = Blockly.ByteCode.variableDB_.getName(this.getFieldValue('VAR'), Blockly.Variables.NAME_TYPE);
+  argument = argument.slice(1, argument.length-1);
+  var code = 'make "' + varName + ' ' + argument + '\n';
+  var code = '<%num> [vo]'+varName+'[vc] '+argument+' <setglobal> ';
   return code;
 };
 
@@ -564,7 +570,7 @@ Blockly.ByteCode.procedure_procedure = function(){
 	var text_pname = this.getFieldValue('pname');
 	// TODO: Assemble ByteCode into code variable.
 	//var code = '[SS]to '+text_pname+'\n[SS]'+statements_statement+'end[SS]';
-	var code = '('+text_pname+' '+statements_statement+')';
+	var code = '('+text_pname+' '+statements_statement+'end)';
 	return code;
 }
 
