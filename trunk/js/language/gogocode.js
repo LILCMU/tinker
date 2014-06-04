@@ -310,9 +310,10 @@ Blockly.GogoCode.action_wait = function() {
 
 Blockly.GogoCode['action_wait'] = function(block) {
   var value_name = Blockly.GogoCode.valueToCode(block, 'NAME', Blockly.GogoCode.ORDER_ATOMIC);
-  value_name = value_name.replace('<span class="c10">', '').replace('</span>', '').toInt()
-  value_name *= 10;
-  var code = '<span class="c290">wait ' + (isNaN(value_name) ? 0 : value_name) + '</span> \n';
+  //value_name = value_name.replace('<span class="c10">', '').replace('</span>', '').toInt()
+  //value_name *= 10;
+  //var code = '<span class="c290">wait ' + (isNaN(value_name) ? 0 : value_name) + '</span> \n';
+  var code = '<span class="c290">wait ' + value_name + '</span> \n';
   return code;
 };
 
@@ -354,10 +355,10 @@ Blockly.GogoCode.motor_action_turn = function() {
 Blockly.GogoCode.motor_action_onfor = function(block) {
   //var value_right = Blockly.GogoCode.valueToCode(this, 'right', Blockly.GogoCode.ORDER_ATOMIC);
   var text_second = Blockly.GogoCode.valueToCode(block, 'value', Blockly.GogoCode.ORDER_ATOMIC);
-  text_second = text_second.replace('<span class="c10">', '').replace('</span>', '').toInt();
+  //text_second = text_second.replace('<span class="c10">', '').replace('</span>', '').toInt();
   // TODO: Assemble GogoCode into code variable.
-  text_second *= 10;
-  text_second = isNaN(text_second) ? 0 : text_second;
+  //text_second *= 10;
+  //text_second = isNaN(text_second) ? 0 : text_second;
   var code = '<span class="c316">onfor ' + text_second + '</span> \n';//+value_right.slice(1, value_right.length-1);
   // TODO: Change ORDER_NONE to the correct strength.
   //return [code, Blockly.GogoCode.ORDER_NONE];

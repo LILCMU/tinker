@@ -243,8 +243,8 @@ Blockly.Blocks['action_wait'] = {
         .appendField("wait");
     this.appendValueInput("NAME")
         .setCheck("Number");
-    this.appendDummyInput()
-        .appendField("second");
+//    this.appendDummyInput()
+//        .appendField("second");
     this.setInputsInline(true);
     this.setPreviousStatement(true);
     this.setNextStatement(true);
@@ -326,8 +326,8 @@ Blockly.Blocks.motor_action_onfor = {
         .appendField("turn on for");
     this.appendValueInput("value")
         .setCheck("Number");
-    this.appendDummyInput()
-        .appendField("second(s)");
+//    this.appendDummyInput()
+//        .appendField("second(s)");
     this.setInputsInline(true);
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
