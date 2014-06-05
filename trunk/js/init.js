@@ -139,7 +139,7 @@ var normalWS = function(){
 	var ws = new wsImpl('ws://localhost:8316/ws');
 	
 	ws.onmessage = function (evt) {
-		console.log(evt.data);
+		//console.log(evt.data);
 		var resp = evt.data.split('::');
 		if(resp[0] == 'burst') {
 			$('gogoStatus').addClass('on');
@@ -151,8 +151,6 @@ var normalWS = function(){
 						$('sensor'+(i+1)).getElements('.sensorValue').set('text', rs[i]);
 					//}
 				}
-				rs2 = rs1;
-				rs1 = rs;
 			}
 		} else if (resp[0] == 'status') {
 			if (resp[1]=='success') {

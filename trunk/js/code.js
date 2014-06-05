@@ -256,7 +256,7 @@ Code.writeToGogoBoard = function() {
 	//alert(code);
 	code = genGlobalVar(code);
 	var byteCode = code.replaceObj(byteCodeObj);
-	alert(byteCode);
+	//alert(byteCode);
 	//return;
 	//alert(String.fromCharCode.apply(String, byteCode.clean().split(' ')));
 	if(true || confirm('Do you want to download these byte codes to Gogo Board?\n\n'+byteCode)){
@@ -305,10 +305,13 @@ Code.saveXML = function() {
   var data = Blockly.Xml.domToText(xml);
 
   // Store data in blob.
-  var builder = new BlobBuilder();
-  builder.append(data);
-  console.log(builder);
-  saveAs(builder.getBlob('text/plain;charset=utf-8'), 'block.xml');
+  //var builder = new BlobBuilder();
+  //builder.append(data);
+  //console.log(builder);
+  //saveAs(builder.getBlob('text/plain;charset=utf-8'), 'block.xml');
+  var name = prompt("Name of this file","blocks");
+  var blob = new Blob([data], {type: "text/plain;charset=utf-8"});
+  saveAs(blob, name+'.xml');
 }
 
 

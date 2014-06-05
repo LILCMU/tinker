@@ -751,7 +751,8 @@ Blockly.Blocks.variables_set = {
   init: function() {
     this.setColour(330);
     //this.appendDummyInput();
-    this.appendValueInput( 'VALUE', null).appendField(Blockly.LANG_VARIABLES_SET_TITLE)
+    //this;
+    this.appendValueInput( 'VALUE', null).appendField("set").appendField(Blockly.LANG_VARIABLES_SET_TITLE)
     .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_SET_ITEM), 'VAR');
     this.setPreviousStatement(true);
     this.setNextStatement(true);

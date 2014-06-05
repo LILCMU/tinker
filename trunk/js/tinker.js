@@ -226,6 +226,8 @@ var initTinker = function() {
 	
 	//Blockly.mainWorkspace.getCanvas().addEventListener('blocklyWorkspaceChange', onWorkspaceChange, false);
 	
+	$('gogoStatus').dispose().inject($('title'), 'after');
+	$('gogoStatusArea').dispose();
 	
 	$$('#motorA, #motorB, #motorC, #motorD').addEvent('click', function(){
 		this.toggleClass('selected');
@@ -244,6 +246,7 @@ var initTinker = function() {
 		//console.log('String: ['+String.fromCharCode(0x80, 0x04, 0)+']');
 	});
 	
+	$('sensorOptionBTN').addClass('selected displayNone');
 	$('sensorOptionBTN').addEvent('click', function(){
 		this.toggleClass('selected');
 		this.set('text', ((this.hasClass('selected')) ? 'ON' : 'OFF' ));
@@ -260,7 +263,7 @@ var initTinker = function() {
 	
 	$$('#setMotorPower select')[0].addEvent('change', function(){
 		var power = this.get('value');
-		ws.send('command::setPower::'+power)
+		ws.send('command::setPower::'+power);
 //		ws.send(3);
 //		ws.send(String.fromCharCode((power*4+64+32),0));
 	});
