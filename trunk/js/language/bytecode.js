@@ -221,20 +221,20 @@ Blockly.ByteCode.scrub_ = function(block, code) {
 //  // TODO: Assemble JavaScript into code variable.
 //  var code = '...';
 //  // TODO: Change ORDER_NONE to the correct strength.
-//  return [code, Blockly.JavaScript.ORDER_NONE];
+//  return [code, Blockly.ByteCode.ORDER_NONE];
 //};
 
 
 Blockly.ByteCode['clock_date'] = function(block) {
   var dropdown_date = block.getFieldValue('date');
   var code = '1 '+dropdown_date+' 98 ';
-  return [code, Blockly.JavaScript.ORDER_NONE];
+  return [code, Blockly.ByteCode.ORDER_NONE];
 };
 
-Blockly.ByteCode['display_showtext'] = function(block) {
+Blockly.ByteCode['display_text'] = function(block) {
   var text_input = block.getFieldValue('text');
   var code = '';
-  if (isNaN(text_input.toInt())) {
+  //if (isNaN(text_input.toInt())) {
   	
   	if (text_input.length > 4) {
   		for (var i = 0; i < text_input.length; i++) {
@@ -247,10 +247,20 @@ Blockly.ByteCode['display_showtext'] = function(block) {
   		}
   		code += '1 3 99 ';
   	}
-  } else {
-  	var num = text_input.toInt();
-  	code = '2 '+Math.floor(num / 256)+' '+(num % 256)+' 1 2 99 ';
-  }
+//  } else {
+//  	var num = text_input.toInt();
+//  	code = '2 '+Math.floor(num / 256)+' '+(num % 256)+' 1 2 99 ';
+//  }
+  return code;
+};
+
+Blockly.ByteCode['display_number'] = function(block) {
+  //var text_input = block.getFieldValue('text');
+  var value_value = Blockly.ByteCode.valueToCode(block, 'value', Blockly.ByteCode.ORDER_ATOMIC);
+  var code = '';
+  //var num = text_input.toInt();
+  //code = '2 '+Math.floor(num / 256)+' '+(num % 256)+' 1 2 99 ';
+  code = value_value + ' 1 2 99 ';
   return code;
 };
 
@@ -293,7 +303,7 @@ Blockly.ByteCode['recorder_eraseall'] = function(block) {
 };
 
 Blockly.ByteCode['i2c_write'] = function(block) {
-  var value_value = Blockly.JavaScript.valueToCode(block, 'value', Blockly.JavaScript.ORDER_ATOMIC);
+  var value_value = Blockly.ByteCode.valueToCode(block, 'value', Blockly.ByteCode.ORDER_ATOMIC);
   var text_reg_addr = block.getFieldValue('reg_addr');
   var text_i2c_addr = block.getFieldValue('i2c_addr');
   var num = isNaN(text_reg_addr) ? text_reg_addr.charCodeAt(0) : text_reg_addr;
@@ -306,7 +316,7 @@ Blockly.ByteCode['i2c_read'] = function(block) {
   var text_i2c_addr = block.getFieldValue('i2c_addr');
   var num = isNaN(text_reg_addr) ? text_reg_addr.charCodeAt(0) : text_reg_addr;
   var code = ' 2 '+Math.floor(num / 256)+' '+(num % 256)+' 1 '+text_i2c_addr+' 108 ';
-  return [code, Blockly.JavaScript.ORDER_NONE];
+  return [code, Blockly.ByteCode.ORDER_NONE];
 };
 
 
@@ -513,9 +523,10 @@ Blockly.ByteCode.input__output__storage_get_ir = function() {
 /****    MATH    ****/
 
 Blockly.ByteCode.math_number = function() {
-  var text_number = this.getFieldValue('number');
-  text_number = (isNaN(text_number) ? 0 : text_number - 0);
-  var code = '<%num'+((text_number > 255) ? '16' : '' )+'> ' + splitNumber(text_number) + ' ';
+  var num = this.getFieldValue('number');
+  num = (isNaN(num) ? 0 : num - 0);
+  //var code = '<%num'+((text_number > 255) ? '16' : '' )+'> ' + splitNumber(text_number) + ' ';
+  var code = '<%num16> ' + Math.floor(num / 256)+' '+(num % 256) + ' ';
   return [code, Blockly.ByteCode.ORDER_NONE];
 };
 

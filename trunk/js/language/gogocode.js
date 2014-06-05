@@ -223,12 +223,19 @@ Blockly.GogoCode['clock_date'] = function(block) {
   // TODO: Assemble JavaScript into code variable.
   var code = '<span class="c330">date['+dropdown_date+']</span>\n';
   // TODO: Change ORDER_NONE to the correct strength.
-  return [code, Blockly.JavaScript.ORDER_NONE];
+  return [code, Blockly.GogoCode.ORDER_NONE];
 };
 
-Blockly.GogoCode['display_showtext'] = function(block) {
+Blockly.GogoCode['display_text'] = function(block) {
   var text_input = block.getFieldValue('text');
   var code = '<span class="c330">display \''+text_input+'\'</span>\n';
+  return code;
+};
+
+Blockly.GogoCode['display_number'] = function(block) {
+  //var text_input = block.getFieldValue('text');
+  var value_value = Blockly.GogoCode.valueToCode(block, 'value', Blockly.GogoCode.ORDER_ATOMIC);
+  var code = '<span class="c330">display \''+value_value+'\'</span>\n';
   return code;
 };
 
@@ -271,7 +278,7 @@ Blockly.GogoCode['recorder_eraseall'] = function(block) {
 };
 
 Blockly.GogoCode['i2c_write'] = function(block) {
-  var value_value = Blockly.JavaScript.valueToCode(block, 'value', Blockly.JavaScript.ORDER_ATOMIC);
+  var value_value = Blockly.GogoCode.valueToCode(block, 'value', Blockly.GogoCode.ORDER_ATOMIC);
   var text_reg_addr = block.getFieldValue('reg_addr');
   var text_i2c_addr = block.getFieldValue('i2c_addr');
   var code = '<span class="c210">i2cwrite [write: \''+value_value+'\', reg_address: '+text_reg_addr+', i2c_address: '+text_i2c_addr+']</span>\n';
@@ -282,7 +289,7 @@ Blockly.GogoCode['i2c_read'] = function(block) {
   var text_reg_addr = block.getFieldValue('reg_addr');
   var text_i2c_addr = block.getFieldValue('i2c_addr');
   var code = '<span class="c210">i2cread [reg_address: '+text_reg_addr+', i2c_address: '+text_i2c_addr+']</span>\n';
-  return [code, Blockly.JavaScript.ORDER_NONE];
+  return [code, Blockly.GogoCode.ORDER_NONE];
 };
 
 

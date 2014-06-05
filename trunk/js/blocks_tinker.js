@@ -46,7 +46,22 @@ Blockly.Blocks['clock_date'] = {
   }
 };
 
-Blockly.Blocks['display_showtext'] = {
+Blockly.Blocks['display_text'] = {
+  init: function() {
+    this.setHelpUrl('http://www.example.com/');
+    this.setColour(330);
+    this.appendDummyInput()
+        .appendField("show text  \"")
+        .appendField(new Blockly.FieldTextInput("text"), "text")
+        .appendField("\"");
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
+/***
+Blockly.Blocks['display_showshorttext'] = {
   init: function() {
     this.setHelpUrl('http://www.example.com/');
     this.setColour(330);
@@ -54,6 +69,26 @@ Blockly.Blocks['display_showtext'] = {
         .appendField("show   \"")
         .appendField(new Blockly.FieldTextInput("text"), "text")
         .appendField("\"");
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+/***/
+
+Blockly.Blocks['display_number'] = {
+  init: function() {
+    this.setHelpUrl('http://www.example.com/');
+    this.setColour(330);
+//    this.appendDummyInput()
+//        .appendField("show number  \"")
+//        .appendField(new Blockly.FieldTextInput("text"), "text")
+//        .appendField("\"");
+    this.appendDummyInput()
+        .appendField("show number  ");
+    this.appendValueInput("value")
+        .setCheck("Number");
+    this.setInputsInline(true);
     this.setPreviousStatement(true);
     this.setNextStatement(true);
     this.setTooltip('');

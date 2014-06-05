@@ -162,7 +162,6 @@ function genGlobalVar(code){
 		varArr.include(item2.split('[vc]')[0]);
 	});
 	code = codeArr[1].split('end)')[0]+' 0';
-	alert(code);
 	
 	varArr.each(function(item, index){
 		code = code.split('[vo]'+item+'[vc]').join(index);
@@ -172,7 +171,6 @@ function genGlobalVar(code){
 
 function filterCode(code) {
 	var codeArr;
-	alert(code);
 	codeArr = code.split('[p]');
 	codeArr.shift();
 	

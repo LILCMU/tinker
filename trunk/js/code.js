@@ -256,7 +256,7 @@ Code.writeToGogoBoard = function() {
 	//alert(code);
 	code = genGlobalVar(code);
 	var byteCode = code.replaceObj(byteCodeObj);
-	//alert(byteCode);
+	alert(byteCode);
 	//return;
 	//alert(String.fromCharCode.apply(String, byteCode.clean().split(' ')));
 	if(true || confirm('Do you want to download these byte codes to Gogo Board?\n\n'+byteCode)){
