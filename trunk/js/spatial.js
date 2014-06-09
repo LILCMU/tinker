@@ -433,9 +433,10 @@ var Converter = new Class({
 		that.lineClickIndex = 0;
 		that.showDash = false;
 		
-		that.graphArea.addEvent(click, function(event){
+		that.graphArea.addEvent('click', function(event){
 			
 			//that.points.push({'x': event.event.offsetX, 'y': event.event.offsetY});
+			kk(that.lineClickIndex);
 			if (that.lineClickIndex != 0) {
 				var newPoint = {
 					'x': event.client.x - that.graphArea.getCoordinates().left,
@@ -478,6 +479,11 @@ var Converter = new Class({
 				}
 			}
 		});
+		
+		that.setPoints = function(points){
+			that.points = points;
+			that.drawPoint();
+		}
 		
 		/** controllInput 
 			width: 40px, height: 20px
@@ -633,7 +639,7 @@ var Converter = new Class({
 						'x': this.get('data-pointX').toInt(), 
 						'y': this.get('data-pointY').toInt()
 					};
-					that.showDashLine(newPoint);
+					//that.showDashLine(newPoint);
 				})
 				.addEvent('mouseout', function(){
 					that.hideDashLine();
@@ -654,7 +660,7 @@ var Converter = new Class({
 						if (!(thisIndex == 0 || thisIndex == (that.points.length - 1))) {
 							this.newPoint.y = Math.max(that.points[thisIndex+1].y + 2, Math.min(this.newPoint.y, that.points[thisIndex-1].y - 2));
 						}
-						that.showDashLine(this.newPoint);
+						//that.showDashLine(this.newPoint);
 						
 						this.setStyles({
 							'top': this.newPoint.y + px,
@@ -696,7 +702,7 @@ var Converter = new Class({
 							'x': event.client.x - that.graphArea.getCoordinates().left,
 							'y': event.client.y - that.graphArea.getCoordinates().top
 						};
-						that.showDashLine(newPoint);
+						//that.showDashLine(newPoint);
 					})
 					.addEvent('mouseout', function(){
 						that.hideDashLine();
@@ -704,6 +710,9 @@ var Converter = new Class({
 					.inject(that.graphArea);
 				}
 			});
+			setTimeout(function(){
+				that.getParent('.contentSpatial').fireEvent('changeGraph', that);
+			}, 10);
 		}
 		
 		that.YtoX = function(yInput){
@@ -771,11 +780,11 @@ var Converter = new Class({
 			var strResult = '';
 			that.points.each(function(item, index){
 				if (index > 0) {
-					strResult += '<value name="IF'+(index-1)+'"><block type="logic_compare" inline="true"><field name="OP">LT</field><value name="A"><block type="variables_get"><field name="VAR">y</field></block></value><value name="B"><block type="math_number" ><field name="NUM">'+that.convertY(that.points[index].y)+'</field></block></value></block></value>';
-					strResult += '<statement name="DO'+(index-1)+'"><block type="variables_set" inline="true"><field name="VAR">x</field><value name="VALUE"><block type="math_arithmetic" inline="true"><field name="OP">ADD</field><value name="A"><block type="math_arithmetic" inline="true"><field name="OP">DIVIDE</field><value name="A"><block type="math_arithmetic" inline="true"><field name="OP">MINUS</field><value name="A"><block type="variables_get"><field name="VAR">y</field></block></value><value name="B"><block type="math_number" ><field name="NUM">'+that.convertY(that.points[index-1].y)+'</field></block></value></block></value><value name="B"><block type="math_number"><field name="NUM">'+that.mArr[index-1]+'</field></block></value></block></value><value name="B"><block type="math_number"><field name="NUM">'+that.convertX(that.points[index-1].x)+'</field></block></value></block></value></block></statement>';
+					strResult += '<value name="IF'+(index-1)+'"><block type="logic_compare" inline="true"><field name="OP">LT</field><value name="A"><block type="variables_get"><field name="VAR">[VAR1]</field></block></value><value name="B"><block type="math_number" ><field name="NUM">'+that.convertY(that.points[index].y)+'</field></block></value></block></value>';
+					strResult += '<statement name="DO'+(index-1)+'"><block type="variables_set" inline="true"><field name="VAR">x</field><value name="VALUE"><block type="math_arithmetic" inline="true"><field name="OP">ADD</field><value name="A"><block type="math_arithmetic" inline="true"><field name="OP">DIVIDE</field><value name="A"><block type="math_arithmetic" inline="true"><field name="OP">MINUS</field><value name="A"><block type="variables_get"><field name="VAR">[VAR1]</field></block></value><value name="B"><block type="math_number" ><field name="NUM">'+that.convertY(that.points[index-1].y)+'</field></block></value></block></value><value name="B"><block type="math_number"><field name="NUM">'+that.mArr[index-1]+'</field></block></value></block></value><value name="B"><block type="math_number"><field name="NUM">'+that.convertX(that.points[index-1].x)+'</field></block></value></block></value></block></statement>';
 				}
 			});
-			strResult = '<block type="procedures_defreturn" inline="false"><mutation><arg name="y"></arg></mutation><field name="NAME">convertYtoX</field><statement name="STACK"><block type="controls_if" inline="false"><mutation elseif="'+(that.points.length - 2)+'"></mutation>'+strResult+'</block></statement><value name="RETURN"><block type="variables_get"><field name="VAR">x</field></block></value></block>';
+			strResult = '<block type="procedures_defreturn" inline="false"><mutation><arg name="[VAR1]"></arg></mutation><field name="NAME">[TITLE]</field><statement name="STACK"><block type="controls_if" inline="false"><mutation elseif="'+(that.points.length - 2)+'"></mutation>'+strResult+'</block></statement><value name="RETURN"><block type="variables_get"><field name="VAR">x</field></block></value></block>';
 			//strResult += '<block type="procedures_callreturn" inline="false" x="243" y="187"><mutation name="convertYtoX"><arg name="y"></arg></mutation></block>';
 			return strResult;
 		}
@@ -788,6 +797,17 @@ var Converter = new Class({
 		that.convertY = function(yInput){
 			var yOutput = ((((that.GP.height - yInput) * (that.gate.maxY.get('value').toInt() - that.gate.minY.get('value').toInt())) / that.GP.height) + that.gate.minY.get('value').toInt()).toFixed(1) ;
 			return yOutput.toFloat();
+		}
+		
+		that.updateSensor = function(yValue){
+			var xValue = that.YtoX(yValue);
+			
+			//kk(yValue+', '+xValue);
+			that.showDashLine({
+				'x': xValue * (that.GP.width) / (that.gate.maxX.get('value').toInt() - that.gate.minX.get('value').toInt()), 
+				'y': (1 - (yValue / (that.gate.maxY.get('value').toInt() - that.gate.minY.get('value').toInt()))) * (that.GP.height)
+			});
+			
 		}
 		
 		

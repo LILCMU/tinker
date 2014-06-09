@@ -132,10 +132,10 @@ Code.renderContent = function() {
   	var code = filterCode(Blockly.GogoCode.workspaceToCode());
   	$(content).set('html', code);
   } else if (content.id == 'content_cvi') {
-  	var mainArea = $$('#mappingMainArea .wrapper')[0];
-  	mainArea.empty();
-  	var currentSpatial = new Converter();
-  	currentSpatial.inject(mainArea);
+//  	var mainArea = $$('#mappingMainArea .wrapper')[0];
+//  	mainArea.empty();
+//  	var currentSpatial = new Converter();
+//  	currentSpatial.inject(mainArea);
   } else if (content.id == 'content_cdi') {
   	var mainArea = $$('#graphMainArea .wrapper')[0];
   	mainArea.empty();

@@ -10,6 +10,14 @@
 	user-select: none;
 }
 
+.spatialBlock * {
+	-webkit-user-select: auto;
+	-khtml-user-select: auto;
+	-moz-user-select: auto;
+	-ms-user-select: auto;
+	user-select: auto;
+}
+
 body {
 	background-color: white;
 	/*color: white;*/
@@ -107,32 +115,90 @@ animation-prototype {
 	display: none;
 }
 
+.addBlock {
+	display: none;
+}
+
 .mappingBlock {
-	background-image: url(mappingBlock.png);
+	background-image: url(../media/mappingBlock.png);
+	background-image: url(../media/mbMiddle.png);
 	color: white;
-	display: inline-block;
-	width: 118px;
+	/*display: inline-block;*/
+	/*width: 118px;*/
 	height: 51px;
 	font-size: 0.9em;
 	text-align: center;
 	line-height: 25px;
-	margin: 0px 7px 5px 0px;
+	margin: 0px 35px 5px 0px;
+	float: left;
+	padding: 0 5px;
+	opacity: 0.8;
+}
+.mappingBlock.selected {
+	opacity: 1;
+}
+.mappingBlock::before {
+	background-image: url(../media/mbLeft.png);
+	content: '';
+	position: absolute;
+	display: block;
+	width: 15px;
+	height: 51px;
+	left: -15px;
+	top: 0px;
+}
+.mappingBlock::after {
+	background-image: url(../media/mbRight.png);
+	content: '';
+	position: absolute;
+	display: block;
+	width: 12px;
+	height: 51px;
+	right: -12px;
+	top: 0px;
+}
+
+.mappingBlock div {
+	text-align: right;
 }
 
 .graphBlock {
-	background-image: url(graphBlock.png);
+	background-image: url(../media/gbMiddle.png);
 	color: white;
-	display: inline-block;
-	width: 127px;
+	/*display: inline-block;*/
+	/*width: 127px;*/
 	height: 76px;
 	font-size: 0.9em;
 	text-align: center;
 	line-height: 25px;
-	margin: 0px 7px 5px 0px;
+	margin: 0px 35px 5px 0px;
+	float: left;
+	padding: 0 5px;
+}
+.graphBlock::before {
+	background-image: url(../media/gbLeft.png);
+	content: '';
+	position: absolute;
+	display: block;
+	width: 17px;
+	height: 76px;
+	left: -17px;
+	top: 0px;
+}
+.graphBlock::after {
+	background-image: url(../media/gbRight.png);
+	content: '';
+	position: absolute;
+	display: block;
+	width: 12px;
+	height: 76px;
+	right: -12px;
+	top: 0px;
 }
 
-
-
+.graphBlock div {
+	text-align: right;
+}
 
 
 #mainMenu {
