@@ -810,6 +810,14 @@ var Converter = new Class({
 			
 		}
 		
+		that.getTextData = function(){
+			var data = [];
+			that.points.each(function(item){
+				data.push(item.x+'#'+item.y);
+			});
+			return data.join(';;');
+		}
+		
 		
 		that.setGP();
 		that.drawController();

@@ -213,7 +213,7 @@ Code.init = function() {
 
   // Lazy-load the syntax-highlighting.
   window.setTimeout(BlocklyApps.importPrettify, 1);
-  document.fireEvent('BlocklyIsReady');
+  window.fireEvent('BlocklyIsReady');
 };
 
 if (window.location.pathname.match(/readonly.html$/)) {

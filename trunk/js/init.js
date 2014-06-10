@@ -74,14 +74,16 @@ var blockSpatial = new Class({
 				item.getFirst().addEvent('blur', function(){
 					item.getParent('.contentSpatial').fireEvent('changeBlockContent', item);
 					var newText = this.get('value');
-					item.set('html', newText);
+					setTimeout(function(){
+						item.set('html', newText);
+					}, 20);
 					item.removeClass('selected');
 					that[item.get('data-type')] = newText;
 				});
 				item.addClass('selected');
 				item.getFirst().select();
 			}
-			event.stop();
+			//event.stop();
 		});
 		
 		return that;
@@ -120,11 +122,48 @@ var initSpatial = function(){
 		'var1': 'y'
 	};
 	
-	var mappingStorage = window.localStorage.getItem('mappingBlock');
-	if (mappingStorage) {
-		mapping.data = mappingStorage.split('::');
-	} else {
-		mapping.data = [];
+	mapping.data = [];
+	mapping.storage = window.localStorage.getItem('mappingBlock');
+	if (mapping.storage) {
+		var dataArr = mapping.storage.split('::');
+		var testBlock;
+		dataArr.each(function(item, index){
+			var itemArr = item.split('||');
+			var blockData = itemArr[0].split(';;');
+			var spatialData = itemArr[1].split(';;');
+			mapping.data.push({'block': itemArr[0], 'spatial': itemArr[1]});
+			testBlock = new mappingBlock();
+			testBlock.setTitle(blockData[0]);
+			testBlock.setVar1(blockData[1]);
+			testBlock.inject(mapping.getElement('.procedure'));
+			testBlock.blockIndex = index;
+			var pointArr = [];
+			var pointData;
+			spatialData.each(function(item){
+				pointData = item.split('#');
+				pointArr.push({'x': pointData[0].toInt(), 'y': pointData[1].toInt()});
+			});
+			testBlock.points = pointArr;
+		});
+		
+		mapping.currentBlock = testBlock;
+		mapping.currentData = mapping.data.length - 1;
+		setTimeout(function(){
+			mapping.currentBlock.fireEvent('click');
+			
+		}, 10);
+	}
+	
+	mapping.saveData  = function(){
+		var dataArr = [];
+		kk(mapping.data);
+		mapping.data.each(function(item){
+			dataArr.push(item.block+'||'+item.spatial);
+		});
+		mapping.storage = dataArr.join('::');
+		kk('save mapping data to storage: ');
+		kk(mapping.storage);
+		window.localStorage.setItem('mappingBlock', mapping.storage);
 	}
 	
 	mapping.addEvent('selectBlock', function(item){
@@ -133,8 +172,13 @@ var initSpatial = function(){
 //		mainArea.empty();
 //		var currentSpatial = new Converter();
 //		currentSpatial.inject(mainArea);
-		var currentSpatial = mapping.getElement('.wrapper').getFirst();
+		
+		//mapping.currentData = mapping.currentBlock.blockIndex;
+		var allBlocks = item.getParent().getElements('.mappingBlock');
+		mapping.currentData = allBlocks.indexOf(item);
 		kk(mapping.currentBlock.points);
+		var currentSpatial = mapping.getElement('.wrapper').getFirst();
+		
 		currentSpatial.setPoints(mapping.currentBlock.points);
 	});
 	
@@ -145,8 +189,14 @@ var initSpatial = function(){
 			mapping.
 		}
 		/***/
+		kk(item);
 		setTimeout(function(){
 			mapping.updateBlock();
+			
+			/**  save data to storage  **/
+			block = item.getParent('.mappingBlock');
+			mapping.data[mapping.currentData].block = block.title+';;'+block.var1;
+			mapping.saveData();
 		}, 10);
 	});
 	
@@ -157,6 +207,9 @@ var initSpatial = function(){
 		mapping.updateBlock();
 		mapping.currentBlock.points = converter.points; 
 		
+		/**  save data to storage  **/
+		mapping.data[mapping.currentData].spatial = converter.getTextData();
+		mapping.saveData();
 		//alert(mapping.currentBlock.points);
 	});
 	
@@ -197,22 +250,54 @@ var initSpatial = function(){
 	});
 	
 	setTimeout(function(){
+	//window.addEvent('BlocklyIsReady', function(){
 		var mainArea = mapping.getElement('.wrapper');
 		mainArea.empty();
 		var currentSpatial = new Converter();
 		currentSpatial.inject(mainArea);
 		mapping.spatial = currentSpatial;
+		mapping.spatial.setPoints(mapping.currentBlock.points);
+		
+		if (!mapping.storage) {
+			mapping.getElement('.submit').fireEvent('click');
+		}
+	//});
 	}, 1000);
 	
+	mapping.getElement('.deleteBlock').addEvent('click', function(){
+		if (mapping.data.length > 1) {
+			var prevBlock = mapping.currentBlock.getPrevious();
+			if (mapping.currentData == 0) {
+				prevBlock = mapping.currentBlock.getNext();
+			}
+			var currentData = mapping.data[mapping.currentData];
+			mapping.data.erase(currentData);
+			mapping.currentBlock.destroy();
+			
+			mapping.currentData = (mapping.currentData == 0) ? 0 : mapping.currentData - 1;
+			
+			prevBlock.fireEvent('click');
+			mapping.saveData();
+		}
+	});
+	
 	mapping.getElement('.submit').addEvent('click', function(){
-		var testBlock = new mappingBlock();
+		var block = new mappingBlock();
 		
-		testBlock.inject(mapping.getElement('.procedure'));
-		testBlock.fireEvent('click');
+		block.inject(mapping.getElement('.procedure'));
+		block.fireEvent('click');
 		mapping.currentBlock = testBlock;
 		
+		//var block = mapping.currentBlock;
+		
+		/**  add data for save to storage  **/
+		
+		mapping.data.push({'block': block.title+';;'+block.var1, 'spatial': ''});
+		
+		mapping.currentData = mapping.data.length - 1;
+		
+		/**  update toolbox  **/
 		var mappingToolbox = mainToolbox.getElement('.toolMappingBlock');
-		var block = mapping.currentBlock;
 		var blockID = 'block+'+now();
 		var newBlock = new Element('block', {'id': blockID, 'html': '<mutation name="'+block.title+'"><arg name="'+block.var1+'"></arg></mutation>'});
 		newBlock.setAttribute('type', 'procedures_callreturn');
