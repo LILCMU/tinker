@@ -120,6 +120,13 @@ var initSpatial = function(){
 		'var1': 'y'
 	};
 	
+	var mappingStorage = window.localStorage.getItem('mappingBlock');
+	if (mappingStorage) {
+		mapping.data = mappingStorage.split('::');
+	} else {
+		mapping.data = [];
+	}
+	
 	mapping.addEvent('selectBlock', function(item){
 		mapping.currentBlock = item;
 //		var mainArea = $$('#mappingMainArea .wrapper')[0];
@@ -153,12 +160,16 @@ var initSpatial = function(){
 		//alert(mapping.currentBlock.points);
 	});
 	
+	
+	/***
 	var testBlock = new mappingBlock();
 	
 	testBlock.inject(mapping.getElement('.procedure'));
 	//testBlock.fireEvent('click');
 	testBlock.addClass('selected');
 	mapping.currentBlock = testBlock;
+	/***/
+	
 	
 	mapping.getElement('.iframe').set('src', 'mappingPreview.html?ltrqwwq');
 	
@@ -199,6 +210,15 @@ var initSpatial = function(){
 		testBlock.inject(mapping.getElement('.procedure'));
 		testBlock.fireEvent('click');
 		mapping.currentBlock = testBlock;
+		
+		var mappingToolbox = mainToolbox.getElement('.toolMappingBlock');
+		var block = mapping.currentBlock;
+		var blockID = 'block+'+now();
+		var newBlock = new Element('block', {'id': blockID, 'html': '<mutation name="'+block.title+'"><arg name="'+block.var1+'"></arg></mutation>'});
+		newBlock.setAttribute('type', 'procedures_callreturn');
+		newBlock.inject(mappingToolbox);
+		
+		Blockly.updateToolbox(mainToolbox);
 	});
 	
 	/***
