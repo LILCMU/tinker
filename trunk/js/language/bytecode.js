@@ -423,6 +423,21 @@ Blockly.ByteCode.control_if = function() {
   return code.clean()+' ';
 };
 
+/***
+Blockly.ByteCode.controls_if = function() {
+  var value_condition = Blockly.ByteCode.valueToCode(this, 'condition', Blockly.ByteCode.ORDER_ATOMIC);
+  var statements_statement = Blockly.ByteCode.statementToCode(this, 'statement');
+  
+  var statement = statements_statement.clean();
+  var condition = value_condition.clean();
+  var listLength = (statement != '') ? statement.split(' ').length + 1 : 1 ;
+  
+  var code = condition+' <%list> '+listLength+' '+statement+' <%eol> <if> ';
+  return code.clean()+' ';
+};
+
+/***/
+
 Blockly.ByteCode.control_ifelse = function() {
   var value_condition = Blockly.ByteCode.valueToCode(this, 'condition', Blockly.ByteCode.ORDER_ATOMIC).clean();
   var statements_if = Blockly.ByteCode.statementToCode(this, 'if').clean();
@@ -545,6 +560,15 @@ Blockly.ByteCode.math_equal = function() {
   return [code, Blockly.ByteCode.ORDER_NONE];
 };
 
+Blockly.ByteCode.logic_compare = function() {
+  var value_left = Blockly.ByteCode.valueToCode(this, 'left', Blockly.ByteCode.ORDER_ATOMIC).clean();
+  var value_right = Blockly.ByteCode.valueToCode(this, 'right', Blockly.ByteCode.ORDER_ATOMIC).clean();
+  var dropdown_cond = this.getFieldValue('cond');
+  //var code = '( '+value_left.slice(1, value_left.length-1)+' '+dropdown_cond+' '+value_right.slice(1, value_right.length-1) +' )';
+  var code = value_left+' '+value_right+' '+dropdown_cond+' ';
+  return [code, Blockly.ByteCode.ORDER_NONE];
+};
+
 Blockly.ByteCode.math_operator = function() {
   var value_1stnum = Blockly.ByteCode.valueToCode(this, '1stNum', Blockly.ByteCode.ORDER_ATOMIC).clean();
   var value_2ndnum = Blockly.ByteCode.valueToCode(this, '2ndNum', Blockly.ByteCode.ORDER_ATOMIC).clean();
@@ -603,6 +627,46 @@ Blockly.ByteCode.procedure_procedure = function(){
 	var code = '('+text_pname+' '+statements_statement+'end)';
 	return code;
 }
+
+Blockly.ByteCode['procedures_callreturn'] = function(block) {
+  // Call a procedure with a return value.
+  var funcName = Blockly.ByteCode.variableDB_.getName(
+      block.getFieldValue('NAME'), Blockly.Procedures.NAME_TYPE);
+  var args = [];
+  for (var x = 0; x < block.arguments_.length; x++) {
+    args[x] = Blockly.ByteCode.valueToCode(block, 'ARG' + x,
+        Blockly.ByteCode.ORDER_COMMA) || 'null';
+  }
+  var code = funcName + '(' + args.join(', ') + ')';
+  return [code, Blockly.ByteCode.ORDER_FUNCTION_CALL];
+};
+
+Blockly.ByteCode['procedures_defreturn'] = function(block) {
+  // Define a procedure with a return value.
+  var funcName = Blockly.ByteCode.variableDB_.getName(
+      block.getFieldValue('NAME'), Blockly.Procedures.NAME_TYPE);
+  var branch = Blockly.ByteCode.statementToCode(block, 'STACK');
+  if (Blockly.ByteCode.INFINITE_LOOP_TRAP) {
+    branch = Blockly.ByteCode.INFINITE_LOOP_TRAP.replace(/%1/g,
+        '\'' + block.id + '\'') + branch;
+  }
+  var returnValue = Blockly.ByteCode.valueToCode(block, 'RETURN',
+      Blockly.ByteCode.ORDER_NONE) || '';
+  if (returnValue) {
+    returnValue = '  return ' + returnValue + ';\n';
+  }
+  var args = [];
+  for (var x = 0; x < block.arguments_.length; x++) {
+    args[x] = Blockly.ByteCode.variableDB_.getName(block.arguments_[x],
+        Blockly.Variables.NAME_TYPE);
+  }
+  var code = '(main ' + funcName + '[' + args.join(', ') + '] {\n' +
+      branch + returnValue + '} )';
+  code = Blockly.ByteCode.scrub_(block, code);
+  Blockly.ByteCode.definitions_[funcName] = code;
+  //alert(code);
+  return null;
+};
 
 /****
 

@@ -251,7 +251,40 @@ Code.runJS = function() {
   }
 };
 
+Code.loadProcedure = function() {
+	var mapping = $('mappingMainArea');
+	var blockArr = mapping.getElements('.mappingBlock');
+	var xmlArr = [];
+	blockArr.each(function(item){
+		mapping.spatial.setPoints(item.points);
+		xmlArr.push(mapping.spatial.YtoXBlockly().split('[TITLE]').join(item.title).split('[VAR1]').join(item.var1));
+		mapping.getXML(xmlArr[xmlArr.length - 1]);
+	});
+	mapping.spatial.setPoints(mapping.currentBlock.points);
+	kk('load procedure');
+	//kk(xmlArr);
+	
+	
+	
+	//return 0;
+	var xmlText = xmlArr.join('');
+	var xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
+	var data = Blockly.Xml.domToText(xml).split('</xml>')[0];
+	//kk(data+xmlText);
+	Blockly.mainWorkspace.clear();
+	xml = Blockly.Xml.textToDom(data+xmlText+'</xml>');
+	Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, xml);
+	return data;
+}
+
+Code.restoreProcedure = function(data){
+	Blockly.mainWorkspace.clear();
+	var xml = Blockly.Xml.textToDom(data+'</xml>');
+	Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, xml);
+}
+
 Code.writeToGogoBoard = function() {
+	//var sourceCode = Code.loadProcedure();
 	var code = Blockly.ByteCode.workspaceToCode().clean();
 	//alert(code);
 	code = genGlobalVar(code);
@@ -263,6 +296,7 @@ Code.writeToGogoBoard = function() {
 		//ws.send("burn::");
 		ws.send("burn::"+String.fromCharCode.apply(String, byteCode.clean().split(' ')));
 	}
+	//Code.restoreProcedure(sourceCode);
 };
 
 Code.clickLoadXML = function(){

@@ -775,8 +775,7 @@ var Converter = new Class({
 					that.cArr.push((that.convertX(that.points[index].x) - (that.convertY(that.points[index].y) / mValue)).toFixed(2).toFloat());
 				}
 			});
-			k(that.mArr);
-			k(that.cArr);
+			
 			var strResult = '';
 			that.points.each(function(item, index){
 				if (index > 0) {
@@ -784,8 +783,49 @@ var Converter = new Class({
 					strResult += '<statement name="DO'+(index-1)+'"><block type="variables_set" inline="true"><field name="VAR">x</field><value name="VALUE"><block type="math_arithmetic" inline="true"><field name="OP">ADD</field><value name="A"><block type="math_arithmetic" inline="true"><field name="OP">DIVIDE</field><value name="A"><block type="math_arithmetic" inline="true"><field name="OP">MINUS</field><value name="A"><block type="variables_get"><field name="VAR">[VAR1]</field></block></value><value name="B"><block type="math_number" ><field name="NUM">'+that.convertY(that.points[index-1].y)+'</field></block></value></block></value><value name="B"><block type="math_number"><field name="NUM">'+that.mArr[index-1]+'</field></block></value></block></value><value name="B"><block type="math_number"><field name="NUM">'+that.convertX(that.points[index-1].x)+'</field></block></value></block></value></block></statement>';
 				}
 			});
+			
+			/***
+			<block type="control_if" inline="false"><value name="condition"><block type="math_equal" inline="true"><field name="cond">&lt;</field><value name="left"><block type="math_number"><field name="number">0</field></block></value><value name="right"><block type="variables_get"><field name="VAR">i</field></block></value></block></value><statement name="statement"><block type="variables_set" inline="false"><field name="VAR">j</field><value name="VALUE"><block type="math_operator" inline="true"><field name="op">+</field><value name="1stNum"><block type="math_operator" inline="true"><field name="op">÷</field><value name="1stNum"><block type="math_operator" inline="true"><field name="op">-</field><value name="1stNum"><block type="variables_get"><field name="VAR">i</field></block></value><value name="2ndNum"><block type="math_number"><field name="number">666</field></block></value></block></value><value name="2ndNum"><block type="math_number"><field name="number">777</field></block></value></block></value><value name="2ndNum"><block type="math_number"><field name="number">888</field></block></value></block></value></block></statement></block>
+			
+			
+			<block type="variables_set" id="2" inline="false" x="376" y="201"><field name="VAR">j</field><value name="VALUE"><block type="math_operator" id="3" inline="true"><field name="op">+</field><value name="1stNum"><block type="math_operator" id="4" inline="true"><field name="op">÷</field><value name="1stNum"><block type="math_operator" id="5" inline="true"><field name="op">-</field><value name="1stNum"><block type="variables_get" id="6"><field name="VAR">i</field></block></value><value name="2ndNum"><block type="math_number" id="7"><field name="number">666</field></block></value></block></value><value name="2ndNum"><block type="math_number" id="8"><field name="number">777</field></block></value></block></value><value name="2ndNum"><block type="math_number" id="9"><field name="number">888</field></block></value></block></value></block>
+			
+			<block type="math_equal" inline="true"><field name="cond">&lt;</field><value name="left"><block type="variables_get"><field name="VAR">i</field></block></value><value name="right"><block type="math_number"><field name="number">500</field></block></value></block>
+			
+			<block type="control_if" id="2" inline="false" x="262" y="142"></block>
+			
+			<block type="control_ifelse" id="2" inline="false" x="380" y="104"></block>
+			
+			<block type="control_if" id="2" inline="false" x="225" y="291"><value name="condition">...</value><statement name="statement"...</statement></block>
+			
+			<block type="control_ifelse" inline="false"><value name="condition">...</value><statement name="if">...</statement><statement name="else">...</statement></block>
+			
+			/***/
+			
 			strResult = '<block type="procedures_defreturn" inline="false"><mutation><arg name="[VAR1]"></arg></mutation><field name="NAME">[TITLE]</field><statement name="STACK"><block type="controls_if" inline="false"><mutation elseif="'+(that.points.length - 2)+'"></mutation>'+strResult+'</block></statement><value name="RETURN"><block type="variables_get"><field name="VAR">x</field></block></value></block>';
 			//strResult += '<block type="procedures_callreturn" inline="false" x="243" y="187"><mutation name="convertYtoX"><arg name="y"></arg></mutation></block>';
+			
+			//return strResult;
+			
+			var strResult = '';
+			//kk(that.points);
+			//kk(that.points.reverse());
+			var pl = that.points.length;
+			that.points.each(function(item, index){
+				if (index > 0) {
+					
+					var condition = '<block type="math_equal" inline="true"><field name="cond">&lt;</field><value name="left"><block type="variables_get"><field name="VAR">[VAR1]</field></block></value><value name="right"><block type="math_number"><field name="number">'+that.convertY(that.points[pl - index].y)+'</field></block></value></block>';
+					var statement = '<block type="variables_set" inline="false"><field name="VAR">x</field><value name="VALUE"><block type="math_operator" inline="true"><field name="op">+</field><value name="1stNum"><block type="math_operator" inline="true"><field name="op">÷</field><value name="1stNum"><block type="math_operator" inline="true"><field name="op">-</field><value name="1stNum"><block type="variables_get"><field name="VAR">[VAR1]</field></block></value><value name="2ndNum"><block type="math_number"><field name="number">'+that.convertY(that.points[pl - index - 1].y)+'</field></block></value></block></value><value name="2ndNum"><block type="math_number"><field name="number">'+that.mArr[pl - index - 1]+'</field></block></value></block></value><value name="2ndNum"><block type="math_number"><field name="number">'+that.convertX(that.points[pl - index - 1].x)+'</field></block></value></block></value></block>';
+					if (index == 1) {
+						strResult = '<block type="control_if" inline="false"><value name="condition">'+condition+'</value><statement name="statement">'+statement+'</statement></block>';
+					} else {
+						strResult = '<block type="control_ifelse" inline="false"><value name="condition">'+condition+'</value><statement name="if">'+statement+'</statement><statement name="else">'+strResult+'</statement></block>';
+					}
+				}
+			});
+			
+			strResult = '<block type="procedures_defreturn" inline="false"><mutation><arg name="[VAR1]"></arg></mutation><field name="NAME">[TITLE]</field><statement name="STACK">'+strResult+'</statement><value name="RETURN"><block type="variables_get"><field name="VAR">x</field></block></value></block>';
+			
 			return strResult;
 		}
 		

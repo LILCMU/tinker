@@ -620,6 +620,19 @@ Blockly.GogoCode.variables_set = function() {
 
 /****    PROCEDURE    ****/
 
+Blockly.GogoCode['procedures_callreturn'] = function(block) {
+  // Call a procedure with a return value.
+  var funcName = Blockly.GogoCode.variableDB_.getName(
+      block.getFieldValue('NAME'), Blockly.Procedures.NAME_TYPE);
+  var args = [];
+  for (var x = 0; x < block.arguments_.length; x++) {
+    args[x] = Blockly.GogoCode.valueToCode(block, 'ARG' + x,
+        Blockly.GogoCode.ORDER_COMMA) || 'null';
+  }
+  var code = funcName + '(' + args.join(', ') + ')';
+  return [code, Blockly.GogoCode.ORDER_FUNCTION_CALL];
+};
+
 Blockly.GogoCode.procedure_procedure = function() {
   var statements_statement = Blockly.GogoCode.statementToCode(this, 'statement');
   var text_pname = this.getFieldValue('pname');

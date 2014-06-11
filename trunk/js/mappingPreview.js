@@ -57,6 +57,17 @@ function updateFunc(xmlText) {
   }
 }
 
+function xmlFunc(xmlText) {
+  var xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
+  var data = Blockly.Xml.domToText(xml);
+  
+  var code = Blockly.ByteCode.workspaceToCode().clean();
+  code = genGlobalVar(code);
+  var byteCode = code.replaceObj(byteCodeObj);
+  
+  return data;
+}
+
 /**
  * Initialize Blockly.  Called on page load.
  */
@@ -82,7 +93,7 @@ Blockly.Blocks.beep = {
 
   if (window.parent.initMappingPreview) {
     // Let the top-level application know that Blockly is ready.
-    window.parent.initMappingPreview(updateFunc);
+    window.parent.initMappingPreview(updateFunc, xmlFunc);
   } else {
     // Attempt to diagnose the problem.
     return;

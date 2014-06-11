@@ -25,7 +25,7 @@ var byteCodeObj = {
 	'+': 23,
 	'-': 24,
 	'*': 25,
-	'/': 26,
+	'÷': 26,
 	'%': 27,
 	'=': 28,
 	'<setglobal>': 35,
@@ -483,9 +483,9 @@ var initTinker = function() {
 	})
 	
 }
+//document.fireEvent('');
 
-
-document.addEvent('BlocklyIsReady', initTinker);
+document.addEvent('spatialIsReady', initTinker);
 
 function autosaveBlock(){
 	var xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
