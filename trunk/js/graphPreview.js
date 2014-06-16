@@ -52,10 +52,26 @@ function updateFunc0(type, code) {
 function updateFunc(xmlText) {
   var xmlDom = Blockly.Xml.textToDom(xmlText);
   
+  console.log('updateFunction graph update');
+  console.log(xmlDom);
+  console.log((xmlDom)?'true':'false');
+  
   if (xmlDom) {
+  	console.log('dddddddd');
     Blockly.mainWorkspace.clear();
     Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, xmlDom);
   }
+}
+
+function xmlFunc(xmlText) {
+  var xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
+  var data = Blockly.Xml.domToText(xml);
+  
+  var code = Blockly.ByteCode.workspaceToCode().clean();
+  code = genGlobalVar(code);
+  var byteCode = code.replaceObj(byteCodeObj);
+  
+  return data;
 }
 
 /**
@@ -67,9 +83,10 @@ function init() {
 
   if (window.parent.initGraphPreview) {
     // Let the top-level application know that Blockly is ready.
-    window.parent.initGraphPreview(updateFunc);
+    window.parent.initGraphPreview(updateFunc, xmlFunc);
   } else {
     // Attempt to diagnose the problem.
+    
     var msg = 'Error: Unable to communicate between frames.\n' +
         'The preview frame will not be functional.\n\n';
     if (window.parent == window) {

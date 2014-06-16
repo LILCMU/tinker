@@ -624,7 +624,7 @@ Blockly.ByteCode.procedure_procedure = function(){
 	var text_pname = this.getFieldValue('pname');
 	// TODO: Assemble ByteCode into code variable.
 	//var code = '[SS]to '+text_pname+'\n[SS]'+statements_statement+'end[SS]';
-	var code = '('+text_pname+' '+statements_statement+'end)';
+	var code = '[p]('+text_pname+' '+statements_statement+'end)[/p]';
 	return code;
 }
 
@@ -637,7 +637,9 @@ Blockly.ByteCode['procedures_callreturn'] = function(block) {
     args[x] = Blockly.ByteCode.valueToCode(block, 'ARG' + x,
         Blockly.ByteCode.ORDER_COMMA) || 'null';
   }
-  var code = funcName + '(' + args.join(', ') + ')';
+  //var code = funcName + '(' + args.join(', ') + ')';
+  var code = args.join(' ') + ' '+parseInt('0xff')+' '+parseInt('0xff')+' ';
+  var code = args.join(' ') + ' #'+funcName+' ';
   return [code, Blockly.ByteCode.ORDER_FUNCTION_CALL];
 };
 
@@ -652,9 +654,11 @@ Blockly.ByteCode['procedures_defreturn'] = function(block) {
   }
   var returnValue = Blockly.ByteCode.valueToCode(block, 'RETURN',
       Blockly.ByteCode.ORDER_NONE) || '';
-  if (returnValue) {
-    returnValue = '  return ' + returnValue + ';\n';
-  }
+  
+//  if (returnValue) {
+//    returnValue = '  return ' + returnValue + ';\n';
+//  }
+  
   var args = [];
   for (var x = 0; x < block.arguments_.length; x++) {
     args[x] = Blockly.ByteCode.variableDB_.getName(block.arguments_[x],
@@ -662,6 +666,12 @@ Blockly.ByteCode['procedures_defreturn'] = function(block) {
   }
   var code = '(main ' + funcName + '[' + args.join(', ') + '] {\n' +
       branch + returnValue + '} )';
+  code = '[p]$' + funcName+' '+args.length+' '+branch + ' ' + returnValue + ' <output>[/p] ';
+  
+  args.each(function(item, index){
+  	code = code.split('<%num> [vo]'+item+'[vc] <global>').join('<%input> '+index);
+  });
+  
   code = Blockly.ByteCode.scrub_(block, code);
   Blockly.ByteCode.definitions_[funcName] = code;
   //alert(code);

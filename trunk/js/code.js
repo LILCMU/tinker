@@ -129,7 +129,8 @@ Code.renderContent = function() {
   } else if (content.id == 'content_gogocode') {
   	var code = Blockly.GogoCode.workspaceToCode().clean();
   	var byteCode = code.replaceObj(byteCodeObj);
-  	var code = filterCode(Blockly.GogoCode.workspaceToCode());
+  	var code = Blockly.GogoCode.workspaceToCode();
+  	code = filterCode(code);
   	$(content).set('html', code);
   } else if (content.id == 'content_cvi') {
 //  	var mainArea = $$('#mappingMainArea .wrapper')[0];
@@ -252,25 +253,54 @@ Code.runJS = function() {
 };
 
 Code.loadProcedure = function() {
+	var xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
+	var allBlocks = $(xml).getElements('block');
+	var tinkerBlocks = [];
+	allBlocks.each(function(item){
+		kk(item.getAttribute('type'));
+		if (item.getAttribute('type') == 'procedures_callreturn') {
+			//tinkerBlocks.push(item);
+			tinkerBlocks.include(item.getElement('mutation').get('name'));
+		}
+	});
+	kk('find tinker Block');
+	kk(tinkerBlocks);
+	
 	var mapping = $('mappingMainArea');
 	var blockArr = mapping.getElements('.mappingBlock');
 	var xmlArr = [];
 	blockArr.each(function(item){
-		mapping.spatial.setPoints(item.points);
-		xmlArr.push(mapping.spatial.YtoXBlockly().split('[TITLE]').join(item.title).split('[VAR1]').join(item.var1));
-		mapping.getXML(xmlArr[xmlArr.length - 1]);
+		if (tinkerBlocks.indexOf(item.title) != -1) {
+			mapping.spatial.setPoints(item.points);
+			xmlArr.push(mapping.spatial.YtoXBlockly().split('[TITLE]').join(item.title).split('[VAR1]').join(item.var1));
+			//mapping.getXML(xmlArr[xmlArr.length - 1]);
+		}
 	});
 	mapping.spatial.setPoints(mapping.currentBlock.points);
-	kk('load procedure');
-	//kk(xmlArr);
+	
+	var condition = $('conditionMainArea');
+	var blockArr = condition.getElements('.condBlock');
+	//var xmlArr = [];
+	blockArr.each(function(item){
+		if (tinkerBlocks.indexOf(item.title) != -1) {
+			condition.spatial.setArea(item.area);
+			xmlArr.push(condition.spatial.convertToBlockly().split('[TITLE]').join(item.title).split('[VAR1]').join(item.var1).split('[VAR2]').join(item.var2));
+			//mapping.getXML(xmlArr[xmlArr.length - 1]);
+		}
+	});
+	condition.spatial.setArea(condition.currentBlock.area);
+	kk('load procedure  -----');
+	kk(xmlArr);
 	
 	
 	
 	//return 0;
-	var xmlText = xmlArr.join('');
-	var xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
+	var xmlText = xmlArr.join(' ');
+	
+	
 	var data = Blockly.Xml.domToText(xml).split('</xml>')[0];
 	//kk(data+xmlText);
+	
 	Blockly.mainWorkspace.clear();
 	xml = Blockly.Xml.textToDom(data+xmlText+'</xml>');
 	Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, xml);
@@ -284,11 +314,43 @@ Code.restoreProcedure = function(data){
 }
 
 Code.writeToGogoBoard = function() {
-	//var sourceCode = Code.loadProcedure();
+	var sourceCode = Code.loadProcedure();
 	var code = Blockly.ByteCode.workspaceToCode().clean();
 	//alert(code);
 	code = genGlobalVar(code);
+	//alert(code);
+	
+	
 	var byteCode = code.replaceObj(byteCodeObj);
+	
+	var codeArr = byteCode.clean().split(' ');
+	
+	var byteCount = 0;
+	var varArr = [];
+	var varObj = {};
+	codeArr.each(function(item){
+		if (item.charAt(0) == '#') {
+			byteCount += 2;
+		} else if (item.charAt(0) == '$') {
+			var num = byteCount + 32768;
+			var bytePos = (Math.floor(num / 256)+' '+(num % 256));
+			varObj[item.split('$')[1]] = bytePos;
+			varArr.push(item.split('$')[1]);
+		} else {
+			byteCount++;
+		}
+	});
+	
+	kk(byteCode);
+	kk('find position of variable in mem');
+	kk(varObj);
+	varArr.each(function(item){
+		byteCode = byteCode.split('#'+item+' ').join(varObj[item]+' ');
+		byteCode = byteCode.split('$'+item+' ').join(' ').clean();
+	});
+	
+	kk(byteCode);
+	
 	//alert(byteCode);
 	//return;
 	//alert(String.fromCharCode.apply(String, byteCode.clean().split(' ')));
@@ -296,7 +358,7 @@ Code.writeToGogoBoard = function() {
 		//ws.send("burn::");
 		ws.send("burn::"+String.fromCharCode.apply(String, byteCode.clean().split(' ')));
 	}
-	//Code.restoreProcedure(sourceCode);
+	Code.restoreProcedure(sourceCode);
 };
 
 Code.clickLoadXML = function(){

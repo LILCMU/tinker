@@ -39,8 +39,9 @@ function xmlMappingPreview() {
   }
 }
 
-function initGraphPreview(updateFunc) {
+function initGraphPreview(updateFunc, xmlFunc) {
   updateGraphPreview.updateFunc = updateFunc;
+  updateGraphPreview.xmlFunc = xmlFunc;
   //updateGraphPreview();
   updateGraphPreview.updateFunc('<xml></xml>');
 }
@@ -49,6 +50,10 @@ function updateGraphPreview() {
   if (updateGraphPreview.updateFunc) {
     var code = document.getElementById('languagePre').textContent;
     updateGraphPreview.updateFunc(xmlText);
+  }
+  if (updateGraphPreview.xmlFunc) {
+    //var code = document.getElementById('languagePre').textContent;
+    updateGraphPreview.xmlFunc(xmlText);
   }
 }
 
@@ -124,27 +129,61 @@ var mappingBlock = new Class({
 	}
 });
 
+var condBlock = new Class({
+	Extends: blockSpatial,
+	initialize: function(){
+		var that = this.parent();
+		
+		that.addClass('condBlock');
+		
+		that.setTitle('checkCondition');
+		that.setVar1('x');
+		that.setVar2('y');
+		
+		//that.points = [{'x': 0, 'y': 400}, {'x': 400, 'y': 0}];
+		that.area = [];
+		
+		that.xmlText = '<block type="procedures_defreturn" inline="false"><mutation><arg name="[VAR1]"></arg></mutation><field name="NAME">[TITLE]</field><statement name="STACK"><block type="controls_if" inline="false"><mutation elseif="0"></mutation><value name="IF0"><block type="logic_compare" inline="true"><field name="OP">LT</field><value name="A"><block type="variables_get"><field name="VAR">[VAR1]</field></block></value><value name="B"><block type="math_number" ><field name="NUM">1000</field></block></value></block></value><statement name="DO0"><block type="variables_set" inline="true"><field name="VAR">x</field><value name="VALUE"><block type="math_arithmetic" inline="true"><field name="OP">ADD</field><value name="A"><block type="math_arithmetic" inline="true"><field name="OP">DIVIDE</field><value name="A"><block type="math_arithmetic" inline="true"><field name="OP">MINUS</field><value name="A"><block type="variables_get"><field name="VAR">[VAR1]</field></block></value><value name="B"><block type="math_number" ><field name="NUM">0</field></block></value></block></value><value name="B"><block type="math_number"><field name="NUM">1</field></block></value></block></value><value name="B"><block type="math_number"><field name="NUM">0</field></block></value></block></value></block></statement></block></statement><value name="RETURN"><block type="variables_get"><field name="VAR">x</field></block></value></block>';
+		
+		return that;
+	}
+});
+
+var checkTitle = function(name, obj){
+	var blockName = [];
+	obj.data.each(function(item){
+		blockName.push(item.block.split(';;')[0]);
+	});
+	var titleCount = '';
+	while (blockName.indexOf(name+titleCount) != -1) {
+		titleCount = (titleCount == '') ? 2 : titleCount + 1;
+	}
+	return name+titleCount;
+}
+
 
 var initSpatial = function(){
 	
 	
 	mainToolbox = $('toolbox');
-	//kk(mainToolbox);
 	
 	var mapping = $('spatialContentTemplate').clone();
 	mapping.set('id', 'mappingMainArea').inject($('content_cvi'));
 	
+	/***
 	mapping.content = {
 		'title': 'convertXtoY',
 		'var1': 'y'
 	};
+	/***/
 	
 	mapping.addBlockToToolbox = function(block){
 		var mappingToolbox = mainToolbox.getElement('.toolMappingBlock');
-		var blockID = 'block+'+now();
+		var blockID = 'block-'+now();
 		var newBlock = new Element('block', {'id': blockID, 'html': '<mutation name="'+block.title+'"><arg name="'+block.var1+'"></arg></mutation>'});
 		block.blockID = blockID;
 		newBlock.setAttribute('type', 'procedures_callreturn');
+		newBlock.setAttribute('class', 'tinkerBlock');
 		newBlock.inject(mappingToolbox);
 		Blockly.updateToolbox(mainToolbox);
 	}
@@ -183,7 +222,6 @@ var initSpatial = function(){
 		});
 		
 		mapping.currentBlock = testBlock;
-		kk(mapping.currentBlock.points);
 		mapping.currentData = mapping.data.length - 1;
 		
 //		setTimeout(function(){
@@ -199,8 +237,6 @@ var initSpatial = function(){
 			dataArr.push(item.block+'||'+item.spatial);
 		});
 		mapping.storage = dataArr.join('::');
-		kk('save mapping data to storage: ');
-		kk(mapping.storage);
 		window.localStorage.setItem('mappingBlock', mapping.storage);
 	}
 	
@@ -248,10 +284,8 @@ var initSpatial = function(){
 		mapping.currentBlock.points = converter.points; 
 		
 		/**  save data to storage  **/
-		kk('change graph');
 		mapping.data[mapping.currentData].spatial = converter.getTextData();
 		mapping.saveData();
-		//alert(mapping.currentBlock.points);
 	});
 	
 	
@@ -270,7 +304,6 @@ var initSpatial = function(){
 	//mapping.xml = '';
 	
 	mapping.getXML = function(xml){
-		kk(xml);
 		return updateMappingPreview.xmlFunc(xml);
 	}
 	
@@ -282,35 +315,6 @@ var initSpatial = function(){
 		
 		updateMappingPreview.updateFunc('<xml>'+xmlText+'</xml>');
 	}
-	
-	document.addEvent('readSensor', function(rs){
-		//kk(rs);
-		if (mapping.spatial) {
-			if ($('tab_cvi').hasClass('tabon')) {
-				
-				mapping.spatial.updateSensor(Math.round(rs*1000/1024));
-			} else {
-				mapping.spatial.hideDashLine();
-			}
-		} 
-	});
-	
-	setTimeout(function(){
-	//window.addEvent('BlocklyIsReady', function(){
-		var mainArea = mapping.getElement('.wrapper');
-		mainArea.empty();
-		var currentSpatial = new Converter();
-		currentSpatial.inject(mainArea);
-		mapping.spatial = currentSpatial;
-		//mapping.spatial.setPoints(mapping.currentBlock.points);
-		
-		if (!mapping.storage) {
-			mapping.getElement('.submit').fireEvent('click');
-		} else {
-			mapping.currentBlock.fireEvent('click');
-		}
-	//});
-	}, 1000);
 	
 	mapping.getElement('.deleteBlock').addEvent('click', function(){
 		if (mapping.data.length > 1) {
@@ -336,65 +340,253 @@ var initSpatial = function(){
 		block.inject(mapping.getElement('.procedure'));
 		mapping.currentBlock = block;
 		
-		//var block = mapping.currentBlock;
-		
 		/**  add data for save to storage  **/
 		
+//		var blockName = [];
+//		mapping.data.each(function(item){
+//			blockName.push(item.block.split(';;')[0]);
+//		});
+//		var titleCount = '';
+//		while (blockName.indexOf(block.title+titleCount) != -1) {
+//			titleCount = (titleCount == '') ? 2 : titleCount + 1;
+//		}
+		//block.title += titleCount;
+		block.setTitle(checkTitle(block.title, mapping));
+		
 		mapping.data.push({'block': block.title+';;'+block.var1, 'spatial': ''});
-		
 		mapping.currentData = mapping.data.length - 1;
-		
 		block.fireEvent('click');
-		
 		mapping.addBlockToToolbox(block);
-		/**  update toolbox  **/
-//		var mappingToolbox = mainToolbox.getElement('.toolMappingBlock');
-//		var blockID = 'block+'+now();
-//		var newBlock = new Element('block', {'id': blockID, 'html': '<mutation name="'+block.title+'"><arg name="'+block.var1+'"></arg></mutation>'});
-//		newBlock.setAttribute('type', 'procedures_callreturn');
-//		newBlock.inject(mappingToolbox);
-//		
-//		Blockly.updateToolbox(mainToolbox);
 	});
 	
+	var condition = $('spatialContentTemplate').clone();
+	condition.set('id', 'conditionMainArea').inject($('content_cdi'));
+	window.condition = condition;
+	
+	condition.getElement('.iframe').set('src', 'graphPreview.html?www');
+	
+	condition.getElement('.mainArea p').set('text', 'Graph: ConvertGraph');
+	condition.getElement('.procedure p').set('text', 'Graph Blocks');
+	
+	condition.addBlockToToolbox = function(block){
+		var graphToolbox = mainToolbox.getElement('.toolGraphBlock');
+		var blockID = 'block-'+now();
+		var newBlock = new Element('block', {'id': blockID, 'html': '<mutation name="'+block.title+'"><arg name="'+block.var1+'"></arg><arg name="'+block.var2+'"></arg></mutation>'});
+		block.blockID = blockID;
+		newBlock.setAttribute('type', 'procedures_callreturn');
+		newBlock.setAttribute('class', 'tinkerBlock');
+		newBlock.inject(graphToolbox);
+		Blockly.updateToolbox(mainToolbox);
+		
+	}
+	
+	condition.removeBlockFromToolbox = function(block){
+		var blockID = block.blockID;
+		$(blockID).destroy();
+		
+		Blockly.updateToolbox(mainToolbox);
+	}
+	
+	condition.data = [];
+	condition.storage = window.localStorage.getItem('conditionBlock');
+	if (condition.storage) {
+		var dataArr = condition.storage.split('::');
+		var testBlock;
+		dataArr.each(function(item, index){
+			var itemArr = item.split('||');
+			var blockData = itemArr[0].split(';;');
+			var spatialData = itemArr[1].split(';;');
+			condition.data.push({'block': itemArr[0], 'spatial': itemArr[1]});
+			testBlock = new condBlock();
+			testBlock.setTitle(blockData[0]);
+			testBlock.setVar1(blockData[1]);
+			testBlock.setVar2(blockData[2]);
+			testBlock.inject(condition.getElement('.procedure'));
+			//testBlock.blockIndex = index;
+			var pointArr = [];
+			var pointData;
+//			spatialData.each(function(item){
+//				pointData = item.split('#');
+//				pointArr.push({'x': pointData[0].toInt(), 'y': pointData[1].toInt()});
+//			});
+			testBlock.area = spatialData;
+			condition.addBlockToToolbox(testBlock);
+		});
+		
+		condition.currentBlock = testBlock;
+		condition.currentData = condition.data.length - 1;
+		
+//		setTimeout(function(){
+//			mapping.currentBlock.fireEvent('click');
+//			
+//		}, 10);
+	}
+	
+	condition.saveData  = function(){
+		var dataArr = [];
+		
+		condition.data.each(function(item){
+			dataArr.push(item.block+'||'+item.spatial);
+		});
+		condition.storage = dataArr.join('::');
+		window.localStorage.setItem('conditionBlock', condition.storage);
+	}
+	
+	condition.addEvent('selectBlock', function(item){
+		condition.currentBlock = item;
+//		var mainArea = $$('#mappingMainArea .wrapper')[0];
+//		mainArea.empty();
+//		var currentSpatial = new Converter();
+//		currentSpatial.inject(mainArea);
+		
+		//mapping.currentData = mapping.currentBlock.blockIndex;
+		var allBlocks = item.getParent().getElements('.condBlock');
+		condition.currentData = allBlocks.indexOf(item);
+		
+		var currentSpatial = condition.getElement('.wrapper').getFirst();
+		
+		currentSpatial.setArea(condition.currentBlock.area);
+	});
+	
+	condition.addEvent('changeBlockContent', function(item){
+		/***
+		alert(item.get('class'));
+		if (item.hasClass('title')) {
+			mapping.
+		}
+		/***/
+		
+		setTimeout(function(){
+			condition.updateBlock();
+			
+			/**  save data to storage  **/
+			block = item.getParent('.condBlock');
+			condition.data[condition.currentData].block = block.title+';;'+block.var1+';;'+block.var2;
+			condition.saveData();
+			condition.removeBlockFromToolbox(block);
+			condition.addBlockToToolbox(block);
+		}, 10);
+	});
+	
+	condition.addEvent('changeGraph', function(item){
+		//var graph = item;
+		var newBlock = item.convertToBlockly();
+		condition.currentBlock.xmlText = newBlock;
+		condition.updateBlock();
+		condition.currentBlock.area = item.getTextData(); 
+		
+		/**  save data to storage  **/
+		condition.data[condition.currentData].spatial = item.getTextData().join(';;');
+		condition.saveData();
+		//alert(mapping.currentBlock.points);
+	});
 	
 	
 	/***
-	mapping.getElement('.submit').addEvent('click', function(){
-		var converter = mapping.getElement('.spatial.converter');
-		
-		var newBlock = converter.YtoXBlockly();
-		
-		var xmlDom = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
-		var xmlText = Blockly.Xml.domToPrettyText(xmlDom).replace('</xml>', '');
-		k(newBlock);
-		
-		//xmlText += newBlock+'</xml>';
-		xmlText += '</xml>';
-		updateMappingPreview.updateFunc('<xml>'+newBlock+'</xml>');
-		
-		xmlDom = Blockly.Xml.textToDom(xmlText);
-		
-		if (xmlDom) {
-		  Blockly.mainWorkspace.clear();
-		  Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, xmlDom);
-		}
-		
-		var mappingToolbox = mainToolbox.getElement('.toolMappingBlock');
-		var newBlock = new Element('block', {'html': '<mutation name="convertYtoX"><arg name="y"></arg></mutation>'});
-		newBlock.setAttribute('type', 'procedures_callreturn');
-		newBlock.inject(mappingToolbox);
-		
-		Blockly.updateToolbox(mainToolbox);
-		
-		var newBlockBTN = new Element('div', {'class': 'mappingBlock', 'html': '<div class="title">convertYtoX</div><div class="var1">y</div>'});
-		newBlockBTN.inject(mapping.getElement('.procedure'));
-		
-		//Code.tabClick('blocks');
-	});
+	var testBlock = new mappingBlock();
+	
+	testBlock.inject(mapping.getElement('.procedure'));
+	//testBlock.fireEvent('click');
+	testBlock.addClass('selected');
+	mapping.currentBlock = testBlock;
 	/***/
 	
 	
+	//condition.getElement('.iframe').set('src', 'graphPreview.html?ltrqwwqq');
+	
+	//mapping.xml = '';
+	
+	condition.getXML = function(xml){
+		return updateGraphPreview.xmlFunc(xml);
+	}
+	
+	condition.updateBlock = function(){
+		var block = condition.currentBlock;
+		var xmlText = block.xmlText;
+		//alert(xmlText.split('[TITLE]').join(block.title));
+		xmlText = xmlText.split('[TITLE]').join(block.title).split('[VAR1]').join(block.var1).split('[VAR2]').join(block.var2);
+		
+		updateGraphPreview.updateFunc('<xml>'+xmlText+'</xml>');
+	}
+	
+	condition.getElement('.deleteBlock').addEvent('click', function(){
+		if (condition.data.length > 1) {
+			var prevBlock = condition.currentBlock.getPrevious();
+			if (condition.currentData == 0) {
+				prevBlock = condition.currentBlock.getNext();
+			}
+			var currentData = condition.data[condition.currentData];
+			condition.data.erase(currentData);
+			condition.removeBlockFromToolbox(condition.currentBlock);
+			condition.currentBlock.destroy();
+			
+			condition.currentData = (condition.currentData == 0) ? 0 : condition.currentData - 1;
+			
+			prevBlock.fireEvent('click');
+			condition.saveData();
+		}
+	});
+	
+	condition.getElement('.submit').addEvent('click', function(){
+		var block = new condBlock();
+		
+		block.inject(condition.getElement('.procedure'));
+		condition.currentBlock = block;
+		
+		/**  add data for save to storage  **/
+		block.setTitle(checkTitle(block.title, condition));
+		
+		condition.data.push({'block': block.title+';;'+block.var1+';;'+block.var2, 'spatial': ''});
+		condition.currentData = condition.data.length - 1;
+		block.fireEvent('click');
+		condition.addBlockToToolbox(block);
+	});
+	
+	
+	document.addEvent('readSensor', function(rs){
+		//kk(rs);
+		if (mapping.spatial) {
+			if ($('tab_cvi').hasClass('tabon')) {
+				
+				mapping.spatial.updateSensor(Math.round(rs*1000/1024));
+			} else {
+				mapping.spatial.hideDashLine();
+			}
+		} 
+	});
+	setTimeout(function(){
+	//window.addEvent('BlocklyIsReady', function(){
+		var mainArea = mapping.getElement('.wrapper');
+		mainArea.empty();
+		var currentSpatial = new Converter();
+		currentSpatial.inject(mainArea);
+		mapping.spatial = currentSpatial;
+		//mapping.spatial.setPoints(mapping.currentBlock.points);
+		
+		if (!mapping.storage) {
+			mapping.getElement('.submit').fireEvent('click');
+		} else {
+			mapping.currentBlock.fireEvent('click');
+		}
+		
+		
+		var mainArea2 = condition.getElement('.wrapper');
+		mainArea2.empty();
+		var currentSpatial = new Graph();
+		currentSpatial.inject(mainArea2);
+		condition.spatial = currentSpatial;
+		//mapping.spatial.setPoints(mapping.currentBlock.points);
+		
+		if (!condition.storage) {
+			condition.getElement('.submit').fireEvent('click');
+		} else {
+			condition.currentBlock.fireEvent('click');
+		}
+	//});
+	}, 1000);
+	
+	
+	/***
 	
 	var graph = $('spatialContentTemplate').clone();
 	graph.set('id', 'graphMainArea').inject($('content_cdi'));
@@ -428,13 +620,15 @@ var initSpatial = function(){
 		
 		Blockly.updateToolbox(mainToolbox);
 		
-		var newBlockBTN = new Element('div', {'class': 'graphBlock', 'html': '<div class="title">convertGraph</div><div class="var1">x</div><div class="var2">y</div>'});
+		var newBlockBTN = new Element('div', {'class': 'condBlock', 'html': '<div class="title">convertGraph</div><div class="var1">x</div><div class="var2">y</div>'});
 		newBlockBTN.inject(graph.getElement('.procedure'));
 		
 		
 	}
 	
 	graph.getElement('.submit').addEvent('click', addNewGB);
+	
+	/****/
 	
 	//Code.tabClick('graph'); 
 	

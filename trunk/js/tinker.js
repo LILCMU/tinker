@@ -1,12 +1,14 @@
 
 var byteCodeObj = {
 	'(main': '', 
-	')': 0, 
+	'(': '',
+	')': '', 
 	'<%num>': 1,
 	'<%num16>': 2,
 	'<%list>': 3, 
 	'<%eol>': 4,
 	'<%eolr>': 5,
+	'<%input>': 6,
 	'<stop>': 7,
 	'<output>': 8,
 	'<repeat>': 9,
@@ -153,7 +155,7 @@ function showTextArea(){
 	onWorkspaceChange();
 }
 
-function genGlobalVar(code){
+function genGlobalVar0(code){
 	var codeArr = code.split('(main');
 	var variables = codeArr[0].split('[vo]');
 	var varArr = [];
@@ -166,6 +168,56 @@ function genGlobalVar(code){
 	varArr.each(function(item, index){
 		code = code.split('[vo]'+item+'[vc]').join(index);
 	});
+	return code;
+}
+
+function genGlobalVar(code){
+	var codeArr = code.split('[p]');
+	var varArr = [];
+	var vars = codeArr.shift();
+	var variables = vars.split('[vo]');
+	variables.shift();
+	variables.each(function(item2){
+		varArr.include(item2.split('[vc]')[0]);
+	});
+	
+	varArr.each(function(item, index){
+		code = code.split('[vo]'+item+'[vc]').join(index);
+	});
+	
+	var proc = [];
+	codeArr = code.split('[p]');
+	codeArr.shift();
+	codeArr.each(function(item){
+		var str = item.split('[/p]')[0];
+		proc.push(''+str+'');
+	});
+	
+	code = proc.join(' ');
+	
+	codeArr = code.split('(main');
+	var codeArr2 = codeArr[1].split('end)');
+	
+	code = codeArr2[0]+' 0 '+codeArr[0]+codeArr2[1];
+	
+	code = code.clean();
+	
+	codeArr = code.split(' ');
+	
+	/***
+	var variables = codeArr[0].split('[vo]');
+	var varArr = [];
+	variables.shift();
+	variables.each(function(item2){
+		varArr.include(item2.split('[vc]')[0]);
+	});
+	code = codeArr[1].split('end)')[0]+' 0';
+	
+	varArr.each(function(item, index){
+		code = code.split('[vo]'+item+'[vc]').join(index);
+	});
+	/***/
+	
 	return code;
 }
 

@@ -325,7 +325,7 @@ var Graph = new Class({
 					prop.width = (that.SS.v) ? Math.max(Math.abs(DX), prop.minWidth) : that.GP.width;
 					prop.height = (that.SS.h) ? Math.max(Math.abs(DY), prop.minHeight) : that.GP.height;
 					
-					k('startY: '+prop.startY+', spy: '+SPY+', cpy: '+CPY+', gp top: '+that.GP.top);
+					//k('startY: '+prop.startY+', spy: '+SPY+', cpy: '+CPY+', gp top: '+that.GP.top);
 					
 					currentArea.setStyles({
 						'top': prop.startY+px,
@@ -361,6 +361,10 @@ var Graph = new Class({
 				}
 				//document.body.selectingArea = false;
 			}
+				setTimeout(function(){
+					that.getParent('.contentSpatial').fireEvent('changeGraph', that);
+					kk('change area in area obj');
+				}, 10);
 			document.body.selectingArea = false;
 			//document.body.currentArea = null;
 			
@@ -414,8 +418,70 @@ var Graph = new Class({
 			});
 			//var strResult = 'if ( ' + strArr.join(' or ') + ' )';
 			strResult = '<block type="procedures_defreturn" inline="false"><mutation><arg name="sensor1"></arg><arg name="sensor2"></arg></mutation><field name="NAME">convertGraph</field><statement name="STACK">'+strResult+'</statement><value name="RETURN"><block type="logic_boolean"><field name="BOOL">FALSE</field></block></value></block>';
+			//return strResult;
+			
+			
+			
+			//<block type="procedure_procedure"><field name="pname">main</field><statement name="statement">...</statement></block>
+			
+			strResult = '';
+			areaArr.each(function(item, index){
+				var prop = {};
+				prop.x1 = Math.round(item.prop.startX / that.GP.width * 1023);
+				prop.x2 = Math.round((item.prop.startX + item.prop.width) / that.GP.width * 1023);
+				prop.y2 = Math.round((that.GP.height - item.prop.startY) / that.GP.height * 1023);
+				prop.y1 = Math.round((that.GP.height - (item.prop.startY + item.prop.height)) / that.GP.height * 1023);
+				//strArr.push("( ("+prop.x1+" < sensor1 and sensor1 < "+prop.x2+") and ("+prop.y1+" < sensor2 and sensor2 < "+prop.y2+") )");
+				//var strBlock = 
+				//strResult = '<block type="procedures_ifreturn" inline="true"><mutation value="1"></mutation><value name="CONDITION"><block type="logic_operation" inline="true"><field name="OP">AND</field><value name="A"><block type="logic_operation" inline="true"><field name="OP">AND</field><value name="A"><block type="logic_compare" inline="true"><field name="OP">LT</field><value name="A"><block type="math_number"><field name="NUM">'+prop.x1+'</field></block></value><value name="B"><block type="variables_get"><field name="VAR">sensor1</field></block></value></block></value><value name="B"><block type="logic_compare" inline="true"><field name="OP">LT</field><value name="A"><block type="variables_get"><field name="VAR">sensor1</field></block></value><value name="B"><block type="math_number"><field name="NUM">'+prop.x2+'</field></block></value></block></value></block></value><value name="B"><block type="logic_operation" inline="true"><field name="OP">AND</field><value name="A"><block type="logic_compare" inline="true"><field name="OP">LT</field><value name="A"><block type="math_number"><field name="NUM">'+prop.y1+'</field></block></value><value name="B"><block type="variables_get"><field name="VAR">sensor2</field></block></value></block></value><value name="B"><block type="logic_compare" inline="true"><field name="OP">LT</field><value name="A"><block type="variables_get"><field name="VAR">sensor2</field></block></value><value name="B"><block type="math_number"><field name="NUM">'+prop.y2+'</field></block></value></block></value></block></value></block></value><value name="VALUE"><block type="logic_boolean"><field name="BOOL">TRUE</field></block></value>'+((strResult == '') ? '' : '<next>'+strResult+'</next>')+'</block>';
+				
+				strResult = '<block type="control_if" inline="false"><value name="condition"><block type="math_andor" inline="true"><field name="andor">and</field><value name="left"><block type="math_equal" inline="true"><field name="cond">&lt;</field><value name="left"><block type="math_number"><field name="number">'+prop.x1+'</field></block></value><value name="right"><block type="variables_get"><field name="VAR">[VAR1]</field></block></value></block></value><value name="right"><block type="math_equal" inline="true"><field name="cond">&lt;</field><value name="left"><block type="variables_get"><field name="VAR">[VAR1]</field></block></value><value name="right"><block type="math_number"><field name="number">'+prop.x2+'</field></block></value></block></value></block></value><statement name="statement"><block type="control_if" inline="false"><value name="condition"><block type="math_andor" inline="true"><field name="andor">and</field><value name="left"><block type="math_equal" inline="true"><field name="cond">&lt;</field><value name="left"><block type="math_number"><field name="number">'+prop.y1+'</field></block></value><value name="right"><block type="variables_get"><field name="VAR">[VAR2]</field></block></value></block></value><value name="right"><block type="math_equal" inline="true"><field name="cond">&lt;</field><value name="left"><block type="variables_get"><field name="VAR">[VAR2]</field></block></value><value name="right"><block type="math_number"><field name="number">'+prop.y2+'</field></block></value></block></value></block></value><statement name="statement"><block type="variables_set" inline="false"><field name="VAR">returnValue</field><value name="VALUE"><block type="math_number"><field name="number">1</field></block></value></block></statement></block></statement>'+((strResult == '') ? '' : '<next>'+strResult+'</next>')+'</block>';
+			});
+			
+			
+			//<block type="procedures_defreturn" inline="false"><mutation><arg name="[VAR1]"></arg></mutation><field name="NAME">[TITLE]</field><statement name="STACK">'+strResult+'</statement><value name="RETURN"><block type="variables_get"><field name="VAR">x</field></block></value></block>
+			
+			strResult = '<block type="procedures_defreturn" inline="false"><mutation><arg name="[VAR1]"></arg><arg name="[VAR2]"></arg></mutation><field name="NAME">[TITLE]</field><statement name="STACK"><block type="variables_set" inline="false"><field name="VAR">returnValue</field><value name="VALUE"><block type="math_number"><field name="number">0</field></block></value><next>'+strResult+'</next></block></statement><value name="RETURN"><block type="math_equal" inline="true"><field name="cond">=</field><value name="left"><block type="variables_get"><field name="VAR">returnValue</field></block></value><value name="right"><block type="math_number"><field name="number">1</field></block></value></block></value></block>';
+			
 			return strResult;
+			
 		};
+		
+		that.updateSensor = function(xValue, yValue){
+			
+		}
+		
+		that.getTextData = function(){
+			var areaArr = that.getElements('.area');
+			var dataArr = [];
+			areaArr.each(function(item){
+				dataArr.push(item.prop.startY + '#' + item.prop.startX + '#' + item.prop.width + '#' + item.prop.height);
+			});
+			
+			return dataArr;
+		}
+		
+		that.setArea = function(areaArr){
+			that.getElements('.area').destroy();
+			areaArr.each(function(item){
+				var areaPosition = item.split('#');
+				var currentArea = new Area(that);
+				currentArea.prop = {
+					'minWidth': that.gridScale.x, 
+					'minHeight': that.gridScale.y,
+					'startY': areaPosition[0].toInt(), 
+					'startX': areaPosition[1].toInt(), 
+					'width': areaPosition[2].toInt(), 
+					'height': areaPosition[3].toInt()
+				};
+				currentArea.inject(that.graphArea);
+				currentArea.setPosition(areaPosition[0].toInt(), areaPosition[1].toInt(), areaPosition[2].toInt(), areaPosition[3].toInt());
+			});
+			setTimeout(function(){
+				that.getParent('.contentSpatial').fireEvent('changeGraph', that);
+				kk('change area in area obj');
+			}, 10);
+		}
 		
 		that.setGP();
 		
@@ -940,6 +1006,7 @@ var Area = new Class({
 		var that = this;
 		
 		that = new Element('div', {'class': 'area currentArea', 'styles': {'z-index': ++obj.zIndex}});
+		//that.prop = {'minWidth': obj.gridScale.x, 'minHeight': obj.gridScale.y};
 		
 		that.setPosition = function(top, left, width, height){
 			if (width < 0) {
@@ -970,6 +1037,8 @@ var Area = new Class({
 			that.prop.newY = top;
 			that.prop.newW = width;
 			that.prop.newH = height;
+			
+			
 		};
 		
 		var cornerType = ['TT', 'BB', 'LL', 'RR', 'TL', 'TR', 'BL', 'BR'];

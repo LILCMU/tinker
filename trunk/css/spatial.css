@@ -34,7 +34,7 @@ animation-prototype {
 	        transition: all 0.3s ease-in-out;
 }
 
-.currentArea {
+.currentArea0 {
 	-webkit-transition: all 0.05s linear;
 	   -moz-transition: all 0.05s linear;
 	     -o-transition: all 0.05s linear;
@@ -162,7 +162,7 @@ animation-prototype {
 	text-align: right;
 }
 
-.graphBlock {
+.condBlock {
 	background-image: url(../media/gbMiddle.png);
 	color: white;
 	/*display: inline-block;*/
@@ -175,7 +175,7 @@ animation-prototype {
 	float: left;
 	padding: 0 5px;
 }
-.graphBlock::before {
+.condBlock::before {
 	background-image: url(../media/gbLeft.png);
 	content: '';
 	position: absolute;
@@ -185,7 +185,7 @@ animation-prototype {
 	left: -17px;
 	top: 0px;
 }
-.graphBlock::after {
+.condBlock::after {
 	background-image: url(../media/gbRight.png);
 	content: '';
 	position: absolute;
@@ -196,7 +196,7 @@ animation-prototype {
 	top: 0px;
 }
 
-.graphBlock div {
+.condBlock div {
 	text-align: right;
 }
 

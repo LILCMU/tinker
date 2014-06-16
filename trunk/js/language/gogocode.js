@@ -620,6 +620,15 @@ Blockly.GogoCode.variables_set = function() {
 
 /****    PROCEDURE    ****/
 
+Blockly.GogoCode.procedure_procedure = function() {
+  var statements_statement = Blockly.GogoCode.statementToCode(this, 'statement');
+  var text_pname = this.getFieldValue('pname');
+  // TODO: Assemble GogoCode into code variable.
+  //var code = '[SS]to '+text_pname+'\n[SS]'+statements_statement+'end[SS]';
+  var code = '[p]<span class="c210">to '+text_pname+'</span>\n[SS]'+statements_statement+'<span class="c210">end</span>[/p]';
+  return code;
+};
+
 Blockly.GogoCode['procedures_callreturn'] = function(block) {
   // Call a procedure with a return value.
   var funcName = Blockly.GogoCode.variableDB_.getName(
@@ -629,17 +638,40 @@ Blockly.GogoCode['procedures_callreturn'] = function(block) {
     args[x] = Blockly.GogoCode.valueToCode(block, 'ARG' + x,
         Blockly.GogoCode.ORDER_COMMA) || 'null';
   }
-  var code = funcName + '(' + args.join(', ') + ')';
+  //var code = funcName + '(' + args.join(', ') + ')';
+  var code = args.join(' ') + ' '+parseInt('0xff')+' '+parseInt('0xff')+' ';
+  code = ''+funcName+' '+args.join(' ')+'  ';
+  code = code.clean();
   return [code, Blockly.GogoCode.ORDER_FUNCTION_CALL];
 };
 
-Blockly.GogoCode.procedure_procedure = function() {
-  var statements_statement = Blockly.GogoCode.statementToCode(this, 'statement');
-  var text_pname = this.getFieldValue('pname');
-  // TODO: Assemble GogoCode into code variable.
-  //var code = '[SS]to '+text_pname+'\n[SS]'+statements_statement+'end[SS]';
-  var code = '[p]<span class="c210">to '+text_pname+'</span>\n[SS]'+statements_statement+'<span class="c210">end</span>[/p]';
-  return code;
+
+Blockly.GogoCode['procedures_defreturn'] = function(block) {
+  // Define a procedure with a return value.
+  var funcName = Blockly.GogoCode.variableDB_.getName(
+      block.getFieldValue('NAME'), Blockly.Procedures.NAME_TYPE);
+  var branch = Blockly.GogoCode.statementToCode(block, 'STACK');
+  if (Blockly.GogoCode.INFINITE_LOOP_TRAP) {
+    branch = Blockly.GogoCode.INFINITE_LOOP_TRAP.replace(/%1/g,
+        '\'' + block.id + '\'') + branch;
+  }
+  var returnValue = Blockly.GogoCode.valueToCode(block, 'RETURN',
+      Blockly.GogoCode.ORDER_NONE) || '';
+  if (returnValue) {
+    returnValue = '  return ' + returnValue + ';\n';
+  }
+  var args = [];
+  for (var x = 0; x < block.arguments_.length; x++) {
+    args[x] = Blockly.GogoCode.variableDB_.getName(block.arguments_[x],
+        Blockly.Variables.NAME_TYPE);
+  }
+  var code = '(main ' + funcName + '[' + args.join(', ') + '] {\n' +
+      branch + returnValue + '} )';
+  code = Blockly.GogoCode.scrub_(block, code);
+  code = '[p]to '+funcName+' '+ args.join(': ')+':\n '+branch+'\nend\n [/p]';
+  Blockly.GogoCode.definitions_[funcName] = code;
+  //alert(code);
+  return null;
 };
 
 /****

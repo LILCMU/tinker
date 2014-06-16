@@ -72,22 +72,6 @@ function xmlFunc(xmlText) {
  * Initialize Blockly.  Called on page load.
  */
 function init() {
-
-
-Blockly.Blocks.beep = {
-  helpUrl: 'http://www.example.com/',
-  init: function() {
-    this.setColour(6);
-    this.appendDummyInput()
-        .appendTitle("Beep");
-    this.setInputsInline(true);
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
-    this.setTooltip('');
-  }
-};
-
-
   var rtl = (document.location.search == '?rtl');
   Blockly.inject(document.body, {path: '../../', rtl: rtl});
 
