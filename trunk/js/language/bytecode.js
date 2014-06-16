@@ -669,7 +669,7 @@ Blockly.ByteCode['procedures_defreturn'] = function(block) {
   code = '[p]$' + funcName+' '+args.length+' '+branch + ' ' + returnValue + ' <output>[/p] ';
   
   args.each(function(item, index){
-  	code = code.split('<%num> [vo]'+item+'[vc] <global>').join('<%input> '+index);
+  	code = code.split('<%num> [vo]'+item+'[vc] <global>').join('<%input> '+(args.length - 1 - index));
   });
   
   code = Blockly.ByteCode.scrub_(block, code);

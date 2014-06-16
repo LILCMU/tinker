@@ -321,9 +321,9 @@ Code.writeToGogoBoard = function() {
 	//alert(code);
 	
 	
-	var byteCode = code.replaceObj(byteCodeObj);
+	var byteCode = code.replaceObj(byteCodeObj).clean();
 	
-	var codeArr = byteCode.clean().split(' ');
+	var codeArr = byteCode.split(' ');
 	
 	var byteCount = 0;
 	var varArr = [];
@@ -341,6 +341,7 @@ Code.writeToGogoBoard = function() {
 		}
 	});
 	
+	kk(code);
 	kk(byteCode);
 	kk('find position of variable in mem');
 	kk(varObj);
