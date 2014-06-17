@@ -163,7 +163,7 @@ function genGlobalVar0(code){
 	variables.each(function(item2){
 		varArr.include(item2.split('[vc]')[0]);
 	});
-	code = codeArr[1].split('end)')[0]+' 0';
+	code = codeArr[1].split('end)')[0];//+' 0';
 	
 	varArr.each(function(item, index){
 		code = code.split('[vo]'+item+'[vc]').join(index);

@@ -544,7 +544,8 @@ var initSpatial = function(){
 	
 	
 	document.addEvent('readSensor', function(rs){
-		//kk(rs);
+		kk(rs);
+		kk('get rs');
 		if (mapping.spatial) {
 			if ($('tab_cvi').hasClass('tabon')) {
 				
@@ -645,7 +646,7 @@ var normalWS = function(){
 			$('gogoStatus').addClass('on');
 			if($('sensorOptionBTN').hasClass('selected')) {
 				var rs = resp[1].split('-');
-				document.fireEvent('readSensor', rs);
+				document.fireEvent('readSensor', rs.join(':'));
 				for (var i = 0; i < 8; i++) {
 					//if(!(Math.abs(rs[i] - rs1[i]) > 950 && Math.abs(rs[i] - rs2[i]) > 950)) {
 						$('sensor'+(i+1)).getFirst('.gate').setStyle('height', (100 - (rs[i] / 10.24))+'%');

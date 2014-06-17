@@ -418,6 +418,7 @@ Blockly.ByteCode.control_if = function() {
   var statement = statements_statement.clean();
   var condition = value_condition.clean();
   var listLength = (statement != '') ? statement.split(' ').length + 1 : 1 ;
+  listLength = countLength(statement);
   
   var code = condition+' <%list> '+listLength+' '+statement+' <%eol> <if> ';
   return code.clean()+' ';
@@ -443,7 +444,9 @@ Blockly.ByteCode.control_ifelse = function() {
   var statements_if = Blockly.ByteCode.statementToCode(this, 'if').clean();
   var statements_else = Blockly.ByteCode.statementToCode(this, 'else').clean();
   var ifLength = (statements_if != '') ? statements_if.split(' ').length + 1 : 1 ;
+  ifLength = countLength(statements_if);
   var elseLength = (statements_else != '') ? statements_else.split(' ').length + 1 : 1 ;
+  elseLength = countLength(statements_else);
   var code = value_condition+' <%list> '+ifLength+' '+statements_if+' <%eol> <%list> '+elseLength+' '+statements_else+' <%eol> <ifelse> ';
   return code.clean()+' ';
 };
@@ -451,6 +454,7 @@ Blockly.ByteCode.control_ifelse = function() {
 Blockly.ByteCode.control_waituntil = function() {
   var condition = Blockly.ByteCode.valueToCode(this, 'NAME', Blockly.ByteCode.ORDER_ATOMIC).clean();
   var conditionLength = (condition != '') ? condition.split(' ').length + 1 : 1 ;
+  conditionLength = countLength(condition);
   var code = '<%list> '+conditionLength+' '+condition+' <%eolr> <waituntil> ';
   return code.clean()+' ';
 };
@@ -459,6 +463,7 @@ Blockly.ByteCode.control_repeat = function() {
   var value_times = Blockly.ByteCode.valueToCode(this, 'times', Blockly.ByteCode.ORDER_ATOMIC).clean();
   var statements_do = Blockly.ByteCode.statementToCode(this, 'do').clean();
   var doLength = (statements_do != '') ? statements_do.split(' ').length + 1 : 1 ;
+  doLength = countLength(statements_do);
   
   var code = '<%num'+((value_times > 255) ? '16' : '' )+'> '+splitNumber(value_times)+' <%list> '+doLength+' '+statements_do+' <%eol> <repeat> ';
   var code = value_times+' <%list> '+doLength+' '+statements_do+' <%eol> <repeat> ';
@@ -468,9 +473,25 @@ Blockly.ByteCode.control_repeat = function() {
 Blockly.ByteCode.control_forever = function() {
   var statements_do = Blockly.ByteCode.statementToCode(this, 'do').clean();
   var doLength = (statements_do != '') ? statements_do.split(' ').length + 1 : 1 ;
+  doLength = countLength(statements_do);
   var code = '<%list> '+doLength+' '+statements_do+' <%eol> <forever> ';
   return code;
 };
+
+var countLength = function(code){
+	var codeArr = code.split('(').join('').split(')').join('').clean().split(' ');
+	var byteCount = 1;
+	codeArr.each(function(item){
+		if (item.charAt(0) == '#') {
+			byteCount += 2;
+		} else if (item.charAt(0) == '$') {
+			;
+		} else {
+			byteCount++;
+		}
+	});
+	return byteCount;
+}
 
 
 /****    INPUT    ****/
