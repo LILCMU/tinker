@@ -429,6 +429,17 @@ Blockly.Blocks.motor_action_turn = {
 
 /**  CONTROL  **/
 
+Blockly.Blocks['control_true'] = {
+  init: function() {
+    this.setHelpUrl('http://www.example.com/');
+    this.setColour(120);
+    this.appendDummyInput()
+        .appendField("true");
+    this.setOutput(true, Boolean);
+    this.setTooltip('');
+  }
+};
+
 Blockly.Blocks.control_if = {
   category: 'Control',
   helpUrl: 'http://www.example.com/',

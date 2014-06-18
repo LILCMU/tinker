@@ -34,7 +34,7 @@ animation-prototype {
 	        transition: all 0.3s ease-in-out;
 }
 
-.currentArea0 {
+.snap .currentArea {
 	-webkit-transition: all 0.05s linear;
 	   -moz-transition: all 0.05s linear;
 	     -o-transition: all 0.05s linear;
@@ -100,6 +100,81 @@ animation-prototype {
 	min-height: 150px;
 	padding: 1px 0;
 	/*border: 1px solid #333;*/
+}
+
+
+.conditionType {
+	position: absolute;
+	top: 2px;
+	left: 135px;
+	z-index: 500;
+}
+
+.conditionType div {
+	padding: 7px 20px;
+	margin: 5px;
+	background-color: rgb(222, 222, 222);
+	border: 1px solid rgb(45, 122, 240);
+	border-radius: 4px;
+}
+
+.conditionType div.selected {
+	background-color: rgb(123, 170, 241);
+}
+
+
+#selectLeftSensor {
+	position: absolute;
+	left: 200px;
+	top: 430px;
+	font-family: "Courier New", Courier, mono;
+}
+
+#selectRightSensor {
+	position: absolute;
+	left: 25px;
+	top: 270px;
+	font-family: "Courier New", Courier, mono;
+	-webkit-transform: rotate(270deg) translate3d(0px, 0px, 0px);
+	-webkit-transform-origin: 0px 0px;
+}
+
+.switchLabel {
+	font-family: "Courier New", Courier, mono;
+	opacity: 0.8;
+	
+}
+
+.switchLabel div {
+	position: absolute;
+	display: none;
+}
+.switch .switchLabel div {
+	display: block;
+}
+
+.switchLabel .label1 {
+	top: 110px;
+	left: 95px;
+}
+
+.switchLabel .label2 {
+	top: 110px;
+	left: 300px;
+}
+
+.switchLabel .label3 {
+	top: 310px;
+	left: 90px;
+}
+
+.switchLabel .label4 {
+	top: 310px;
+	left: 300px;
+}
+
+.sensorX,.sensorY {
+	z-index: 10;
 }
 
 #mappingExBlock, 
@@ -283,7 +358,7 @@ animation-prototype {
 
 .sensorY {
 	position: absolute;
-	background-color: rgb(102, 129, 167);
+	background-color: rgb(200, 200, 200);
 	/*padding: 7px 10px;*/
 	font-size: 0.9em;
 	text-align: center;
@@ -293,7 +368,7 @@ animation-prototype {
 
 .sensorX {
 	position: absolute;
-	background-color: rgb(102, 129, 167);
+	background-color: rgb(200, 200, 200);
 	/*padding: 7px 10px;*/
 	font-size: 0.9em;
 	text-align: center;

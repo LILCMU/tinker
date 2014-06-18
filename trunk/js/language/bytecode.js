@@ -411,6 +411,13 @@ Blockly.ByteCode.motor_action_power = function() {
 
 /**  CONTROL  **/
 
+Blockly.ByteCode['control_true'] = function(block) {
+  // TODO: Assemble JavaScript into code variable.
+  var code = '<%num> 1 <%num> 1 = ';
+  // TODO: Change ORDER_NONE to the correct strength.
+  return [code, Blockly.ByteCode.ORDER_NONE];
+};
+
 Blockly.ByteCode.control_if = function() {
   var value_condition = Blockly.ByteCode.valueToCode(this, 'condition', Blockly.ByteCode.ORDER_ATOMIC);
   var statements_statement = Blockly.ByteCode.statementToCode(this, 'statement');

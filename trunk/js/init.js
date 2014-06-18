@@ -169,6 +169,7 @@ var initSpatial = function(){
 	
 	var mapping = $('spatialContentTemplate').clone();
 	mapping.set('id', 'mappingMainArea').inject($('content_cvi'));
+	window.mapping = mapping;
 	
 	/***
 	mapping.content = {
@@ -365,7 +366,7 @@ var initSpatial = function(){
 	
 	condition.getElement('.iframe').set('src', 'graphPreview.html?www');
 	
-	condition.getElement('.mainArea p').set('text', 'Graph: ConvertGraph');
+	condition.getElement('.mainArea p').set('text', 'Condition Lab');
 	condition.getElement('.procedure p').set('text', 'Graph Blocks');
 	
 	condition.addBlockToToolbox = function(block){
@@ -542,16 +543,27 @@ var initSpatial = function(){
 		condition.addBlockToToolbox(block);
 	});
 	
+	condition.setType = function(type){
+		condition.type = type;
+		condition.spatial.setType(type);
+	}
+	
 	
 	document.addEvent('readSensor', function(rs){
-		kk(rs);
-		kk('get rs');
 		if (mapping.spatial) {
 			if ($('tab_cvi').hasClass('tabon')) {
 				
-				mapping.spatial.updateSensor(Math.round(rs*1000/1024));
+				mapping.spatial.updateSensor(rs);
 			} else {
 				mapping.spatial.hideDashLine();
+			}
+		} 
+		if (condition.spatial) {
+			if ($('tab_cdi').hasClass('tabon')) {
+				
+				condition.spatial.updateSensor(rs);
+			} else {
+				condition.spatial.sensorScale.setScale(-1, -1);
 			}
 		} 
 	});
@@ -584,7 +596,7 @@ var initSpatial = function(){
 			condition.currentBlock.fireEvent('click');
 		}
 	//});
-	}, 1000);
+	}, 50);
 	
 	
 	/***
@@ -635,6 +647,31 @@ var initSpatial = function(){
 	
 	document.fireEvent('spatialIsReady');
 }
+
+document.addEvent('spatialIsReady', function(){
+	var mainArea = condition.getElement('.mainArea');
+	var titleElem = mainArea.getFirst('p');
+	
+	var list = new Element('div', {'class': 'conditionType', 'html': '<div data-type="sensor">sensor</div><div data-type="switch">switch</div>'});
+	list.inject(mainArea);
+	list.fade('hide');
+	list.getElements('div').each(function(item){
+		item.addEvent('click', function(){
+			list.getElements('div').removeClass('selected');
+			this.addClass('selected');
+			condition.setType(this.get('data-type'));
+				
+			setTimeout(function(){
+				list.fade('out');
+			}, 200);
+		});
+	});
+	
+	titleElem.addEvent('click', function(){
+		list.fade('in');
+	})
+	
+});
 
 var normalWS = function(){
 	var ws = new wsImpl('ws://localhost:8316/ws');

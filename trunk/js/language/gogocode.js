@@ -413,7 +413,12 @@ Blockly.GogoCode.motor_action_turn = function() {
 
 /**  CONTROL  **/
 
-
+Blockly.GogoCode['control_true'] = function(block) {
+  // TODO: Assemble JavaScript into code variable.
+  var code = '<span class="c120">true</span> ';
+  // TODO: Change ORDER_NONE to the correct strength.
+  return [code, Blockly.GogoCode.ORDER_NONE];
+};
 
 Blockly.GogoCode.control_if = function() {
   var value_condition = Blockly.GogoCode.valueToCode(this, 'condition', Blockly.GogoCode.ORDER_ATOMIC);

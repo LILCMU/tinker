@@ -47,7 +47,7 @@ document.addEvent('init1', function(){
 			}
 			case 'g': {
 				if (currentSpatial)
-					currentSpatial.sanpToGrid = !currentSpatial.sanpToGrid;
+					currentSpatial.snapToGrid = !currentSpatial.snapToGrid;
 				break;
 			}
 		}
@@ -64,13 +64,52 @@ var createSpatial = function(){
 	currentSpatial.inject($('wrapper'));
 }
 
+
+var SensorScale = new Class({
+	initialize: function(obj){
+		var that = this;
+		
+		that = new Element('div', {
+			'id': 'ssScale'
+		});
+		
+		that.h = new Element('div', {
+			'id': 'ssScale-h',
+			'class': 'ssScale'
+		}).inject(that);
+		
+		that.v = new Element('div', {
+			'id': 'ssScale-v',
+			'class': 'ssScale'
+		}).inject(that);
+		
+		that.setScale = function(x, y){
+			if (x < 0) {
+				that.v.addClass('disabled');
+			} else if (x != 0) {
+				that.v.removeClass('disabled');
+				that.v.setStyle('left', obj.GP.width * x);
+			}
+			if (y < 0) {
+				that.h.addClass('disabled');
+			} else if (y != 1) {
+				that.h.removeClass('disabled');
+				that.h.setStyle('top', obj.GP.height * (1 - y));
+			}
+		};
+		
+		return that;
+	}
+});
+
+
 var Spatial = new Class({
 	initialize: function(){
 		var that = this;
 		
 		that = new Element('div', {'class': 'spatial'});
 		
-		that.sanpToGrid = false;
+		that.snapToGrid = false;
 		that.zIndex = 1;
 		
 		that.GP = { // graphic position
@@ -177,16 +216,17 @@ var Graph = new Class({
 		
 		that.SS = {'h': true, 'v': true};
 		that.addClass('graph');
+		that.type = 'sensor';
 		
 		new Element('div', {'class': 'toggleGrid '+mouseEvent, 'text': 'toggle grid'})
 		.addEvent(click, function(){
 			this.toggleClass('gridOn');
-			that.sanpToGrid = this.hasClass('gridOn');
+			that.snapToGrid = this.hasClass('gridOn');
 		})
 		.inject(that.controlArea);
 		
-		var sensorScale = new SensorScale(that).inject(that.graphArea);
-		sensorScale.setScale(-1, -1);
+		that.sensorScale = new SensorScale(that).inject(that.graphArea);
+		that.sensorScale.setScale(-1, -1);
 		
 		for (var i = 0; i < 16; i++) {
 			var sensorNo = (i % 8) + 1;
@@ -216,7 +256,7 @@ var Graph = new Class({
 				'data-ss': sensorNo,
 				'styles': btnStyle
 			})
-			.addEvent(mouse.click, function(){
+			.addEvent('click', function(){
 				var nextState = !this.hasClass('sensorOn');
 				
 				var opAxis = (this.get('data-axis') == 'X') ? 'Y' : 'X';
@@ -226,26 +266,47 @@ var Graph = new Class({
 				if (this.hasClass('sensorOn')) {
 					this.removeClass('sensorOn');
 					$('sensor-'+opAxis+'-'+this.get('data-ss')).removeClass('disabled');
-					SS[curWay] = false;
+					that.SS[curWay] = false;
 				} else {
-					$$('#control-area .sensor'+this.get('data-axis')).removeClass('sensorOn');
-					$$('#control-area .sensor'+opAxis).removeClass('disabled');
-					SS[curWay] = true;
+					that.controlArea.getElements('.sensor'+this.get('data-axis')).removeClass('sensorOn');
+					that.controlArea.getElements('.sensor'+opAxis).removeClass('disabled');
+					that.SS[curWay] = true;
 					if (!this.hasClass('disabled')) {
 						
 						$('sensor-'+opAxis+'-'+this.get('data-ss')).addClass('disabled');
 						this.addClass('sensorOn');
 						
 					} else {
-						SS[diffWay] = false;
+						that.SS[diffWay] = false;
 						this.removeClass('disabled').addClass('sensorOn');
 						$('sensor-'+opAxis+'-'+this.get('data-ss')).addClass('disabled').removeClass('sensorOn');
 					}
+					setTimeout(function(){
+						that.controlArea.getElements('.sensorX').fade('out');
+							that.controlArea.getElements('.sensorY').fade('out');
+					}, 200);
 				}
 				
 			})
 			.inject(that.controlArea);
 		}
+		
+		that.controlArea.getElements('.sensorX, .sensorY').fade('hide');
+		var selectLeftSensor = new Element('div', {'id': 'selectLeftSensor', 'text': 'Left Sensor'});
+		selectLeftSensor.inject(that.controlArea);
+		selectLeftSensor.addEvent('click', function(){
+			that.controlArea.getElements('.sensorX').fade('in');
+		});
+		
+		//that.controlArea.getElements('.sensorX, .sensorY').fade('hide');
+		var selectRightSensor = new Element('div', {'id': 'selectRightSensor', 'text': 'Right Sensor'});
+		selectRightSensor.inject(that.controlArea);
+		selectRightSensor.addEvent('click', function(){
+			that.controlArea.getElements('.sensorY').fade('in');
+		});
+		
+		var switchLabel = new Element('div', {'class': 'switchLabel', 'html': '<div class="label1">Right Pressed</div><div class="label2">None Pressed</div><div class="label3">Both Pressed</div><div class="label4">Left Pressed</div>'});
+		switchLabel.inject(that.controlArea);
 		
 		that.graphArea.addEvent(mouseDown, function(){
 			if (!document.body.selectingArea) {
@@ -371,7 +432,7 @@ var Graph = new Class({
 		});
 		
 		that.gx = function(number){
-			if (that.sanpToGrid) {
+			if (that.snapToGrid) {
 				var newNum = Math.round(Math.round(number / that.gridScale.x) * that.gridScale.x) ;
 				return newNum;
 				//return ((newNum % (gridScale * 2) ) == 0 ) ? newNum : number;
@@ -380,7 +441,7 @@ var Graph = new Class({
 		};
 		
 		that.gy = function(number){
-			if (that.sanpToGrid) {
+			if (that.snapToGrid) {
 				var newNum = Math.round(Math.round(number / that.gridScale.y) * that.gridScale.y) ;
 				return newNum;
 				//return ((newNum % (gridScale * 2) ) == 0 ) ? newNum : number;
@@ -445,12 +506,63 @@ var Graph = new Class({
 			
 			strResult = '<block type="procedures_defreturn" inline="false"><mutation><arg name="[VAR1]"></arg><arg name="[VAR2]"></arg></mutation><field name="NAME">[TITLE]</field><statement name="STACK"><block type="variables_set" inline="false"><field name="VAR">returnValue</field><value name="VALUE"><block type="math_number"><field name="number">0</field></block></value><next>'+strResult+'</next></block></statement><value name="RETURN"><block type="math_equal" inline="true"><field name="cond">=</field><value name="left"><block type="variables_get"><field name="VAR">returnValue</field></block></value><value name="right"><block type="math_number"><field name="number">1</field></block></value></block></value></block>';
 			
+			if (that.type == 'switch') {
+				strResult = '';
+				areaArr.each(function(item, index){
+					var prop = {};
+					prop.x1 = Math.round(item.prop.startX / that.GP.width * 1023);
+					prop.x2 = Math.round((item.prop.startX + item.prop.width) / that.GP.width * 1023);
+					prop.y2 = Math.round((that.GP.height - item.prop.startY) / that.GP.height * 1023);
+					prop.y1 = Math.round((that.GP.height - (item.prop.startY + item.prop.height)) / that.GP.height * 1023);
+					
+					var leftStr = '<block type="math_equal" inline="true"><field name="cond">'+((prop.x1 < 256) ? '&lt;' : '&gt;' )+'</field><value name="left"><block type="variables_get"><field name="VAR">x</field></block></value><value name="right"><block type="math_number"><field name="number">512</field></block></value></block>';
+					if (prop.x1 < 256 && prop.x2 > 768) {
+						leftStr = '<block type=​"control_true">​</block>​';
+						//alert(leftStr);
+					}
+					var rightStr = '<block type="math_equal" inline="true"><field name="cond">'+((prop.y1 < 256) ? '&lt;' : '&gt;' )+'</field><value name="left"><block type="variables_get"><field name="VAR">y</field></block></value><value name="right"><block type="math_number"><field name="number">512</field></block></value></block>';
+					if (prop.y1 < 256 && prop.y2 > 768) {
+						rightStr = '<block type=​"control_true">​</block>​';
+					}
+					strResult = '<block type="control_if" inline="false"><value name="condition"><block type="math_andor" inline="true"><field name="andor">and</field><value name="left">'+leftStr+'</value><value name="right">'+rightStr+'</value></block></value><statement name="statement"><block type="variables_set" inline="false"><field name="VAR">returnValue</field><value name="VALUE"><block type="math_number"><field name="number">1</field></block></value></block></statement>'+((strResult == '') ? '' : '<next>'+strResult+'</next>')+'</block>';
+				});
+				
+				
+				//<block type="procedures_defreturn" inline="false"><mutation><arg name="[VAR1]"></arg></mutation><field name="NAME">[TITLE]</field><statement name="STACK">'+strResult+'</statement><value name="RETURN"><block type="variables_get"><field name="VAR">x</field></block></value></block>
+				
+				strResult = '<block type="procedures_defreturn" inline="false"><mutation><arg name="[VAR1]"></arg><arg name="[VAR2]"></arg></mutation><field name="NAME">[TITLE]</field><statement name="STACK"><block type="variables_set" inline="false"><field name="VAR">returnValue</field><value name="VALUE"><block type="math_number"><field name="number">0</field></block></value><next>'+strResult+'</next></block></statement><value name="RETURN"><block type="math_equal" inline="true"><field name="cond">=</field><value name="left"><block type="variables_get"><field name="VAR">returnValue</field></block></value><value name="right"><block type="math_number"><field name="number">1</field></block></value></block></value></block>';
+				
+				
+				
+			}
+			
 			return strResult;
 			
 		};
 		
-		that.updateSensor = function(xValue, yValue){
-			
+		that.updateSensor = function(rs){
+			var rsArr = rs.split(':');
+			var rightElem = that.controlArea.getElement('.sensorY.sensorOn');
+			var rightSensor = (rightElem) ? rsArr[rightElem.get('data-ss') - 1].toInt() / 1024 : -1;
+			var leftElem = that.controlArea.getElement('.sensorX.sensorOn');
+			var leftSensor = (leftElem) ? rsArr[leftElem.get('data-ss') - 1].toInt() / 1024 : -1;
+			that.sensorScale.setScale(leftSensor, rightSensor);
+		}
+		
+		that.setType = function(type){
+			//alert(type);
+			that.type = type;
+			that.removeClass('snap');
+			that.getParent().removeClass('switch');
+			if (type == 'switch') {
+				that.snapToGrid = true;
+				that.addClass('snap');
+				that.getParent().addClass('switch');
+				that.setGridAmount(2,2);
+			} else if (type == 'sensor') {
+				that.snapToGrid = false;
+				that.setGridAmount(20,20);
+			}
 		}
 		
 		that.getTextData = function(){
@@ -907,7 +1019,9 @@ var Converter = new Class({
 			return yOutput.toFloat();
 		}
 		
-		that.updateSensor = function(yValue){
+		that.updateSensor = function(rs){
+			var rsArr = rs.split(':');
+			var yValue = rsArr[0];
 			var xValue = that.YtoX(yValue);
 			
 			//kk(yValue+', '+xValue);
@@ -965,43 +1079,6 @@ var Line = new Class({
 var drawGraphic = function(){
 	
 }
-
-var SensorScale = new Class({
-	initialize: function(obj){
-		var that = this;
-		
-		that = new Element('div', {
-			'id': 'ssScale'
-		});
-		
-		that.h = new Element('div', {
-			'id': 'ssScale-h',
-			'class': 'ssScale'
-		}).inject(that);
-		
-		that.v = new Element('div', {
-			'id': 'ssScale-v',
-			'class': 'ssScale'
-		}).inject(that);
-		
-		that.setScale = function(x, y){
-			if (x < 0) {
-				that.v.addClass('disabled');
-			} else if (x != 0) {
-				that.v.removeClass('disabled');
-				that.v.setStyle('left', drawArea.width * x);
-			}
-			if (y < 0) {
-				that.h.addClass('disabled');
-			} else if (y != 1) {
-				that.h.removeClass('disabled');
-				that.h.setStyle('top', drawArea.height * (1 - y));
-			}
-		};
-		
-		return that;
-	}
-});
 
 var Area = new Class({
 	initialize: function(obj){
