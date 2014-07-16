@@ -41,6 +41,14 @@ animation-prototype {
 	        transition: all 0.05s linear;
 }
 
+.labFont {
+	font-family: "Courier New", Courier, mono;
+}
+
+.pointer {
+	cursor: pointer;
+}
+
 #spatialWrapper {
 	position: absolute;
 	background-color: white;
