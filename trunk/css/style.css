@@ -77,11 +77,14 @@ pre.content {
   font-family: monospace;
   overflow: scroll;
 }
-#languageMenu {
+#languageMenu,
+#boardOptions {
   vertical-align: top;
   margin-top: 15px;
   margin-right: 15px;
+  font-size: 2em;
 }
+
 
 /* Buttons */
 button {

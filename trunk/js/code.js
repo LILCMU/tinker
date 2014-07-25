@@ -138,10 +138,10 @@ Code.renderContent = function() {
 //  	var currentSpatial = new Converter();
 //  	currentSpatial.inject(mainArea);
   } else if (content.id == 'content_cdi') {
-  	var mainArea = $$('#graphMainArea .wrapper')[0];
-  	mainArea.empty();
-  	var currentSpatial = new Graph();
-  	currentSpatial.inject(mainArea);
+//  	var mainArea = $$('#graphMainArea .wrapper')[0];
+//  	mainArea.empty();
+//  	var currentSpatial = new Graph();
+//  	currentSpatial.inject(mainArea);
   }
 };
 
@@ -211,10 +211,19 @@ Code.init = function() {
     BlocklyApps.bindClick('tab_' + name,
         function(name_) {return function() {Code.tabClick(name_);};}(name));
   }
+  
+  new Element('option', {'text': 'GoGo Board', 'value': 'gogoBoard', 'selected': true}).inject($('boardOptions'));
+  new Element('option', {'text': 'Raspberry Pi', 'value': 'rPi'}).inject($('boardOptions'));
+  $('boardOptions').addEvent('change', function(){
+  	//alert(this.get('value'));
+  	document.fireEvent('boardTypeIsChanged');
+  });
 
   // Lazy-load the syntax-highlighting.
   window.setTimeout(BlocklyApps.importPrettify, 1);
-  window.fireEvent('BlocklyIsReady');
+  setTimeout(function(){
+	  window.fireEvent('BlocklyIsReady');
+  }, 1000);
 };
 
 if (window.location.pathname.match(/readonly.html$/)) {
@@ -352,12 +361,15 @@ Code.writeToGogoBoard = function() {
 	
 	kk(byteCode);
 	
-	//alert(byteCode);
-	//return;
+	var code = Blockly.GogoCode.workspaceToCode();
+	code = filterCode(code);
+	code = code.replace(/(<([^>]+)>)/ig,"").clean();
+	
 	//alert(String.fromCharCode.apply(String, byteCode.clean().split(' ')));
 	if(true || confirm('Do you want to download these byte codes to Gogo Board?\n\n'+byteCode)){
 		//ws.send("burn::");
-		ws.send("burn::"+String.fromCharCode.apply(String, byteCode.clean().split(' ')));
+		//ws.send("burn::"+String.fromCharCode.apply(String, byteCode.clean().split(' ')));
+		ws.send('logo::'+code);
 	}
 	Code.restoreProcedure(sourceCode);
 };

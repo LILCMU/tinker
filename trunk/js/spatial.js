@@ -578,18 +578,21 @@ var Graph = new Class({
 		that.setArea = function(areaArr){
 			that.getElements('.area').destroy();
 			areaArr.each(function(item){
-				var areaPosition = item.split('#');
-				var currentArea = new Area(that);
-				currentArea.prop = {
-					'minWidth': that.gridScale.x, 
-					'minHeight': that.gridScale.y,
-					'startY': areaPosition[0].toInt(), 
-					'startX': areaPosition[1].toInt(), 
-					'width': areaPosition[2].toInt(), 
-					'height': areaPosition[3].toInt()
-				};
-				currentArea.inject(that.graphArea);
-				currentArea.setPosition(areaPosition[0].toInt(), areaPosition[1].toInt(), areaPosition[2].toInt(), areaPosition[3].toInt());
+				item = item.clean();
+				if (item != '') {
+					var areaPosition = item.split('#');
+					var currentArea = new Area(that);
+					currentArea.prop = {
+						'minWidth': that.gridScale.x, 
+						'minHeight': that.gridScale.y,
+						'startY': areaPosition[0].toInt(), 
+						'startX': areaPosition[1].toInt(), 
+						'width': areaPosition[2].toInt(), 
+						'height': areaPosition[3].toInt()
+					};
+					currentArea.inject(that.graphArea);
+					currentArea.setPosition(areaPosition[0].toInt(), areaPosition[1].toInt(), areaPosition[2].toInt(), areaPosition[3].toInt());
+				}
 			});
 			setTimeout(function(){
 				that.getParent('.contentSpatial').fireEvent('changeGraph', that);

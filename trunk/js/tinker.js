@@ -374,7 +374,10 @@ var initTinker = function() {
 		//alert(code);
 		var byteCode = code.replaceObj(byteCodeObj);
 		//alert(byteCode);
-		//return;
+		
+		
+		
+		return;
 		//alert(String.fromCharCode.apply(String, byteCode.clean().split(' ')));
 		if(true || confirm('Do you want to download these byte codes to Gogo Board?\n\n'+byteCode)){
 			//ws.send("burn::");

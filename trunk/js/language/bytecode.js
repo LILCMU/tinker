@@ -303,7 +303,7 @@ Blockly.ByteCode['recorder_eraseall'] = function(block) {
 };
 
 Blockly.ByteCode['i2c_write'] = function(block) {
-  var value_value = Blockly.ByteCode.valueToCode(block, 'value', Blockly.ByteCode.ORDER_ATOMIC);
+  var value_value = Blockly.ByteCode.valueToCode(block, 'TEXT', Blockly.ByteCode.ORDER_ATOMIC);
   var text_reg_addr = block.getFieldValue('reg_addr');
   var text_i2c_addr = block.getFieldValue('i2c_addr');
   var num = isNaN(text_reg_addr) ? text_reg_addr.charCodeAt(0) : text_reg_addr;
@@ -317,6 +317,13 @@ Blockly.ByteCode['i2c_read'] = function(block) {
   var num = isNaN(text_reg_addr) ? text_reg_addr.charCodeAt(0) : text_reg_addr;
   var code = ' 2 '+Math.floor(num / 256)+' '+(num % 256)+' 1 '+text_i2c_addr+' 108 ';
   return [code, Blockly.ByteCode.ORDER_NONE];
+};
+
+Blockly.ByteCode['text'] = function(block) {
+  var text_text = block.getFieldValue('TEXT');
+  // TODO: Assemble JavaScript into code variable.
+  var code = text_text;
+  return code;
 };
 
 

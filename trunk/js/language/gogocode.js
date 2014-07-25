@@ -221,33 +221,46 @@ Blockly.GogoCode.scrub_ = function(block, code) {
 Blockly.GogoCode['clock_date'] = function(block) {
   var dropdown_date = block.getFieldValue('date');
   // TODO: Assemble JavaScript into code variable.
-  var code = '<span class="c330">date['+dropdown_date+']</span>\n';
+  
+  var date;
+  switch (dropdown_date.toInt()) {
+  	case 0: date = 'seconds'; break;
+  	case 1: date = 'minutes'; break;
+  	case 2: date = 'hours'; break;
+  	case 3: date = 'dow'; break;
+  	case 4: date = 'day'; break;
+  	case 5: date = 'month'; break;
+  	case 6: date = 'year'; break;
+  	
+  }
+  
+  var code = '<span class="c230">'+date+'</span>';
   // TODO: Change ORDER_NONE to the correct strength.
   return [code, Blockly.GogoCode.ORDER_NONE];
 };
 
 Blockly.GogoCode['display_text'] = function(block) {
   var text_input = block.getFieldValue('text');
-  var code = '<span class="c330">display \''+text_input+'\'</span>\n';
+  var code = '<span class="c230">show \"'+text_input+'\"</span>\n';
   return code;
 };
 
 Blockly.GogoCode['display_number'] = function(block) {
   //var text_input = block.getFieldValue('text');
   var value_value = Blockly.GogoCode.valueToCode(block, 'value', Blockly.GogoCode.ORDER_ATOMIC);
-  var code = '<span class="c330">display \''+value_value+'\'</span>\n';
+  var code = '<span class="c230">show '+value_value+'</span>\n';
   return code;
 };
 
 Blockly.GogoCode['display_movecursor'] = function(block) {
   var text_num = block.getFieldValue('num');
   text_num = isNaN(text_num) ? 0 : text_num % 32 ;
-  var code = '<span class="c330">movecursor \''+text_num+'\'</span>\n';
+  var code = '<span class="c230">setpos '+text_num+'</span>\n';
   return code;
 };
 
 Blockly.GogoCode['display_clearscreen'] = function(block) {
-  var code = '<span class="c330">clearscreen</span>\n';
+  var code = '<span class="c230">cls</span>\n';
   return code;
 };
 
@@ -257,31 +270,32 @@ Blockly.GogoCode['recorder_play'] = function(block) {
 };
 
 Blockly.GogoCode['recorder_next'] = function(block) {
-  var code = '<span class="c90">next</span>\n';
+  var code = '<span class="c90">nexttrack</span>\n';
   return code;
 };
 
 Blockly.GogoCode['recorder_prev'] = function(block) {
-  var code = '<span class="c90">prev</span>\n';
+  var code = '<span class="c90">prevtrack</span>\n';
   return code;
 };
 
 Blockly.GogoCode['recorder_select'] = function(block) {
   var num_track = block.getFieldValue('track');
-  var code = '<span class="c90">selecttrack '+num_track+'</span>\n';
+  var code = '<span class="c90">gototrack '+num_track+'</span>\n';
   return code;
 };
 
 Blockly.GogoCode['recorder_eraseall'] = function(block) {
-  var code = '<span class="c90">eraseall</span>\n';
+  var code = '<span class="c90">erasetracks</span>\n';
   return code;
 };
 
 Blockly.GogoCode['i2c_write'] = function(block) {
-  var value_value = Blockly.GogoCode.valueToCode(block, 'value', Blockly.GogoCode.ORDER_ATOMIC);
+  var value_value = Blockly.GogoCode.valueToCode(block, 'TEXT', Blockly.GogoCode.ORDER_ATOMIC);
   var text_reg_addr = block.getFieldValue('reg_addr');
   var text_i2c_addr = block.getFieldValue('i2c_addr');
   var code = '<span class="c210">i2cwrite [write: \''+value_value+'\', reg_address: '+text_reg_addr+', i2c_address: '+text_i2c_addr+']</span>\n';
+  var code = '<span class="c210">i2cwrite '+text_i2c_addr+' '+text_reg_addr+' '+value_value+'</span>\n';
   return code;
 };
 
@@ -289,7 +303,15 @@ Blockly.GogoCode['i2c_read'] = function(block) {
   var text_reg_addr = block.getFieldValue('reg_addr');
   var text_i2c_addr = block.getFieldValue('i2c_addr');
   var code = '<span class="c210">i2cread [reg_address: '+text_reg_addr+', i2c_address: '+text_i2c_addr+']</span>\n';
+  var code = '<span class="c210">i2cread '+text_i2c_addr+' '+text_reg_addr+'</span>';
   return [code, Blockly.GogoCode.ORDER_NONE];
+};
+
+Blockly.GogoCode['text'] = function(block) {
+  var text_text = block.getFieldValue('TEXT');
+  // TODO: Assemble JavaScript into code variable.
+  var code = text_text;
+  return code;
 };
 
 

@@ -16,6 +16,7 @@ window.addEvent('BlocklyIsReady', function(){
 
 function initMappingPreview(updateFunc, xmlFunc) {
   updateMappingPreview.updateFunc = updateFunc;
+  
   updateMappingPreview.xmlFunc = xmlFunc;
   //updateMappingPreview();
   updateMappingPreview.updateFunc('<xml></xml>');
@@ -167,16 +168,17 @@ var initSpatial = function(){
 	
 	mainToolbox = $('toolbox');
 	
+	document.addEvent('boardTypeIsChanged', function(){
+		if ($('boardOptions').get('value') == 'gogoBoard') {
+			
+		}
+	});
+	
+	
+	
 	var mapping = $('spatialContentTemplate').clone();
 	mapping.set('id', 'mappingMainArea').inject($('content_cvi'));
 	window.mapping = mapping;
-	
-	/***
-	mapping.content = {
-		'title': 'convertXtoY',
-		'var1': 'y'
-	};
-	/***/
 	
 	mapping.addBlockToToolbox = function(block){
 		var mappingToolbox = mainToolbox.getElement('.toolMappingBlock');
@@ -446,6 +448,9 @@ var initSpatial = function(){
 		
 		var currentSpatial = condition.getElement('.wrapper').getFirst();
 		
+		condition.currentBlock.area.clean();
+		kk(condition.currentBlock.area);
+		
 		currentSpatial.setArea(condition.currentBlock.area);
 	});
 	
@@ -596,7 +601,7 @@ var initSpatial = function(){
 			condition.currentBlock.fireEvent('click');
 		}
 	//});
-	}, 50);
+	}, 500);
 	
 	
 	/***
