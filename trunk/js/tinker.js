@@ -239,7 +239,7 @@ function filterCode(code) {
 		var variables = str.split('[:]');
 		variables.shift();
 		variables.each(function(item2){
-			varArr.include(item2.split('[;]')[0].split(':')[1]);
+			varArr.include(item2.split('[;]')[0].split(':')[0]);
 		});
 		
 		varArr0.each(function(item4){
@@ -248,7 +248,7 @@ function filterCode(code) {
 		
 		var newVar = '';
 		varArr.each(function(item3){
-			newVar += '  <span class="c330">make "'+item3+' 0</span>\n';
+			newVar += '  <span class="c330">set '+item3+' 0</span>\n';
 		});
 		var str2 = str.replace('[SS]', newVar).replace(/\[:\]/g, '').replace(/\[;\]/g, '');
 		proc.push(str2);

@@ -128,7 +128,7 @@ Blockly.GogoCode.init = function() {
     var defvars = [];
     var variables = Blockly.Variables.allVariables();
     for (var x = 0; x < variables.length; x++) {
-      defvars[x] = 'make "' +
+      defvars[x] = 'set ' +
           Blockly.GogoCode.variableDB_.getName(variables[x],
           Blockly.Variables.NAME_TYPE) + ' 0';
     }
@@ -629,7 +629,7 @@ Blockly.GogoCode.math_not = function() {
 
 Blockly.GogoCode.variables_get = function() {
   // Variable getter.
-  var code = '<span class="c330">[:]:'+Blockly.GogoCode.variableDB_.getName(this.getFieldValue('VAR'),
+  var code = '<span class="c330">[:]'+Blockly.GogoCode.variableDB_.getName(this.getFieldValue('VAR'),
       Blockly.Variables.NAME_TYPE)+'[;]</span>';
   return [code, Blockly.GogoCode.ORDER_ATOMIC];
 };
@@ -641,7 +641,7 @@ Blockly.GogoCode.variables_set = function() {
   //if (argument0 != '0') argument0 = argument0.slice(1, argument0.length-1);
   var varName = Blockly.GogoCode.variableDB_.getName(
       this.getFieldValue('VAR'), Blockly.Variables.NAME_TYPE);
-  return '<span class="c330">make "' + varName + ' ' + argument0 + '</span>\n';
+  return '<span class="c330">set ' + varName + ' ' + argument0 + '</span>\n';
 };
 
 

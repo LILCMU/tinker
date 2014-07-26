@@ -318,13 +318,21 @@ Blockly.Blocks.action_motor = {
     this.setColour(310);
     this.appendDummyInput().appendField("talk to motor")
 
-    .appendField(new Blockly.FieldDropdown([["", 0], ["a", 1]]), "a")
-    .appendField(",")	
-    .appendField(new Blockly.FieldDropdown([["", 0], ["b", 2]]), "b")
+//    .appendField(new Blockly.FieldDropdown([["", 0], ["a", 1]]), "a")
+//    .appendField(",")	
+//    .appendField(new Blockly.FieldDropdown([["", 0], ["b", 2]]), "b")
+//    .appendField(",")
+//    .appendField(new Blockly.FieldDropdown([["", 0], ["c", 4]]), "c")
+//    .appendField(",")
+//    .appendField(new Blockly.FieldDropdown([["", 0], ["d", 8]]), "d");
+    
+    .appendField(new Blockly.FieldDropdown([["a", "a"], [" ", ""]]), "a")
     .appendField(",")
-    .appendField(new Blockly.FieldDropdown([["", 0], ["c", 4]]), "c")
+    .appendField(new Blockly.FieldDropdown([[" ", ""], ["b", "b"]]), "b")
     .appendField(",")
-    .appendField(new Blockly.FieldDropdown([["", 0], ["d", 8]]), "d");
+    .appendField(new Blockly.FieldDropdown([[" ", ""], ["c", "c"]]), "c")
+    .appendField(",")
+    .appendField(new Blockly.FieldDropdown([[" ", ""], ["d", "d"]]), "d");
     //var input =  this.appendValueInput( "NAME", "motor");
     //input.appendField("to");
     this.setPreviousStatement(true, null);
