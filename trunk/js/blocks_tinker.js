@@ -421,6 +421,45 @@ Blockly.Blocks.motor_action_power = {
   }
 };
 
+Blockly.Blocks['servo_seth'] = {
+  init: function() {
+    this.setHelpUrl('http://www.example.com/');
+    this.setColour(316);
+    this.appendDummyInput()
+        .appendField("Set servo heading")
+        .appendField(new Blockly.FieldTextInput("10"), "heading");
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
+Blockly.Blocks['servo_lt'] = {
+  init: function() {
+    this.setHelpUrl('http://www.example.com/');
+    this.setColour(316);
+    this.appendDummyInput()
+        .appendField("Servo left turn")
+        .appendField(new Blockly.FieldTextInput("10"), "heading");
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
+Blockly.Blocks['servo_rt'] = {
+  init: function() {
+    this.setHelpUrl('http://www.example.com/');
+    this.setColour(316);
+    this.appendDummyInput()
+        .appendField("Servo right turn")
+        .appendField(new Blockly.FieldTextInput("10"), "heading");
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
 /***
 Blockly.Blocks.motor_action_turn = {
   category: 'Motor Action',

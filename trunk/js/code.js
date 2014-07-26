@@ -424,8 +424,10 @@ Code.saveXML = function() {
   //console.log(builder);
   //saveAs(builder.getBlob('text/plain;charset=utf-8'), 'block.xml');
   var name = prompt("Name of this file","blocks");
-  var blob = new Blob([data], {type: "text/plain;charset=utf-8"});
-  saveAs(blob, name+'.xml');
+  if (name) {
+	  var blob = new Blob([data], {type: "text/plain;charset=utf-8"});
+	  saveAs(blob, name+'.xml');
+  }
 }
 
 

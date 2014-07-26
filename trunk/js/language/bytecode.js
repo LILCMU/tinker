@@ -416,6 +416,24 @@ Blockly.ByteCode.motor_action_power = function() {
   return code;
 };
 
+Blockly.ByteCode['servo_seth'] = function(block) {
+  var text_heading = block.getFieldValue('heading');
+  var code = '<span class="c316">seth ' + text_heading + '</span> \n';
+  return '';
+};
+
+Blockly.ByteCode['servo_lt'] = function(block) {
+  var text_heading = block.getFieldValue('heading');
+  var code = '<span class="c316">lt ' + text_heading + '</span> \n';
+  return '';
+};
+
+Blockly.ByteCode['servo_rt'] = function(block) {
+  var text_heading = block.getFieldValue('heading');
+  var code = '<span class="c316">rt ' + text_heading + '</span> \n';
+  return '';
+};
+
 /**  CONTROL  **/
 
 Blockly.ByteCode['control_true'] = function(block) {

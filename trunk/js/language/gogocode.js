@@ -423,6 +423,24 @@ Blockly.GogoCode.motor_action_power = function() {
   return code;
 };
 
+Blockly.GogoCode['servo_seth'] = function(block) {
+  var text_heading = block.getFieldValue('heading');
+  var code = '<span class="c316">seth ' + text_heading + '</span> \n';
+  return code;
+};
+
+Blockly.GogoCode['servo_lt'] = function(block) {
+  var text_heading = block.getFieldValue('heading');
+  var code = '<span class="c316">lt ' + text_heading + '</span> \n';
+  return code;
+};
+
+Blockly.GogoCode['servo_rt'] = function(block) {
+  var text_heading = block.getFieldValue('heading');
+  var code = '<span class="c316">rt ' + text_heading + '</span> \n';
+  return code;
+};
+
 /***
 
 Blockly.GogoCode.motor_action_turn = function() {
