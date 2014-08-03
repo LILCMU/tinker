@@ -424,7 +424,6 @@ var Graph = new Class({
 			}
 				setTimeout(function(){
 					that.getParent('.contentSpatial').fireEvent('changeGraph', that);
-					kk('change area in area obj');
 				}, 10);
 			document.body.selectingArea = false;
 			//document.body.currentArea = null;
@@ -559,6 +558,7 @@ var Graph = new Class({
 				that.addClass('snap');
 				that.getParent().addClass('switch');
 				that.setGridAmount(2,2);
+				
 			} else if (type == 'sensor') {
 				that.snapToGrid = false;
 				that.setGridAmount(20,20);
@@ -596,7 +596,6 @@ var Graph = new Class({
 			});
 			setTimeout(function(){
 				that.getParent('.contentSpatial').fireEvent('changeGraph', that);
-				kk('change area in area obj');
 			}, 10);
 		}
 		
@@ -1119,7 +1118,7 @@ var Area = new Class({
 			that.prop.newY = top;
 			that.prop.newW = width;
 			that.prop.newH = height;
-			
+			kk(that.prop);
 			
 		};
 		

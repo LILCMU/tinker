@@ -50,6 +50,10 @@ div {
 	transition: all 51ms ease;
 }
 
+.c0 {
+	display: none;
+}
+
 .c10 {
 	color: hsl(10, 80%, 30%);
 }

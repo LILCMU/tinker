@@ -52,13 +52,8 @@ function updateFunc0(type, code) {
 function updateFunc(xmlText) {
   var xmlDom = Blockly.Xml.textToDom(xmlText);
   
-  console.log('updateFunction graph update');
-  console.log(xmlDom);
-  console.log((xmlDom)?'true':'false');
-  
   if (xmlDom) {
-  	console.log('dddddddd');
-    Blockly.mainWorkspace.clear();
+  	Blockly.mainWorkspace.clear();
     Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, xmlDom);
   }
 }
@@ -79,7 +74,7 @@ function xmlFunc(xmlText) {
  */
 function init() {
   var rtl = (document.location.search == '?rtl');
-  Blockly.inject(document.body, {path: '../../', rtl: rtl});
+  Blockly.inject(document.body, {path: window.location.pathname.split('graph')[0], rtl: rtl});
 
   if (window.parent.initGraphPreview) {
     // Let the top-level application know that Blockly is ready.

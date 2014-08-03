@@ -482,7 +482,8 @@ Blockly.GogoCode.control_ifelse = function() {
 Blockly.GogoCode.control_waituntil = function() {
   var value_name = Blockly.GogoCode.valueToCode(this, 'NAME', Blockly.GogoCode.ORDER_ATOMIC);
   // TODO: Assemble GogoCode into code variable.
-  var code = '<span class="c120">waituntil [ '+value_name.slice(1, value_name.length-1)+' ]</span>\n';
+  //var code = '<span class="c120">waituntil [ '+value_name.slice(1, value_name.length-1)+' ]</span>\n';
+  var code = '<span class="c120">waituntil [ '+value_name+' ]</span>\n';
   return code;
 };
 
@@ -490,7 +491,7 @@ Blockly.GogoCode.control_repeat = function() {
   var value_times = Blockly.GogoCode.valueToCode(this, 'times', Blockly.GogoCode.ORDER_ATOMIC);
   var statements_do = Blockly.GogoCode.statementToCode(this, 'do');
   // TODO: Assemble GogoCode into code variable.
-  var code = '<span class="c120">repeat '+value_times.slice(1, value_times.length-1)+' \n[\n'+statements_do+'\n]</span>\n';
+  //var code = '<span class="c120">repeat '+value_times.slice(1, value_times.length-1)+' \n[\n'+statements_do+'\n]</span>\n';
   var code = '<span class="c120">repeat '+value_times+' \n[\n'+statements_do+'\n]</span>\n';
   return code;
 };
@@ -521,14 +522,16 @@ Blockly.GogoCode.input_sensor = function() {
 Blockly.GogoCode.input__output__storage_setdp = function() {
   var value_dp = Blockly.GogoCode.valueToCode(this, 'DP', Blockly.GogoCode.ORDER_ATOMIC);
   // TODO: Assemble GogoCode into code variable.
-  var code = '<span class="c220">setdp '+value_dp.slice(1, value_dp.length-1)+'</span>\n';
+  //var code = '<span class="c220">setdp '+value_dp.slice(1, value_dp.length-1)+'</span>\n';
+  var code = '<span class="c220">setdp '+value_dp+'</span>\n';
   return code;
 };
 
 Blockly.GogoCode.input__output__storage_record = function() {
   var value_value = Blockly.GogoCode.valueToCode(this, 'value', Blockly.GogoCode.ORDER_ATOMIC);
   // TODO: Assemble GogoCode into code variable.
-  var code = '<span class="c220">record '+value_value.slice(1, value_value.length-1)+'</span>\n';
+  //var code = '<span class="c220">record '+value_value.slice(1, value_value.length-1)+'</span>\n';
+  var code = '<span class="c220">record '+value_value+'</span>\n';
   return code;
 };
 
@@ -542,7 +545,8 @@ Blockly.GogoCode.input__output__storage_recall = function() {
 Blockly.GogoCode.input__output__storage_send_serial = function() {
   var value_send = Blockly.GogoCode.valueToCode(this, 'send', Blockly.GogoCode.ORDER_ATOMIC);
   // TODO: Assemble GogoCode into code variable.
-  var code = '<span class="c250">send '+value_send.slice(1, value_send.length-1)+'</span> \n';
+ // var code = '<span class="c250">send '+value_send.slice(1, value_send.length-1)+'</span> \n';
+  var code = '<span class="c250">send '+value_send+'</span> \n';
   return code;
 };
 
@@ -617,7 +621,8 @@ Blockly.GogoCode.math_operator = function() {
   var value_2ndnum = Blockly.GogoCode.valueToCode(this, '2ndNum', Blockly.GogoCode.ORDER_ATOMIC);
   var dropdown_op = this.getFieldValue('op');
   // TODO: Assemble GogoCode into code variable.
-  var code = '<span class="c10">( '+value_1stnum.slice(1, value_1stnum.length-1)+' '+dropdown_op+' '+value_2ndnum.slice(1, value_2ndnum.length-1) +' )</span>';
+  //var code = '<span class="c10">( '+value_1stnum.slice(1, value_1stnum.length-1)+' '+dropdown_op+' '+value_2ndnum.slice(1, value_2ndnum.length-1) +' )</span>';
+  var code = '<span class="c10">( '+value_1stnum+' '+dropdown_op+' '+value_2ndnum +' )</span>';
   // TODO: Change ORDER_NONE to the correct strength.
   return [code, Blockly.GogoCode.ORDER_NONE];
 };
@@ -639,6 +644,66 @@ Blockly.GogoCode.math_not = function() {
   var code = '<span class="c10">not '+value_bool+'</span>';
   // TODO: Change ORDER_NONE to the correct strength.
   return [code, Blockly.GogoCode.ORDER_NONE];
+};
+
+
+
+/****    RASPBERRY PI    ****/
+
+
+
+Blockly.GogoCode.use_sms = function() {
+  // TODO: Assemble Python into code variable.
+  var code = '\nimport commands';
+  return code;
+};
+
+Blockly.GogoCode.send_sms = function() {
+  var value_name = Blockly.GogoCode.valueToCode(this, 'NAME', Blockly.GogoCode.ORDER_ATOMIC);
+  var text_phoneno = this.getTitleValue('phoneno');
+  // TODO: Assemble JavaScript into code variable.
+  var command = 'sudo gammu sendsms TEXT +66' + text_phoneno + ' -textutf8 "'+value_name+'"';
+  var code = '\ncommandString = \''+command+'\'\ncommands.getoutput(commandString)';
+  return code;
+};
+
+Blockly.GogoCode.userfid = function() {
+  // TODO: Assemble Python into code variable.
+  var code = '\nimport rfid_sl500\nrfid = rfid_sl500.RFID_Reader()\nrfid.connect("/dev/ttyUSB0")';
+  return code;
+};
+
+Blockly.GogoCode.read_from_rfid = function() {
+  // TODO: Assemble Python into code variable.
+  var code = '\nrfid.read_String()'
+  // TODO: Change ORDER_NONE to the correct strength.
+  return [code, Blockly.GogoCode.ORDER_NONE];
+};
+
+Blockly.GogoCode.write_to_rfid = function() {
+  var value_name = Blockly.GogoCode.valueToCode(this, 'NAME', Blockly.GogoCode.ORDER_ATOMIC);
+  // TODO: Assemble Python into code variable.
+  var code = '\nrfid.write_String("string")';
+  return code;
+};
+
+Blockly.GogoCode.use_finer_scan = function() {
+  // TODO: Assemble Python into code variable.
+  var code = '\nimport fingerscan\nfp = fingerscan.fingerPrint()\nfp.connect("/dev/ttyACM0")';
+  return code;
+};
+
+Blockly.GogoCode.identify_finger = function() {
+  // TODO: Assemble Python into code variable.
+  var code = '\nfp.identify()';
+  // TODO: Change ORDER_NONE to the correct strength.
+  return [code, Blockly.GogoCode.ORDER_NONE];
+};
+
+Blockly.GogoCode.enroll_finger = function() {
+  // TODO: Assemble Python into code variable.
+  var code = '\nfp.enrollOneTime()';
+  return code;
 };
 
 
@@ -670,7 +735,7 @@ Blockly.GogoCode.procedure_procedure = function() {
   var text_pname = this.getFieldValue('pname');
   // TODO: Assemble GogoCode into code variable.
   //var code = '[SS]to '+text_pname+'\n[SS]'+statements_statement+'end[SS]';
-  var code = '[p]<span class="c210">to '+text_pname+'</span>\n[SS]'+statements_statement+'<span class="c210">end</span>[/p]';
+  var code = '[p]<span class="c210">to '+text_pname+'</span><span class="c0">newline</span>\n[SS]'+statements_statement+'<span class="c0">newline</span><span class="c210">end</span>[/p]';
   return code;
 };
 
@@ -703,7 +768,7 @@ Blockly.GogoCode['procedures_defreturn'] = function(block) {
   var returnValue = Blockly.GogoCode.valueToCode(block, 'RETURN',
       Blockly.GogoCode.ORDER_NONE) || '';
   if (returnValue) {
-    returnValue = '  return ' + returnValue + ';\n';
+    returnValue = '  output ' + returnValue + ';\n';
   }
   var args = [];
   for (var x = 0; x < block.arguments_.length; x++) {
@@ -712,8 +777,9 @@ Blockly.GogoCode['procedures_defreturn'] = function(block) {
   }
   var code = '(main ' + funcName + '[' + args.join(', ') + '] {\n' +
       branch + returnValue + '} )';
+  alert(returnValue);
   code = Blockly.GogoCode.scrub_(block, code);
-  code = '[p]to '+funcName+' '+ args.join(': ')+':\n '+branch+'\nend\n [/p]';
+  code = '[p]<span class="c0">newline</span><span class="c0">newline</span>to '+funcName+' '+ args.join(': ')+':<span class="c0">newline</span>\n '+branch+'\n<span class="c0">newline</span>'+returnValue+'\n<span class="c0">newline</span>end\n [/p]';
   Blockly.GogoCode.definitions_[funcName] = code;
   //alert(code);
   return null;

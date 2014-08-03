@@ -169,9 +169,19 @@ var initSpatial = function(){
 	mainToolbox = $('toolbox');
 	
 	document.addEvent('boardTypeIsChanged', function(){
+		var addOn = mainToolbox.getElement('#addOnModules');
 		if ($('boardOptions').get('value') == 'gogoBoard') {
-			
+			var rpiElem = addOn.getElements('.rPiBlocks');
+			rpiElem.each(function(item){
+				item.dispose();
+			});
+		} else if ($('boardOptions').get('value') == 'rPi') {
+			var rpiElem = $('rPiBlocks').getChildren();
+			rpiElem.each(function(item){
+				item.clone().inject(addOn);
+			});
 		}
+		Blockly.updateToolbox(mainToolbox);
 	});
 	
 	
@@ -449,7 +459,7 @@ var initSpatial = function(){
 		var currentSpatial = condition.getElement('.wrapper').getFirst();
 		
 		condition.currentBlock.area.clean();
-		kk(condition.currentBlock.area);
+		//kk(condition.currentBlock.area);
 		
 		currentSpatial.setArea(condition.currentBlock.area);
 	});
@@ -509,6 +519,7 @@ var initSpatial = function(){
 	condition.updateBlock = function(){
 		var block = condition.currentBlock;
 		var xmlText = block.xmlText;
+		
 		//alert(xmlText.split('[TITLE]').join(block.title));
 		xmlText = xmlText.split('[TITLE]').join(block.title).split('[VAR1]').join(block.var1).split('[VAR2]').join(block.var2);
 		
@@ -731,6 +742,17 @@ var normalWS = function(){
 			startWebSocket();
 		}, 1000);
 	}
+	
+	ws.sendFn = ws.send;
+	
+	ws.send = function(value){
+		if (ws.readyState == 1) {
+			ws.sendFn(value);
+		}
+	}
+	
+	//alert(ws.send);
+	
 	return ws;
 }
 

@@ -149,11 +149,11 @@ Code.renderContent = function() {
  * Initialize Blockly.  Called on page load.
  */
 Code.init = function() {
-//alert(Blockly.pathToBlockly);
-
+  Blockly.pathToBlockly = window.location.pathname.split('index')[0];
 
 	
   BlocklyApps.init();
+//alert(Blockly.pathToBlockly);
 
   var rtl = BlocklyApps.isRtl();
   var container = document.getElementById('content_area');
@@ -180,7 +180,7 @@ Code.init = function() {
   window.addEventListener('resize', onresize, false);
   var toolbox = document.getElementById('toolbox');
   Blockly.inject(document.getElementById('content_blocks'),
-      {path: './', //+
+      {path: window.location.pathname.split('index')[0], //+
        rtl: rtl,
        toolbox: toolbox});
 
@@ -266,14 +266,11 @@ Code.loadProcedure = function() {
 	var allBlocks = $(xml).getElements('block');
 	var tinkerBlocks = [];
 	allBlocks.each(function(item){
-		kk(item.getAttribute('type'));
 		if (item.getAttribute('type') == 'procedures_callreturn') {
 			//tinkerBlocks.push(item);
 			tinkerBlocks.include(item.getElement('mutation').get('name'));
 		}
 	});
-	kk('find tinker Block');
-	kk(tinkerBlocks);
 	
 	var mapping = $('mappingMainArea');
 	var blockArr = mapping.getElements('.mappingBlock');
@@ -298,17 +295,12 @@ Code.loadProcedure = function() {
 		}
 	});
 	condition.spatial.setArea(condition.currentBlock.area);
-	kk('load procedure  -----');
-	kk(xmlArr);
-	
-	
 	
 	//return 0;
 	var xmlText = xmlArr.join(' ');
 	
 	
 	var data = Blockly.Xml.domToText(xml).split('</xml>')[0];
-	//kk(data+xmlText);
 	
 	Blockly.mainWorkspace.clear();
 	xml = Blockly.Xml.textToDom(data+xmlText+'</xml>');
@@ -350,16 +342,10 @@ Code.writeToGogoBoard = function() {
 		}
 	});
 	
-	kk(code);
-	kk(byteCode);
-	kk('find position of variable in mem');
-	kk(varObj);
 	varArr.each(function(item){
 		byteCode = byteCode.split('#'+item+' ').join(varObj[item]+' ');
 		byteCode = byteCode.split('$'+item+' ').join(' ').clean();
 	});
-	
-	kk(byteCode);
 	
 	var code = Blockly.GogoCode.workspaceToCode();
 	code = filterCode(code);
@@ -370,11 +356,14 @@ Code.writeToGogoBoard = function() {
 	code = code.split('&lt;').join(' < ');
 	code = code.split('&gt;').join(' > ');
 	
+	code = code.split('newline').join('\n');
+	
 	//alert(String.fromCharCode.apply(String, byteCode.clean().split(' ')));
 	if(true || confirm('Do you want to download these byte codes to Gogo Board?\n\n'+byteCode)){
 		//ws.send("burn::");
 		//ws.send("burn::"+String.fromCharCode.apply(String, byteCode.clean().split(' ')));
 		ws.send('logo::'+code);
+		kk('logo::'+code);
 	}
 	Code.restoreProcedure(sourceCode);
 };

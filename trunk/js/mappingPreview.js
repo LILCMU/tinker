@@ -73,7 +73,7 @@ function xmlFunc(xmlText) {
  */
 function init() {
   var rtl = (document.location.search == '?rtl');
-  Blockly.inject(document.body, {path: '../../', rtl: rtl});
+  Blockly.inject(document.body, {path: window.location.pathname.split('mapping')[0], rtl: rtl});
 
   if (window.parent.initMappingPreview) {
     // Let the top-level application know that Blockly is ready.

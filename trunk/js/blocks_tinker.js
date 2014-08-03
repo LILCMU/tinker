@@ -778,6 +778,135 @@ Blockly.Blocks.math_not = {
 };
 
 
+/**    Send SMS    **/
+
+
+Blockly.Blocks.use_sms = {
+  helpUrl: 'http://www.example.com/',
+  init: function() {
+    this.setColour(330);
+    this.appendDummyInput()
+        .appendTitle("Use SMS");
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setTooltip('');
+  }
+};
+
+
+
+Blockly.Blocks.send_sms = {
+  helpUrl: 'http://www.example.com/',
+  init: function() {
+    this.setColour(330);
+    this.appendDummyInput()
+        .appendTitle("Send SMS");
+    this.appendDummyInput()
+        .appendTitle("to : 0")
+        .appendTitle(new Blockly.FieldTextInput("8xxxxxxxx"), "phoneno");
+    this.appendValueInput("NAME")
+        .setCheck(String)
+        .appendTitle("message :");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setTooltip('');
+  }
+};
+
+
+/**     RFID    **/
+
+
+Blockly.Blocks.userfid = {
+  helpUrl: 'http://www.example.com/',
+  init: function() {
+    this.setColour(230);
+    this.appendDummyInput()
+        .appendTitle("Use RFID");
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setTooltip('');
+  }
+};
+
+
+
+Blockly.Blocks.read_from_rfid = {
+  helpUrl: 'http://www.example.com/',
+  init: function() {
+    this.setColour(230);
+    this.appendDummyInput()
+        .appendTitle("Read from RFID");
+    this.setInputsInline(true);
+    this.setOutput(true, String);
+    this.setTooltip('');
+  }
+};
+
+
+
+Blockly.Blocks.write_to_rfid = {
+  helpUrl: 'http://www.example.com/',
+  init: function() {
+    this.setColour(230);
+    this.appendValueInput("NAME")
+        .setCheck(String)
+        .appendTitle("Write to RFID");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setTooltip('');
+  }
+};
+
+
+/**     Finger Scan    **/
+
+
+Blockly.Blocks.use_finer_scan = {
+  helpUrl: 'http://www.example.com/',
+  init: function() {
+    this.setColour(160);
+    this.appendDummyInput()
+        .appendTitle("Use Finger Scan");
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setTooltip('');
+  }
+};
+
+
+
+Blockly.Blocks.identify_finger = {
+  helpUrl: 'http://www.example.com/',
+  init: function() {
+    this.setColour(160);
+    this.appendDummyInput()
+        .appendTitle("Identify Finger");
+    this.setInputsInline(true);
+    this.setOutput(true, String);
+    this.setTooltip('');
+  }
+};
+
+
+
+Blockly.Blocks.enroll_finger = {
+  helpUrl: 'http://www.example.com/',
+  init: function() {
+    this.setColour(160);
+    this.appendDummyInput()
+        .appendTitle("Enroll Finger");
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setTooltip('');
+  }
+};
+
+
 /****    VARIABLE    ****/
 
 Blockly.Blocks.variables_get = {

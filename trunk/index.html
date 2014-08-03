@@ -1,7 +1,8 @@
 
 <!--
 
-Update : 26 July 2014: 2:28pm
+Update : 4 August 2014 - 4:36m
+Update : 26 July 2014 - 2:28pm
 
 -->
 
@@ -65,6 +66,20 @@ Update : 26 July 2014: 2:28pm
   
   <category id="rPiBlocks">
   	
+  	<category name="Text message" class="rPiBlocks">
+  		<block type="use_sms"></block>
+  		<block type="send_sms"></block>
+  	</category>
+  	<category name="RFID" class="rPiBlocks">
+  		<block type="userfid"></block>
+  		<block type="read_from_rfid"></block>
+  		<block type="write_to_rfid"></block>
+  	</category>
+  	<category name="Finger Scan" class="rPiBlocks">
+  		<block type="use_finer_scan"></block>
+  		<block type="identify_finger"></block>
+  		<block type="enroll_finger"></block>
+  	</category>
   </category>
   
   
@@ -215,7 +230,7 @@ Update : 26 July 2014: 2:28pm
   	  	
   	  </category>
 
-  	  <category name="Add-on Modules">
+  	  <category id="addOnModules" name="Add-on Modules">
   	  	<category name="Clock">
 	  	  	<block type="clock_date">
 	  	  	  <title name="date">4</title>
