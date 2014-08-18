@@ -127,11 +127,7 @@ Code.renderContent = function() {
       content.innerHTML = code;
     }
   } else if (content.id == 'content_gogocode') {
-  	var code = Blockly.GogoCode.workspaceToCode().clean();
-  	var byteCode = code.replaceObj(byteCodeObj);
-  	var code = Blockly.GogoCode.workspaceToCode();
-  	code = filterCode(code);
-  	$(content).set('html', code);
+  	Code.gogoCodePage();
   } else if (content.id == 'content_cvi') {
 //  	var mainArea = $$('#mappingMainArea .wrapper')[0];
 //  	mainArea.empty();
@@ -314,7 +310,42 @@ Code.restoreProcedure = function(data){
 	Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, xml);
 }
 
-Code.writeToGogoBoard = function() {
+Code.gogoCodePage = function() {
+	var code = Code.genGogoCode();
+	$('content_gogocode').set('html', code);
+}
+
+Code.genGogoCode = function(){
+	var sourceCode = Code.loadProcedure();
+	
+	var code = Blockly.GogoCode.workspaceToCode();
+	code = filterCode(code);
+	code = code.split(';').join('');
+	
+	Code.restoreProcedure(sourceCode);
+	
+	return code;
+}
+
+Code.writeToGogoBoard = function(){
+	var code = Code.genGogoCode();
+	if ($('tab_gogocode').hasClass('tabon')) {
+		code = $('content_gogocode').get('html');
+	}
+	
+	code = code.split(' < ').join('&lt;');
+	code = code.split(' > ').join('&gt;');
+	code = code.replace(/(<([^>]+)>)/ig,"").clean();
+	code = code.split('&lt;').join(' < ');
+	code = code.split('&gt;').join(' > ');
+	
+	code = code.split('newline').join('\n');
+	
+	ws.send('logo::'+code);
+	kk('logo::'+code);
+}
+
+Code.writeToGogoBoard1 = function() {
 	var sourceCode = Code.loadProcedure();
 	var code = Blockly.ByteCode.workspaceToCode().clean();
 	//alert(code);

@@ -10,6 +10,14 @@ h1 {
   margin-right: 5px;
 }
 
+#versionNO {
+	font-size: 0.6em;
+	color: rgba(0, 0, 0, 0.3);
+	padding: 5px;
+	position: absolute;
+	/*bottom: 0;*/
+}
+
 /* Tabs */
 #tabRow>td {
   border: 1px solid #ccc;

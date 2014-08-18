@@ -53,7 +53,7 @@ document.addEvent('init', function(){
 		$(document.body).addClass('mouseIsDown').addClass('mouseIsNotMove').removeClass('mouseIsMove');
 		$(document.body).startPoint = event.client;
 		$(document.body).distance = {'x': 0, 'y': 0};
-		if(false && event.target.hasClass(mouseEvent)) {
+		if(false || event.target.hasClass(mouseEvent)) {
 			event.target.addClass(mouseEventTick);
 		}
 		
@@ -100,8 +100,9 @@ document.addEvent('init', function(){
 		event.distance = {'x': delX, 'y': delY};
 		$$('.'+mouseEvent+'.'+mouseEventTick).fireEvent(mouse.up, event);
 		
-		if($(document.body).hasClass('mouseIsDown') && $(document.body).hasClass('mouseIsNotMove')) 
+		if($(document.body).hasClass('mouseIsDown') && $(document.body).hasClass('mouseIsNotMove')) {
 			$$('.'+mouseEvent+'.'+mouseEventTick).fireEvent(mouse.click, event);
+		}
 		$(document.body).removeClass('mouseIsDown');
 		$$('.'+mouseEvent+'.'+mouseEventTick).removeClass(mouseEventTick);
 		

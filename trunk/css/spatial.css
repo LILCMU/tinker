@@ -83,6 +83,31 @@ animation-prototype {
 	padding-left: 20px;
 }
 
+.contentSpatial#conditionMainArea .mainArea p {
+	cursor: pointer;
+}
+#conditionMainArea .mainArea p:after {
+	content: '';
+	position: absolute;
+	background-color: blue;
+	margin-top: 6px;
+	margin-left: 6px;
+	width: 6px;
+	height: 6px;
+	border-radius: 3px;
+}
+#conditionMainArea .mainArea p:hover:after {
+	background-color: green;
+	width: 8px;
+	height: 8px;
+	margin-top: 5px;
+	margin-left: 5px;
+	border-radius: 4px;
+}
+#conditionMainArea .mainArea p:hover {
+	/*color: blue;*/
+}
+
 .contentSpatial .wrapper {
 	position: relative;
 	width: 480px;
@@ -136,6 +161,26 @@ animation-prototype {
 	left: 200px;
 	top: 430px;
 	font-family: "Courier New", Courier, mono;
+	cursor: pointer;
+}
+#selectLeftSensor:after {
+	content: '';
+	position: absolute;
+	background-color: blue;
+	margin-top: 6px;
+	margin-left: 6px;
+	width: 6px;
+	height: 6px;
+	border-radius: 3px;
+	cursor: pointer;
+}
+#selectLeftSensor:hover:after {
+	background-color: green;
+	width: 8px;
+	height: 8px;
+	margin-top: 5px;
+	margin-left: 5px;
+	border-radius: 4px;
 }
 
 #selectRightSensor {
@@ -145,7 +190,28 @@ animation-prototype {
 	font-family: "Courier New", Courier, mono;
 	-webkit-transform: rotate(270deg) translate3d(0px, 0px, 0px);
 	-webkit-transform-origin: 0px 0px;
+	cursor: pointer;
 }
+#selectRightSensor:after {
+	content: '';
+	position: absolute;
+	background-color: blue;
+	margin-top: 6px;
+	margin-left: 6px;
+	width: 6px;
+	height: 6px;
+	border-radius: 3px;
+	cursor: pointer;
+}
+#selectRightSensor:hover:after {
+	background-color: green;
+	width: 8px;
+	height: 8px;
+	margin-top: 5px;
+	margin-left: 5px;
+	border-radius: 4px;
+}
+
 
 .switchLabel {
 	font-family: "Courier New", Courier, mono;
@@ -183,6 +249,7 @@ animation-prototype {
 
 .sensorX,.sensorY {
 	z-index: 10;
+	cursor: pointer;
 }
 
 #mappingExBlock, 
@@ -215,7 +282,11 @@ animation-prototype {
 	margin: 0px 35px 5px 0px;
 	float: left;
 	padding: 0 5px;
-	opacity: 0.8;
+	opacity: 0.7;
+	cursor: pointer;
+}
+.mappingBlock:hover {
+	opacity: 0.85;
 }
 .mappingBlock.selected {
 	opacity: 1;
@@ -257,6 +328,14 @@ animation-prototype {
 	margin: 0px 35px 5px 0px;
 	float: left;
 	padding: 0 5px;
+	opacity: 0.7;
+	cursor: pointer;
+}
+.condBlock:hover {
+	opacity: 0.85;
+}
+.condBlock.selected {
+	opacity: 1;
 }
 .condBlock::before {
 	background-image: url(../media/gbLeft.png);
@@ -303,6 +382,10 @@ animation-prototype {
 
 .canvasGraphic, .graphArea {
 	position: absolute;
+}
+
+#conditionMainArea .graphArea {
+	cursor: crosshair;
 }
 
 .controlArea {
@@ -400,6 +483,7 @@ animation-prototype {
 .area {
 	position: absolute;
 	background-color: rgba(101, 152, 221, 0.67);
+	cursor: move;
 }
 
 .currentArea {	
@@ -422,6 +506,7 @@ animation-prototype {
 .areaSide.TT {
 	top: 0;
 	border-top: 1px solid #1c5eb5;
+	cursor: n-resize;
 }
 .areaSide.TT:hover {
 	border-top: 4px solid #1c5eb5;
@@ -429,6 +514,7 @@ animation-prototype {
 .areaSide.BB {
 	bottom: 0;
 	border-bottom: 1px solid #1c5eb5;
+	cursor: s-resize;
 }
 .areaSide.BB:hover {
 	border-bottom: 4px solid #1c5eb5;
@@ -442,6 +528,7 @@ animation-prototype {
 .areaSide.LL {
 	left: 0;
 	border-left: 1px solid #1c5eb5;
+	cursor: w-resize;
 }
 .areaSide.LL:hover {
 	border-left: 4px solid #1c5eb5;
@@ -449,6 +536,7 @@ animation-prototype {
 .areaSide.RR {
 	right: 0;
 	border-right: 1px solid #1c5eb5;
+	cursor: e-resize;
 }
 .areaSide.RR:hover {
 	border-right: 4px solid #1c5eb5;
@@ -470,6 +558,7 @@ animation-prototype {
 	left: 0;
 	border-top: 1px solid #1c5eb5;
 	border-left: 1px solid #1c5eb5;
+	cursor: nw-resize;
 }
 .areaCorner.TL:hover {
 	top: -2px;
@@ -483,6 +572,7 @@ animation-prototype {
 	right: 0;
 	border-top: 1px solid #1c5eb5;
 	border-right: 1px solid #1c5eb5;
+	cursor: ne-resize;
 }
 .areaCorner.TR:hover {
 	top: -2px;
@@ -496,6 +586,7 @@ animation-prototype {
 	left: 0;
 	border-bottom: 1px solid #1c5eb5;
 	border-left: 1px solid #1c5eb5;
+	cursor: sw-resize;
 }
 .areaCorner.BL:hover {
 	bottom: -2px;
@@ -509,6 +600,7 @@ animation-prototype {
 	right: 0;
 	border-bottom: 1px solid #1c5eb5;
 	border-right: 1px solid #1c5eb5;
+	cursor: se-resize;
 }
 .areaCorner.BR:hover {
 	bottom: -2px;

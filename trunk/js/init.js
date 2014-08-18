@@ -11,7 +11,61 @@ document.addEvent('domready', function(){
 window.addEvent('BlocklyIsReady', function(){
 	initSpatial();
 	
+	setupContentGogocode();
 });
+
+var setupContentGogocode = function(){
+	$('content_gogocode').addEvent('keydown', function(event){
+		if (event.key == 'backspace') {
+			var range = window.getSelection().getRangeAt(0);
+			if (range.collapsed) {
+				var sc = range.startContainer;
+				var so = range.startOffset;
+				if (so == 0) return;
+				range.setStart(sc, so-1);
+				window.getSelection().addRange(range);
+			}
+			range.deleteContents();
+		}
+	});
+}
+
+
+/***
+document.addEvent('keyup', function(event){
+	//backspaceAtCursor('test2');
+	console.log('keyup: '+event.key);
+	console.log(window.getSelection());
+});
+
+ function backspaceAtCursor(id)
+  {
+    var field = document.getElementById(id);
+	kk(field);
+	kk(field.selectionStart);
+    if(field.selectionStart)
+    {
+      var startPos = field.selectionStart;
+      var endPos = field.selectionEnd;
+
+      if(field.selectionStart == field.selectionEnd)
+      {
+        field.value = field.value.substring(0, startPos - 1) + field.value.substring(endPos, field.value.length);
+
+        field.focus(); 
+        field.setSelectionRange(startPos - 1, startPos - 1); 
+      }
+      else
+      {
+        field.value = field.value.substring(0, startPos) + field.value.substring(endPos, field.value.length);
+
+        field.focus(); 
+        field.setSelectionRange(startPos, startPos); 
+      }
+    }
+  }
+  
+/***/
 
 
 function initMappingPreview(updateFunc, xmlFunc) {
@@ -105,7 +159,6 @@ var blockSpatial = new Class({
 				item.addClass('selected');
 				item.getFirst().select();
 			}
-			//event.stop();
 		});
 		
 		return that;
@@ -140,6 +193,8 @@ var condBlock = new Class({
 		that.setTitle('checkCondition');
 		that.setVar1('x');
 		that.setVar2('y');
+		
+		that.sensorType = 'sensor';
 		
 		//that.points = [{'x': 0, 'y': 400}, {'x': 400, 'y': 0}];
 		that.area = [];
@@ -414,6 +469,7 @@ var initSpatial = function(){
 			testBlock.setTitle(blockData[0]);
 			testBlock.setVar1(blockData[1]);
 			testBlock.setVar2(blockData[2]);
+			testBlock.sensorType = (blockData[3]) ? blockData[3] : 'sensor' ;
 			testBlock.inject(condition.getElement('.procedure'));
 			//testBlock.blockIndex = index;
 			var pointArr = [];
@@ -442,6 +498,7 @@ var initSpatial = function(){
 			dataArr.push(item.block+'||'+item.spatial);
 		});
 		condition.storage = dataArr.join('::');
+		kk(condition.storage);
 		window.localStorage.setItem('conditionBlock', condition.storage);
 	}
 	
@@ -458,6 +515,7 @@ var initSpatial = function(){
 		
 		var currentSpatial = condition.getElement('.wrapper').getFirst();
 		
+		condition.setType(condition.currentBlock.sensorType);
 		condition.currentBlock.area.clean();
 		//kk(condition.currentBlock.area);
 		
@@ -477,7 +535,7 @@ var initSpatial = function(){
 			
 			/**  save data to storage  **/
 			block = item.getParent('.condBlock');
-			condition.data[condition.currentData].block = block.title+';;'+block.var1+';;'+block.var2;
+			condition.data[condition.currentData].block = block.title+';;'+block.var1+';;'+block.var2+';;'+block.sensorType;
 			condition.saveData();
 			condition.removeBlockFromToolbox(block);
 			condition.addBlockToToolbox(block);
@@ -553,7 +611,7 @@ var initSpatial = function(){
 		/**  add data for save to storage  **/
 		block.setTitle(checkTitle(block.title, condition));
 		
-		condition.data.push({'block': block.title+';;'+block.var1+';;'+block.var2, 'spatial': ''});
+		condition.data.push({'block': block.title+';;'+block.var1+';;'+block.var2+';;'+block.sensorType, 'spatial': ''});
 		condition.currentData = condition.data.length - 1;
 		block.fireEvent('click');
 		condition.addBlockToToolbox(block);
@@ -562,6 +620,14 @@ var initSpatial = function(){
 	condition.setType = function(type){
 		condition.type = type;
 		condition.spatial.setType(type);
+	}
+	
+	condition.setTypeAndSave = function(type){
+		condition.setType(type);
+		var block = condition.currentBlock;
+		block.sensorType = type;
+		condition.data[condition.currentData].block = block.title+';;'+block.var1+';;'+block.var2+';;'+block.sensorType;
+		condition.saveData();
 	}
 	
 	
@@ -675,7 +741,7 @@ document.addEvent('spatialIsReady', function(){
 		item.addEvent('click', function(){
 			list.getElements('div').removeClass('selected');
 			this.addClass('selected');
-			condition.setType(this.get('data-type'));
+			condition.setTypeAndSave(this.get('data-type'));
 				
 			setTimeout(function(){
 				list.fade('out');

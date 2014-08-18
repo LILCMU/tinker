@@ -14,7 +14,7 @@ var currentSpatial;
 //alert(currentSpatial);
 
 
-document.addEvent('init1', function(){
+document.addEvent('init1ww', function(){
 	
 	var thisLocation = location.href.split('#')[1];
 	if (thisLocation == 'spatial') {
@@ -31,7 +31,7 @@ document.addEvent('init1', function(){
 	$(document.body).addEvent('keydown', function(event){
 		switch (event.key) {
 			case 'backspace': {
-				event.stop();
+				//event.stop();
 				break;
 			}
 		}
@@ -217,6 +217,10 @@ var Graph = new Class({
 		that.SS = {'h': true, 'v': true};
 		that.addClass('graph');
 		that.type = 'sensor';
+		that.setStyles({
+			'width': '100%', 
+			'height': '100%'
+		});
 		
 		new Element('div', {'class': 'toggleGrid '+mouseEvent, 'text': 'toggle grid'})
 		.addEvent(click, function(){
@@ -281,28 +285,28 @@ var Graph = new Class({
 						this.removeClass('disabled').addClass('sensorOn');
 						$('sensor-'+opAxis+'-'+this.get('data-ss')).addClass('disabled').removeClass('sensorOn');
 					}
-					setTimeout(function(){
-						that.controlArea.getElements('.sensorX').fade('out');
-							that.controlArea.getElements('.sensorY').fade('out');
-					}, 200);
 				}
+				setTimeout(function(){
+					that.controlArea.getElements('.sensorX').removeClass('flipInX').addClass('flipOutX');
+					that.controlArea.getElements('.sensorY').removeClass('flipInX').addClass('flipOutX');
+				}, 10);
 				
 			})
 			.inject(that.controlArea);
 		}
 		
-		that.controlArea.getElements('.sensorX, .sensorY').fade('hide');
+		that.controlArea.getElements('.sensorX, .sensorY').addClass('fast').addClass('flipOutX');
 		var selectLeftSensor = new Element('div', {'id': 'selectLeftSensor', 'text': 'Left Sensor'});
 		selectLeftSensor.inject(that.controlArea);
 		selectLeftSensor.addEvent('click', function(){
-			that.controlArea.getElements('.sensorX').fade('in');
+			that.controlArea.getElements('.sensorX').removeClass('flipOutX').addClass('flipInX');
 		});
 		
 		//that.controlArea.getElements('.sensorX, .sensorY').fade('hide');
 		var selectRightSensor = new Element('div', {'id': 'selectRightSensor', 'text': 'Right Sensor'});
 		selectRightSensor.inject(that.controlArea);
 		selectRightSensor.addEvent('click', function(){
-			that.controlArea.getElements('.sensorY').fade('in');
+			that.controlArea.getElements('.sensorY').removeClass('flipOutX').addClass('flipInX');
 		});
 		
 		var switchLabel = new Element('div', {'class': 'switchLabel', 'html': '<div class="label1">Right Pressed</div><div class="label2">None Pressed</div><div class="label3">Both Pressed</div><div class="label4">Left Pressed</div>'});
@@ -313,7 +317,9 @@ var Graph = new Class({
 				document.body.currentArea = null;
 				$$('.currentArea').removeClass('currentArea');
 			}
-		}).addEvent(mouseMove, function(event){
+		});
+		
+		that.addEvent(mouseMove, function(event){
 			if ($(document.body).hasClass('mouseIsDown')) {
 				if (!document.body.currentArea) {
 					var currentArea = new Area(that);
@@ -408,7 +414,6 @@ var Graph = new Class({
 		});
 		
 		that.addEvent(mouseUp, function(){
-			
 			if (document.body.selectingArea && $(document.body).hasClass('mouseIsMove')) {
 				var currentArea = document.body.currentArea;
 				currentArea.prop.startX = currentArea.prop.newX;
@@ -429,6 +434,26 @@ var Graph = new Class({
 			//document.body.currentArea = null;
 			
 		});
+		
+		that.graphArea.addEvent(keyUpEvent, function(event){
+			switch (event.key) {
+				case 'backspace':
+				case 'd': {
+					if (!$('tab_cdi').hasClass('tabon')) break;
+					that.deleteSelectedArea();
+					event.stop();
+					break;
+				}
+			}
+		});
+		
+		that.deleteSelectedArea = function(){
+			that.getElement('.currentArea').destroy();
+			setTimeout(function(){
+				that.getParent('.contentSpatial').fireEvent('changeGraph', that);
+			}, 10);
+			document.body.selectingArea = false;
+		}
 		
 		that.gx = function(number){
 			if (that.snapToGrid) {
@@ -517,13 +542,16 @@ var Graph = new Class({
 					var leftStr = '<block type="math_equal" inline="true"><field name="cond">'+((prop.x1 < 256) ? '&lt;' : '&gt;' )+'</field><value name="left"><block type="variables_get"><field name="VAR">x</field></block></value><value name="right"><block type="math_number"><field name="number">512</field></block></value></block>';
 					if (prop.x1 < 256 && prop.x2 > 768) {
 						leftStr = '<block type=​"control_true">​</block>​';
+						leftStr = '<block type="control_true"></block>';
 						//alert(leftStr);
 					}
 					var rightStr = '<block type="math_equal" inline="true"><field name="cond">'+((prop.y1 < 256) ? '&lt;' : '&gt;' )+'</field><value name="left"><block type="variables_get"><field name="VAR">y</field></block></value><value name="right"><block type="math_number"><field name="number">512</field></block></value></block>';
 					if (prop.y1 < 256 && prop.y2 > 768) {
 						rightStr = '<block type=​"control_true">​</block>​';
+						rightStr = '<block type="control_true"></block>';
 					}
 					strResult = '<block type="control_if" inline="false"><value name="condition"><block type="math_andor" inline="true"><field name="andor">and</field><value name="left">'+leftStr+'</value><value name="right">'+rightStr+'</value></block></value><statement name="statement"><block type="variables_set" inline="false"><field name="VAR">returnValue</field><value name="VALUE"><block type="math_number"><field name="number">1</field></block></value></block></statement>'+((strResult == '') ? '' : '<next>'+strResult+'</next>')+'</block>';
+					
 				});
 				
 				
@@ -649,18 +677,24 @@ var Converter = new Class({
 			switch (event.key) {
 				case 'backspace':
 				case 'd': {
-					that.getElements('.point.selected').each(function(item){
-						var thisIndex = item.get('data-index').toInt();
-						if (!(thisIndex == 0 || thisIndex == (that.points.length - 1))) 
-							that.points.splice(thisIndex, 1);
-						item.destroy();
-					});
-					that.drawPoint();
+					if (!$('tab_cvi').hasClass('tabon')) break;
+					console.log('key2: '+event.key);
+					that.deleteSelectedPoint();
 					event.stop();
 					break;
 				}
 			}
 		});
+		
+		that.deleteSelectedPoint = function(){
+			that.getElements('.point.selected').each(function(item){
+				var thisIndex = item.get('data-index').toInt();
+				if (!(thisIndex == 0 || thisIndex == (that.points.length - 1))) 
+					that.points.splice(thisIndex, 1);
+				item.destroy();
+			});
+			that.drawPoint();
+		}
 		
 		that.setPoints = function(points){
 			that.points = points;
@@ -719,6 +753,7 @@ var Converter = new Class({
 			
 			that.gateType.each(function(item){
 				that.gate[item].addEvent('keydown', function(event){
+					console.log('eee');
 					switch (event.key) {
 						case 'backspace': {
 							that.gate[item].set('value', '0').select();
@@ -1118,7 +1153,6 @@ var Area = new Class({
 			that.prop.newY = top;
 			that.prop.newW = width;
 			that.prop.newH = height;
-			kk(that.prop);
 			
 		};
 		
