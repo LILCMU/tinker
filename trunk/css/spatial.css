@@ -115,8 +115,9 @@ animation-prototype {
 }
 
 .contentSpatial .control {
-	text-align: right;
-	padding-top: 20px;
+	/*text-align: right;*/
+	padding-top: 30px;
+	padding-left: 505px;
 }
 .contentSpatial .control a {
 	margin: 20px 20px 0 0;
@@ -131,7 +132,7 @@ animation-prototype {
 	left: 520px;
 	width: 600px;
 	min-height: 150px;
-	padding: 1px 0;
+	padding: 15px 0 1px 0;
 	/*border: 1px solid #333;*/
 }
 
