@@ -731,6 +731,18 @@ Blockly.ByteCode['procedures_defreturn'] = function(block) {
   return null;
 };
 
+Blockly.ByteCode['procedures_defnoreturn'] = Blockly.ByteCode['procedures_defreturn'];
+
+Blockly.ByteCode.procedures_callnoreturn=function(a){
+	var b = Blockly.ByteCode.variableDB_.getName(a.getFieldValue("NAME"),Blockly.Procedures.NAME_TYPE);
+	var c = [];
+	for(var d = 0 ; d < a.arguments_.length ; d++) {
+		c[d] = Blockly.ByteCode.valueToCode(a,"ARG"+d,Blockly.ByteCode.ORDER_COMMA) || "null" ;
+	};
+	var code = b+"("+c.join(", ")+");\n";
+	return code;
+};
+
 /****
 
 Paste your new language here

@@ -117,7 +117,8 @@ animation-prototype {
 .contentSpatial .control {
 	/*text-align: right;*/
 	padding-top: 30px;
-	padding-left: 505px;
+	padding-left: 205px;
+	margin-left: 300px;
 }
 .contentSpatial .control a {
 	margin: 20px 20px 0 0;
@@ -130,7 +131,7 @@ animation-prototype {
 .contentSpatial .procedure {
 	position: relative;
 	left: 520px;
-	width: 600px;
+	width: 610px;
 	min-height: 150px;
 	padding: 15px 0 1px 0;
 	/*border: 1px solid #333;*/
@@ -260,6 +261,8 @@ animation-prototype {
 	width: 650px;
 	height: 400px;
 	/*border: 1px solid #333;*/
+	clear: both;
+	padding-top: 1px;
 }
 
 #spatialContentTemplate {
@@ -326,7 +329,7 @@ animation-prototype {
 	font-size: 0.9em;
 	text-align: center;
 	line-height: 25px;
-	margin: 0px 35px 5px 0px;
+	margin: 0px 110px 5px 0px;
 	float: left;
 	padding: 0 5px;
 	opacity: 0.7;
@@ -361,6 +364,84 @@ animation-prototype {
 
 .condBlock div {
 	text-align: right;
+}
+
+.condBlock .var1::after, 
+.condBlock .var2::after {
+	position: absolute;
+	display: block;
+	width: 87px;
+	height: 26px;
+	right: -95px;
+	top: 0px;
+	background-image: url(../media/swBlock.png);
+	text-align: center;
+}
+
+.condBlock .var1.sw1::after, 
+.condBlock .var2.sw1::after{
+	content: 'switch 1';
+}
+.condBlock .var1.sw2::after, 
+.condBlock .var2.sw2::after{
+	content: 'switch 2';
+}
+.condBlock .var1.sw3::after, 
+.condBlock .var2.sw3::after{
+	content: 'switch 3';
+}
+.condBlock .var1.sw4::after, 
+.condBlock .var2.sw4::after{
+	content: 'switch 4';
+}
+.condBlock .var1.sw5::after, 
+.condBlock .var2.sw5::after{
+	content: 'switch 5';
+}
+.condBlock .var1.sw6::after, 
+.condBlock .var2.sw6::after{
+	content: 'switch 6';
+}
+.condBlock .var1.sw7::after, 
+.condBlock .var2.sw7::after{
+	content: 'switch 7';
+}
+.condBlock .var1.sw8::after, 
+.condBlock .var2.sw8::after{
+	content: 'switch 8';
+}
+
+.condBlock .var1.ss1::after, 
+.condBlock .var2.ss1::after{
+	content: 'sensor 1';
+}
+.condBlock .var1.ss2::after, 
+.condBlock .var2.ss2::after{
+	content: 'sensor 2';
+}
+.condBlock .var1.ss3::after, 
+.condBlock .var2.ss3::after{
+	content: 'sensor 3';
+}
+.condBlock .var1.ss4::after, 
+.condBlock .var2.ss4::after{
+	content: 'sensor 4';
+}
+.condBlock .var1.ss5::after, 
+.condBlock .var2.ss5::after{
+	content: 'sensor 5';
+}
+.condBlock .var1.ss6::after, 
+.condBlock .var2.ss6::after{
+	content: 'sensor 6';
+}
+.condBlock .var1.ss7::after, 
+.condBlock .var2.ss7::after{
+	content: 'sensor 7';
+}
+.condBlock .var1.ss8::after, 
+.condBlock .var2.ss8::after{
+	content: 'sensor 8';
 }
 
 

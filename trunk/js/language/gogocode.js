@@ -772,17 +772,29 @@ Blockly.GogoCode['procedures_defreturn'] = function(block) {
   }
   var args = [];
   for (var x = 0; x < block.arguments_.length; x++) {
-    args[x] = Blockly.GogoCode.variableDB_.getName(block.arguments_[x],
+    args[x] = ':'+Blockly.GogoCode.variableDB_.getName(block.arguments_[x],
         Blockly.Variables.NAME_TYPE);
   }
   var code = '(main ' + funcName + '[' + args.join(', ') + '] {\n' +
       branch + returnValue + '} )';
   //alert(returnValue);
   code = Blockly.GogoCode.scrub_(block, code);
-  code = '[p]<span class="c0">newline</span><span class="c0">newline</span>to '+funcName+' :'+ args.join(' :')+'<span class="c0">newline</span>\n '+branch+'\n<span class="c0">newline</span>'+returnValue+'\n<span class="c0">newline</span>end\n [/p]';
+  code = '[p]<span class="c0">newline</span><span class="c0">newline</span>to '+funcName+' '+ args.join(' ')+'<span class="c0">newline</span>\n '+branch+'\n<span class="c0">newline</span>'+returnValue+'\n<span class="c0">newline</span>end\n [/p]';
   Blockly.GogoCode.definitions_[funcName] = code;
   //alert(code);
   return null;
+};
+
+Blockly.GogoCode['procedures_defnoreturn'] = Blockly.GogoCode['procedures_defreturn'];
+
+Blockly.GogoCode.procedures_callnoreturn=function(a){
+	var b = Blockly.GogoCode.variableDB_.getName(a.getFieldValue("NAME"),Blockly.Procedures.NAME_TYPE);
+	var c = [];
+	for( var d = 0 ; d < a.arguments_.length ; d++) {
+		c[d] = ':'+Blockly.GogoCode.valueToCode(a,"ARG"+d,Blockly.GogoCode.ORDER_COMMA) || "null" ;
+	};
+	var code = b+" "+c.join(" ")+" ";
+	return code;
 };
 
 /****
