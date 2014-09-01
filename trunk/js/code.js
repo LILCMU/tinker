@@ -219,7 +219,8 @@ Code.init = function() {
   window.setTimeout(BlocklyApps.importPrettify, 1);
   setTimeout(function(){
 	  window.fireEvent('BlocklyIsReady');
-  }, 1000);
+	  Blockly.Toolbox.tree_.children_[1].setExpanded(true);
+  }, 500);
 };
 
 if (window.location.pathname.match(/readonly.html$/)) {
@@ -316,13 +317,13 @@ Code.gogoCodePage = function() {
 }
 
 Code.genGogoCode = function(){
-	var sourceCode = Code.loadProcedure();
+	//var sourceCode = Code.loadProcedure();
 	
 	var code = Blockly.GogoCode.workspaceToCode();
 	code = filterCode(code);
 	code = code.split(';').join('');
 	
-	Code.restoreProcedure(sourceCode);
+	//Code.restoreProcedure(sourceCode);
 	
 	return code;
 }

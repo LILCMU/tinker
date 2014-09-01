@@ -76,6 +76,16 @@ function init() {
   var rtl = (document.location.search == '?rtl');
   Blockly.inject(document.body, {path: window.location.pathname.split('graph')[0], rtl: rtl});
 
+	try {
+		//console.log(window.parent.contentWindow);
+		window.parent.initGraphPreview(updateFunc, xmlFunc);
+	} catch (error) {
+		var xmlText = window.localStorage.getItem('graphPreview') || '<xml></xml>';
+		updateFunc(xmlText);
+	}
+
+
+/***
   if (window.parent.initGraphPreview) {
     // Let the top-level application know that Blockly is ready.
     window.parent.initGraphPreview(updateFunc, xmlFunc);
@@ -93,6 +103,9 @@ function init() {
     }
     alert(msg);
   }
+
+/***/
+
 }
 
 window.addEventListener('load', init);

@@ -367,7 +367,7 @@ var initSpatial = function(){
 	/***/
 	
 	
-	mapping.getElement('.iframe').set('src', 'mappingPreview.html?ltrqwwqq');
+	mapping.getElement('.iframe').set('src', 'mappingPreview.html');
 	
 	//mapping.xml = '';
 	
@@ -381,7 +381,14 @@ var initSpatial = function(){
 		//alert(xmlText.split('[TITLE]').join(block.title));
 		xmlText = xmlText.split('[TITLE]').join(block.title).split('[VAR1]').join(block.var1);
 		
-		updateMappingPreview.updateFunc('<xml>'+xmlText+'</xml>');
+		mapping.xmlText = '<xml>'+xmlText+'</xml>';
+		
+		if (updateMappingPreview.updateFunc) {
+			updateMappingPreview.updateFunc(mapping.xmlText);
+		} else {
+			window.localStorage.setItem('mappingPreview', mapping.xmlText);
+			mapping.getElement('.iframe').set('src', 'mappingPreview.html');
+		}
 	}
 	
 	mapping.getElement('.deleteBlock').addEvent('click', function(){
@@ -431,7 +438,7 @@ var initSpatial = function(){
 	condition.set('id', 'conditionMainArea').inject($('content_cdi'));
 	window.condition = condition;
 	
-	condition.getElement('.iframe').set('src', 'graphPreview.html?www');
+	condition.getElement('.iframe').set('src', 'graphPreview.html');
 	
 	condition.getElement('.mainArea p').set('text', 'Condition Lab');
 	condition.getElement('.procedure p').set('text', 'Graph Blocks');
@@ -581,7 +588,14 @@ var initSpatial = function(){
 		//alert(xmlText.split('[TITLE]').join(block.title));
 		xmlText = xmlText.split('[TITLE]').join(block.title).split('[VAR1]').join(block.var1).split('[VAR2]').join(block.var2);
 		
-		updateGraphPreview.updateFunc('<xml>'+xmlText+'</xml>');
+		condition.xmlText = '<xml>'+xmlText+'</xml>';
+		
+		if (updateGraphPreview.updateFunc) {
+			updateGraphPreview.updateFunc(condition.xmlText);
+		} else {
+			window.localStorage.setItem('graphPreview', condition.xmlText);
+			condition.getElement('.iframe').set('src', 'graphPreview.html');
+		}
 	}
 	
 	condition.getElement('.deleteBlock').addEvent('click', function(){

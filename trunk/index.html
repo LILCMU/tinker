@@ -1,6 +1,7 @@
 
 <!--
 
+Update : 2 September 2014 - 2:56am
 Update : 29 August 2014 - 5:12am
 Update : 19 August 2014 - 11:43pm
 Update : 18 August 2014 - 6:38am
@@ -41,7 +42,7 @@ Update : 26 July 2014 - 2:28pm
 </head>
 <body>
 
-<div id="versionNO">v0.9.7 Update 29Aug14 0512</div>
+<div id="versionNO">v0.9.8 Update 02Sep14 0256</div>
 
 <div id="spatialContentTemplate" class="contentSpatial">
 	<div class="mainArea">
@@ -113,7 +114,7 @@ Update : 26 July 2014 - 2:28pm
   		<title name="turn">on</title>
   	</block>
 	<block type="motor_action_thisway" x="119" y="159">
-	  <title name="thisway">thisway</title>
+	  <title name="clockwise">Clockwise</title>
 	</block>  	
   	<block type="control_if" inline="false" x="244" y="308"></block>
 	<block type="control_ifelse" inline="false" x="72" y="152"></block>
@@ -176,15 +177,37 @@ Update : 26 July 2014 - 2:28pm
   	    	</value>
   	    </block>
   	    <block type="motor_action_thisway" x="119" y="159">
-  	      <title name="thisway">thisway</title>
+  	      <title name="clockwise">Clockwise</title>
   	    </block>
   	    <block type="motor_action_rd" x="116" y="214"></block>
   	    <block type="motor_action_power" x="119" y="263">
-  	      <title name="power">0</title>
+  	      <value name="power">
+  	        <block type="math_number">
+  	          <title name="number">7</title>
+  	        </block>
+  	      </value>
   	    </block>
-  	    <block type="servo_seth" x="116" y="214"></block>
-  	    <block type="servo_lt" x="116" y="214"></block>
-  	    <block type="servo_rt" x="116" y="214"></block>
+  	    <block type="servo_seth" x="116" y="214">
+  	    	<value name="heading">
+  	    	  <block type="math_number">
+  	    	    <title name="number">10</title>
+  	    	  </block>
+  	    	</value>
+  	    </block>
+  	    <block type="servo_lt" x="116" y="214">
+  	    	<value name="heading">
+  	    	  <block type="math_number">
+  	    	    <title name="number">10</title>
+  	    	  </block>
+  	    	</value>
+  	    </block>
+  	    <block type="servo_rt" x="116" y="214">
+  	    	<value name="heading">
+  	    	  <block type="math_number">
+  	    	    <title name="number">10</title>
+  	    	  </block>
+  	    	</value>
+  	    </block>
   	  </category>
   	  
   	  <category name="Program Control">
@@ -332,12 +355,12 @@ Update : 26 July 2014 - 2:28pm
   			</value>
   			<statement name="if">
   			  <block type="motor_action_thisway">
-  			    <title name="thisway">thisway</title>
+  			    <title name="clockwise">Clockwise</title>
   			  </block>
   			</statement>
   			<statement name="else">
   			  <block type="motor_action_thisway">
-  			    <title name="thisway">thatway</title>
+  			    <title name="clockwise">Counter-Clockwise</title>
   			  </block>
   			</statement>
   		</block>

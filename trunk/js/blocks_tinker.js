@@ -276,8 +276,7 @@ Blockly.Blocks['action_wait'] = {
     this.setColour(290);
     this.appendDummyInput()
         .appendField("wait");
-    this.appendValueInput("NAME")
-        .setCheck("Number");
+    this.appendValueInput("NAME", Number);
 //    this.appendDummyInput()
 //        .appendField("second");
     this.setInputsInline(true);
@@ -367,8 +366,7 @@ Blockly.Blocks.motor_action_onfor = {
 //    .appendField("second(s)");
     this.appendDummyInput()
         .appendField("turn on for");
-    this.appendValueInput("value")
-        .setCheck("Number");
+    this.appendValueInput("value", Number);
 //    this.appendDummyInput()
 //        .appendField("second(s)");
     this.setInputsInline(true);
@@ -378,12 +376,28 @@ Blockly.Blocks.motor_action_onfor = {
   }
 };
 
+/***
 Blockly.Blocks.motor_action_thisway = {
   category: 'Motor Action',
   helpUrl: 'http://www.example.com/',
   init: function() {
     this.setColour(316);
     this.appendDummyInput().appendField(new Blockly.FieldDropdown([["this way", "thisway"], ["that way", "thatway"]]), "thisway");
+    // this.appendValueInput( "right", "motor");
+    //this.setOutput(true, "motor");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setTooltip('xxxxx');
+  }
+};
+/***/
+
+Blockly.Blocks.motor_action_thisway = {
+  category: 'Motor Action',
+  helpUrl: 'http://www.example.com/',
+  init: function() {
+    this.setColour(316);
+    this.appendDummyInput().appendField(new Blockly.FieldDropdown([["turn Clockwise", "cw"], ["turn Counter-Clockwise", "ccw"]]), "clockwise");
     // this.appendValueInput( "right", "motor");
     //this.setOutput(true, "motor");
     this.setPreviousStatement(true, null);
@@ -411,8 +425,15 @@ Blockly.Blocks.motor_action_power = {
   helpUrl: 'http://www.example.com/',
   init: function() {
     this.setColour(316);
-    this.appendDummyInput().appendField("set power")
-    .appendField(new Blockly.FieldDropdown([["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"]]), "power");
+    
+    //this.appendDummyInput().appendField("set power").appendField(new Blockly.FieldDropdown([["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"]]), "power");
+    
+    this.appendValueInput("power", Number).appendField("Set power");
+    
+    //this.appendDummyInput().appendField("set power");
+    //this.appendValueInput("power", Number);
+    
+    this.setInputsInline(true);
     // this.appendValueInput( "right", "motor");
     //this.setOutput(true, "motor");
     this.setPreviousStatement(true, null);
@@ -425,9 +446,11 @@ Blockly.Blocks['servo_seth'] = {
   init: function() {
     this.setHelpUrl('http://www.example.com/');
     this.setColour(316);
-    this.appendDummyInput()
-        .appendField("Set servo heading")
-        .appendField(new Blockly.FieldTextInput("10"), "heading");
+    this.appendValueInput("heading", Number).appendField("Set servo heading");
+    this.setInputsInline(true);
+//    this.appendDummyInput()
+//        .appendField("Set servo heading")
+//        .appendField(new Blockly.FieldTextInput("10"), "heading");
     this.setPreviousStatement(true);
     this.setNextStatement(true);
     this.setTooltip('');
@@ -438,9 +461,11 @@ Blockly.Blocks['servo_lt'] = {
   init: function() {
     this.setHelpUrl('http://www.example.com/');
     this.setColour(316);
-    this.appendDummyInput()
-        .appendField("Servo left turn")
-        .appendField(new Blockly.FieldTextInput("10"), "heading");
+    this.appendValueInput("heading", Number).appendField("Servo left turn");
+    this.setInputsInline(true);
+//    this.appendDummyInput()
+//        .appendField("Servo left turn")
+//        .appendField(new Blockly.FieldTextInput("10"), "heading");
     this.setPreviousStatement(true);
     this.setNextStatement(true);
     this.setTooltip('');
@@ -451,9 +476,11 @@ Blockly.Blocks['servo_rt'] = {
   init: function() {
     this.setHelpUrl('http://www.example.com/');
     this.setColour(316);
-    this.appendDummyInput()
-        .appendField("Servo right turn")
-        .appendField(new Blockly.FieldTextInput("10"), "heading");
+    this.appendValueInput("heading", Number).appendField("Servo right turn");
+    this.setInputsInline(true);
+//    this.appendDummyInput()
+//        .appendField("Servo right turn")
+//        .appendField(new Blockly.FieldTextInput("10"), "heading");
     this.setPreviousStatement(true);
     this.setNextStatement(true);
     this.setTooltip('');
@@ -852,7 +879,6 @@ Blockly.Blocks.write_to_rfid = {
   init: function() {
     this.setColour(230);
     this.appendValueInput("NAME")
-        .setCheck(String)
         .appendTitle("Write to RFID");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);

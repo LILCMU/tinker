@@ -396,7 +396,7 @@ Blockly.GogoCode.motor_action_onfor = function(block) {
 
 Blockly.GogoCode.motor_action_thisway = function() {
   //var value_right = Blockly.GogoCode.valueToCode(this, 'right', Blockly.GogoCode.ORDER_ATOMIC);
-  var dropdown_thisway = this.getFieldValue('thisway');
+  var dropdown_thisway = this.getFieldValue('clockwise');
   // TODO: Assemble GogoCode into code variable.
   var code = '<span class="c316">'+dropdown_thisway+ '</span> \n';//+value_right.slice(1, value_right.length-1);
   // TODO: Change ORDER_NONE to the correct strength.
@@ -413,31 +413,35 @@ Blockly.GogoCode.motor_action_rd = function() {
   return code;
 };
 
-Blockly.GogoCode.motor_action_power = function() {
-  var dropdown_power = this.getFieldValue('power');
+Blockly.GogoCode.motor_action_power = function(block) {
+  //var dropdown_power = this.getFieldValue('power');
+  var value_power = Blockly.GogoCode.valueToCode(block, 'power', Blockly.GogoCode.ORDER_ATOMIC);
   //var value_right = Blockly.GogoCode.valueToCode(this, 'right', Blockly.GogoCode.ORDER_ATOMIC);
   // TODO: Assemble GogoCode into code variable.
-  var code = '<span class="c316">setpower ' + dropdown_power + '</span> \n';//+value_right.slice(1, value_right.length-1);
+  var code = '<span class="c316">setpower ' + value_power + '</span> \n';//+value_right.slice(1, value_right.length-1);
   // TODO: Change ORDER_NONE to the correct strength.
   //return [code, Blockly.GogoCode.ORDER_NONE];
   return code;
 };
 
 Blockly.GogoCode['servo_seth'] = function(block) {
-  var text_heading = block.getFieldValue('heading');
-  var code = '<span class="c316">seth ' + text_heading + '</span> \n';
+  //var text_heading = block.getFieldValue('heading');
+  var value_heading = Blockly.GogoCode.valueToCode(block, 'heading', Blockly.GogoCode.ORDER_ATOMIC);
+  var code = '<span class="c316">seth ' + value_heading + '</span> \n';
   return code;
 };
 
 Blockly.GogoCode['servo_lt'] = function(block) {
-  var text_heading = block.getFieldValue('heading');
-  var code = '<span class="c316">lt ' + text_heading + '</span> \n';
+  //var text_heading = block.getFieldValue('heading');
+  var value_heading = Blockly.GogoCode.valueToCode(block, 'heading', Blockly.GogoCode.ORDER_ATOMIC);
+  var code = '<span class="c316">lt ' + value_heading + '</span> \n';
   return code;
 };
 
 Blockly.GogoCode['servo_rt'] = function(block) {
-  var text_heading = block.getFieldValue('heading');
-  var code = '<span class="c316">rt ' + text_heading + '</span> \n';
+  //var text_heading = block.getFieldValue('heading');
+  var value_heading = Blockly.GogoCode.valueToCode(block, 'heading', Blockly.GogoCode.ORDER_ATOMIC);
+  var code = '<span class="c316">rt ' + value_heading + '</span> \n';
   return code;
 };
 

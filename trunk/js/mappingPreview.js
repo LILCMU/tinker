@@ -75,6 +75,15 @@ function init() {
   var rtl = (document.location.search == '?rtl');
   Blockly.inject(document.body, {path: window.location.pathname.split('mapping')[0], rtl: rtl});
 
+	try {
+		//console.log(window.parent.contentWindow);
+		window.parent.initMappingPreview(updateFunc, xmlFunc);
+	} catch (error) {
+		var xmlText = window.localStorage.getItem('mappingPreview') || '<xml></xml>';
+		updateFunc(xmlText);
+	}
+	
+/***
   if (window.parent.initMappingPreview) {
     // Let the top-level application know that Blockly is ready.
     window.parent.initMappingPreview(updateFunc, xmlFunc);
@@ -92,6 +101,10 @@ function init() {
     }
     alert(msg);
   }
+  
+/***/
+
+
 }
 
 window.addEventListener('load', init);
