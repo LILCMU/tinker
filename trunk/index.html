@@ -1,6 +1,7 @@
 
 <!--
 
+Update : 6 September 2014 - 5:57pm
 Update : 2 September 2014 - 2:56am
 Update : 29 August 2014 - 5:12am
 Update : 19 August 2014 - 11:43pm
@@ -42,7 +43,7 @@ Update : 26 July 2014 - 2:28pm
 </head>
 <body>
 
-<div id="versionNO">v0.9.8 Update 02Sep14 0256</div>
+<div id="versionNO">v1.0.0 Update 06Sep14 1757</div>
 
 <div id="spatialContentTemplate" class="contentSpatial">
 	<div class="mainArea">
@@ -85,6 +86,11 @@ Update : 26 July 2014 - 2:28pm
   		<block type="identify_finger"></block>
   		<block type="enroll_finger"></block>
   	</category>
+  	<category name="Camera" class="rPiBlocks">
+  		<block type="use_camera"></block>
+  		<block type="close_camera"></block>
+  		<block type="found_face"></block>
+  	</category>
   </category>
   
   
@@ -114,7 +120,7 @@ Update : 26 July 2014 - 2:28pm
   		<title name="turn">on</title>
   	</block>
 	<block type="motor_action_thisway" x="119" y="159">
-	  <title name="clockwise">Clockwise</title>
+	  <title name="clockwise">cw</title>
 	</block>  	
   	<block type="control_if" inline="false" x="244" y="308"></block>
 	<block type="control_ifelse" inline="false" x="72" y="152"></block>
@@ -177,7 +183,7 @@ Update : 26 July 2014 - 2:28pm
   	    	</value>
   	    </block>
   	    <block type="motor_action_thisway" x="119" y="159">
-  	      <title name="clockwise">Clockwise</title>
+  	      <title name="clockwise">cw</title>
   	    </block>
   	    <block type="motor_action_rd" x="116" y="214"></block>
   	    <block type="motor_action_power" x="119" y="263">
@@ -355,12 +361,12 @@ Update : 26 July 2014 - 2:28pm
   			</value>
   			<statement name="if">
   			  <block type="motor_action_thisway">
-  			    <title name="clockwise">Clockwise</title>
+  			    <title name="clockwise">cw</title>
   			  </block>
   			</statement>
   			<statement name="else">
   			  <block type="motor_action_thisway">
-  			    <title name="clockwise">Counter-Clockwise</title>
+  			    <title name="clockwise">ccw</title>
   			  </block>
   			</statement>
   		</block>
@@ -423,9 +429,9 @@ Update : 26 July 2014 - 2:28pm
   	
   	<category name=" ">
   	</category>
-  	<category name="Mapping" class="toolMappingBlock">
+  	<category name="Condition Blocks" class="toolMappingBlock">
   	</category>
-  	<category name="Graph" class="toolGraphBlock">
+  	<category name="Conversion Blocks" class="toolGraphBlock">
   	</category>
     
   </xml>

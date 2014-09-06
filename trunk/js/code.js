@@ -213,6 +213,7 @@ Code.init = function() {
   $('boardOptions').addEvent('change', function(){
   	//alert(this.get('value'));
   	document.fireEvent('boardTypeIsChanged');
+  	Blockly.Toolbox.tree_.children_[1].setExpanded(true);
   });
 
   // Lazy-load the syntax-highlighting.

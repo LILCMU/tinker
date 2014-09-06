@@ -711,6 +711,26 @@ Blockly.GogoCode.enroll_finger = function() {
 };
 
 
+Blockly.GogoCode.use_camera = function() {
+  // TODO: Assemble Python into code variable.
+  var code = '\nuse_camera ';
+  return code;
+};
+
+Blockly.GogoCode.close_camera = function() {
+  // TODO: Assemble Python into code variable.
+  var code = '\nclose_camera ';
+  return code;
+};
+
+Blockly.GogoCode.found_face = function() {
+  // TODO: Assemble Python into code variable.
+  var code = 'face_found? ';
+  // TODO: Change ORDER_NONE to the correct strength.
+  return [code, Blockly.GogoCode.ORDER_NONE];
+};
+
+
 
 /****    VARIABLE    ****/ 
 

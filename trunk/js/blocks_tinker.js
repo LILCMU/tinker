@@ -933,6 +933,48 @@ Blockly.Blocks.enroll_finger = {
 };
 
 
+/**     Camera    **/
+
+
+Blockly.Blocks.use_camera = {
+  helpUrl: 'http://www.example.com/',
+  init: function() {
+    this.setColour(160);
+    this.appendDummyInput()
+        .appendTitle("Use Camera");
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setTooltip('');
+  }
+};
+
+Blockly.Blocks.close_camera = {
+  helpUrl: 'http://www.example.com/',
+  init: function() {
+    this.setColour(160);
+    this.appendDummyInput()
+        .appendTitle("Close Camera");
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setTooltip('');
+  }
+};
+
+Blockly.Blocks.found_face = {
+  helpUrl: 'http://www.example.com/',
+  init: function() {
+    this.setColour(160);
+    this.appendDummyInput()
+        .appendTitle("Found Face?");
+    this.setInputsInline(true);
+    this.setOutput(true, Boolean);
+    this.setTooltip('');
+  }
+};
+
+
 /****    VARIABLE    ****/
 
 Blockly.Blocks.variables_get = {
