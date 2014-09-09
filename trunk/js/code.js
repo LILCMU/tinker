@@ -318,13 +318,13 @@ Code.gogoCodePage = function() {
 }
 
 Code.genGogoCode = function(){
-	//var sourceCode = Code.loadProcedure();
+	var sourceCode = Code.loadProcedure();
 	
 	var code = Blockly.GogoCode.workspaceToCode();
 	code = filterCode(code);
 	code = code.split(';').join('');
 	
-	//Code.restoreProcedure(sourceCode);
+	Code.restoreProcedure(sourceCode);
 	
 	return code;
 }
