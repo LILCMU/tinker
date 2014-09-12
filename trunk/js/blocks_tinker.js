@@ -833,7 +833,7 @@ Blockly.Blocks.send_sms = {
         .appendTitle("to : 0")
         .appendTitle(new Blockly.FieldTextInput("8xxxxxxxx"), "phoneno");
     this.appendValueInput("NAME")
-        .setCheck(String)
+        //.setCheck(String)
         .appendTitle("message :");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);

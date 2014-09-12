@@ -191,8 +191,8 @@ var condBlock = new Class({
 		that.addClass('condBlock');
 		
 		that.setTitle('checkCondition');
-		that.setVar1('x');
-		that.setVar2('y');
+		that.setVar1('1');
+		that.setVar2('2');
 		
 		that.sensorType = 'sensor';
 		
@@ -237,6 +237,7 @@ var initSpatial = function(){
 			});
 		}
 		Blockly.updateToolbox(mainToolbox);
+		Blockly.Toolbox.tree_.children_[1].setExpanded(true);
 	});
 	
 	
@@ -254,6 +255,7 @@ var initSpatial = function(){
 		newBlock.setAttribute('class', 'tinkerBlock');
 		newBlock.inject(mappingToolbox);
 		Blockly.updateToolbox(mainToolbox);
+		Blockly.Toolbox.tree_.children_[1].setExpanded(true);
 	}
 	
 	mapping.removeBlockFromToolbox = function(block){
@@ -262,6 +264,7 @@ var initSpatial = function(){
 		$(blockID).destroy();
 		
 		Blockly.updateToolbox(mainToolbox);
+		Blockly.Toolbox.tree_.children_[1].setExpanded(true);
 	}
 	
 	mapping.data = [];
@@ -446,12 +449,29 @@ var initSpatial = function(){
 	condition.addBlockToToolbox = function(block){
 		var graphToolbox = mainToolbox.getElement('.toolGraphBlock');
 		var blockID = 'block-'+now();
-		var newBlock = new Element('block', {'id': blockID, 'html': '<mutation name="'+block.title+'"><arg name="'+block.var1+'"></arg><arg name="'+block.var2+'"></arg></mutation>'});
+		var newBlock = new Element('block', {'id': blockID, 'html': '<mutation name="'+block.title+'"></mutation>'});
 		block.blockID = blockID;
 		newBlock.setAttribute('type', 'procedures_callreturn');
 		newBlock.setAttribute('class', 'tinkerBlock');
 		newBlock.inject(graphToolbox);
+		
+		block.varID = [];
+		block.area.each(function(item){
+			var areaArr = item.split('#');
+			if (areaArr[4] && areaArr[4].clean() != '') {
+				var areaName = areaArr[4].clean().split(' ').join('-').split('_').join('-').camelCase();
+				blockID = 'block-'+now()+'-'+areaName;
+				
+				var newBlock = new Element('block', {'id': blockID, 'html': '<field name="VAR">'+areaName+'</field>'});
+				block.varID.push(blockID+'');
+				newBlock.setAttribute('type', 'variables_get');
+				newBlock.setAttribute('class', 'tinkerBlock');
+				newBlock.inject(graphToolbox);
+			}
+		});
+		
 		Blockly.updateToolbox(mainToolbox);
+		Blockly.Toolbox.tree_.children_[1].setExpanded(true);
 		
 	}
 	
@@ -459,7 +479,13 @@ var initSpatial = function(){
 		var blockID = block.blockID;
 		$(blockID).destroy();
 		
+		while (block.varID.length > 0) {
+			blockID = block.varID.pop();
+			$(blockID).destroy();
+		}
+		
 		Blockly.updateToolbox(mainToolbox);
+		Blockly.Toolbox.tree_.children_[1].setExpanded(true);
 	}
 	
 	condition.data = [];
@@ -541,7 +567,7 @@ var initSpatial = function(){
 			condition.updateBlock();
 			
 			/**  save data to storage  **/
-			block = item.getParent('.condBlock');
+			block = item.getParent('.condBlock') || item;
 			condition.data[condition.currentData].block = block.title+';;'+block.var1+';;'+block.var2+';;'+block.sensorType;
 			condition.saveData();
 			condition.removeBlockFromToolbox(block);
@@ -556,9 +582,14 @@ var initSpatial = function(){
 		condition.updateBlock();
 		condition.currentBlock.area = item.getTextData(); 
 		
+		condition.currentBlock.var1 = item.sensorX;
+		condition.currentBlock.var2 = item.sensorY;
+		
 		/**  save data to storage  **/
 		condition.data[condition.currentData].spatial = item.getTextData().join(';;');
 		condition.saveData();
+		
+		condition.fireEvent('changeBlockContent', condition.currentBlock);
 		//alert(mapping.currentBlock.points);
 	});
 	
@@ -586,7 +617,7 @@ var initSpatial = function(){
 		var xmlText = block.xmlText;
 		
 		//alert(xmlText.split('[TITLE]').join(block.title));
-		xmlText = xmlText.split('[TITLE]').join(block.title).split('[VAR1]').join(block.var1).split('[VAR2]').join(block.var2);
+		xmlText = xmlText.split('[TITLE]').join(block.title).split('[VAR1]').join(block.type+block.var1).split('[VAR2]').join(block.type+block.var2);
 		
 		condition.xmlText = '<xml>'+xmlText+'</xml>';
 		
@@ -633,7 +664,7 @@ var initSpatial = function(){
 	
 	condition.setType = function(type){
 		condition.type = type;
-		condition.spatial.setType(type);
+		condition.spatial.setType(type, condition.currentBlock.var1, condition.currentBlock.var2);
 	}
 	
 	condition.setTypeAndSave = function(type){

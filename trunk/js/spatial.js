@@ -232,6 +232,9 @@ var Graph = new Class({
 		that.sensorScale = new SensorScale(that).inject(that.graphArea);
 		that.sensorScale.setScale(-1, -1);
 		
+		that.sensorX = 1;
+		that.sensorY = 2;
+		
 		for (var i = 0; i < 16; i++) {
 			var sensorNo = (i % 8) + 1;
 			var axis = (i < 8) ? 'X' : 'Y';
@@ -254,7 +257,7 @@ var Graph = new Class({
 			}
 			new Element('div', {
 				'id': 'sensor-'+axis+'-'+sensorNo, 
-				'class': mouseEvent+' sensor'+axis+' '+((i == 0 || i == 9) ? "sensorOn" : "")+' '+((i == 1 || i == 8) ? "disabled" : ""), 
+				'class': mouseEvent+' sensor'+axis+' '+((i == 0 || i == 9) ? "sensorOn" : "")+' '+((i == 1 || i == 8) ? "disabled1" : ""), 
 				'text': sensorNo,
 				'data-axis': axis,
 				'data-ss': sensorNo,
@@ -271,21 +274,28 @@ var Graph = new Class({
 					this.removeClass('sensorOn');
 					$('sensor-'+opAxis+'-'+this.get('data-ss')).removeClass('disabled');
 					that.SS[curWay] = false;
+					that["sensor"+this.get('data-axis')] = 0;
 				} else {
 					that.controlArea.getElements('.sensor'+this.get('data-axis')).removeClass('sensorOn');
 					that.controlArea.getElements('.sensor'+opAxis).removeClass('disabled');
 					that.SS[curWay] = true;
 					if (!this.hasClass('disabled')) {
 						
-						$('sensor-'+opAxis+'-'+this.get('data-ss')).addClass('disabled');
+						//$('sensor-'+opAxis+'-'+this.get('data-ss')).addClass('disabled');
 						this.addClass('sensorOn');
 						
 					} else {
 						that.SS[diffWay] = false;
 						this.removeClass('disabled').addClass('sensorOn');
-						$('sensor-'+opAxis+'-'+this.get('data-ss')).addClass('disabled').removeClass('sensorOn');
+						//$('sensor-'+opAxis+'-'+this.get('data-ss')).addClass('disabled').removeClass('sensorOn');
 					}
+					that["sensor"+this.get('data-axis')] = this.get('data-ss').toInt();
 				}
+				
+				setTimeout(function(){
+					that.getParent('.contentSpatial').fireEvent('changeGraph', that);
+				}, 10);
+				
 				setTimeout(function(){
 					that.controlArea.getElements('.sensorX').removeClass('flipInX').addClass('flipOutX');
 					that.controlArea.getElements('.sensorY').removeClass('flipInX').addClass('flipOutX');
@@ -510,6 +520,8 @@ var Graph = new Class({
 			//<block type="procedure_procedure"><field name="pname">main</field><statement name="statement">...</statement></block>
 			
 			strResult = '';
+			var varStr = 'INNER';
+			var startVarValue = 8316;
 			areaArr.each(function(item, index){
 				var prop = {};
 				prop.x1 = Math.round(item.prop.startX / that.GP.width * 1023);
@@ -521,17 +533,28 @@ var Graph = new Class({
 				//strResult = '<block type="procedures_ifreturn" inline="true"><mutation value="1"></mutation><value name="CONDITION"><block type="logic_operation" inline="true"><field name="OP">AND</field><value name="A"><block type="logic_operation" inline="true"><field name="OP">AND</field><value name="A"><block type="logic_compare" inline="true"><field name="OP">LT</field><value name="A"><block type="math_number"><field name="NUM">'+prop.x1+'</field></block></value><value name="B"><block type="variables_get"><field name="VAR">sensor1</field></block></value></block></value><value name="B"><block type="logic_compare" inline="true"><field name="OP">LT</field><value name="A"><block type="variables_get"><field name="VAR">sensor1</field></block></value><value name="B"><block type="math_number"><field name="NUM">'+prop.x2+'</field></block></value></block></value></block></value><value name="B"><block type="logic_operation" inline="true"><field name="OP">AND</field><value name="A"><block type="logic_compare" inline="true"><field name="OP">LT</field><value name="A"><block type="math_number"><field name="NUM">'+prop.y1+'</field></block></value><value name="B"><block type="variables_get"><field name="VAR">sensor2</field></block></value></block></value><value name="B"><block type="logic_compare" inline="true"><field name="OP">LT</field><value name="A"><block type="variables_get"><field name="VAR">sensor2</field></block></value><value name="B"><block type="math_number"><field name="NUM">'+prop.y2+'</field></block></value></block></value></block></value></block></value><value name="VALUE"><block type="logic_boolean"><field name="BOOL">TRUE</field></block></value>'+((strResult == '') ? '' : '<next>'+strResult+'</next>')+'</block>';
 				
 				//strResult = '<block type="control_if" inline="false"><value name="condition"><block type="math_andor" inline="true"><field name="andor">and</field><value name="left"><block type="math_equal" inline="true"><field name="cond">&lt;</field><value name="left"><block type="math_number"><field name="number">'+prop.x1+'</field></block></value><value name="right"><block type="variables_get"><field name="VAR">[VAR1]</field></block></value></block></value><value name="right"><block type="math_equal" inline="true"><field name="cond">&lt;</field><value name="left"><block type="variables_get"><field name="VAR">[VAR1]</field></block></value><value name="right"><block type="math_number"><field name="number">'+prop.x2+'</field></block></value></block></value></block></value><statement name="statement"><block type="control_if" inline="false"><value name="condition"><block type="math_andor" inline="true"><field name="andor">and</field><value name="left"><block type="math_equal" inline="true"><field name="cond">&lt;</field><value name="left"><block type="math_number"><field name="number">'+prop.y1+'</field></block></value><value name="right"><block type="variables_get"><field name="VAR">[VAR2]</field></block></value></block></value><value name="right"><block type="math_equal" inline="true"><field name="cond">&lt;</field><value name="left"><block type="variables_get"><field name="VAR">[VAR2]</field></block></value><value name="right"><block type="math_number"><field name="number">'+prop.y2+'</field></block></value></block></value></block></value><statement name="statement"><block type="variables_set" inline="false"><field name="VAR">returnValue</field><value name="VALUE"><block type="math_number"><field name="number">1</field></block></value></block></statement></block></statement>'+((strResult == '') ? '' : '<next>'+strResult+'</next>')+'</block>';
+				var areaName = '';
+				if (item.getElement('.areaName') && item.getElement('.areaName').get('text') != '') {
+					areaName = item.getElement('.areaName').get('text').clean().split(' ').join('-').split('_').join('-').camelCase();
+					//arrValue.push('<block type="variables_set" inline="false"><field name="VAR">'+areaName+'</field><value name="VALUE"><block type="math_number"><field name="number">'+startVarValue+'</field></block></value><next>INNER</next></block>');
+					varStr = varStr.split('INNER').join('<block type="variables_set" inline="false"><field name="VAR">'+areaName+'</field><value name="VALUE"><block type="math_number"><field name="number">'+startVarValue+'</field></block></value><next>INNER</next></block>');
+					startVarValue++;
+				}
 				
-				strResult = '<block type="control_if" inline="false"><value name="condition"><block type="math_andor" inline="true"><field name="andor">and</field><value name="left"><block type="math_andor" inline="true"><field name="andor">and</field><value name="left"><block type="math_equal" inline="true"><field name="cond">&lt;</field><value name="left"><block type="math_number"><field name="number">'+prop.x1+'</field></block></value><value name="right"><block type="variables_get"><field name="VAR">[VAR1]</field></block></value></block></value><value name="right"><block type="math_equal" inline="true"><field name="cond">&lt;</field><value name="left"><block type="variables_get"><field name="VAR">[VAR1]</field></block></value><value name="right"><block type="math_number"><field name="number">'+prop.x2+'</field></block></value></block></value></block></value><value name="right"><block type="math_andor" inline="true"><field name="andor">and</field><value name="left"><block type="math_equal" inline="true"><field name="cond">&lt;</field><value name="left"><block type="math_number"><field name="number">'+prop.y1+'</field></block></value><value name="right"><block type="variables_get"><field name="VAR">[VAR2]</field></block></value></block></value><value name="right"><block type="math_equal" inline="true"><field name="cond">&lt;</field><value name="left"><block type="variables_get"><field name="VAR">[VAR2]</field></block></value><value name="right"><block type="math_number"><field name="number">'+prop.y2+'</field></block></value></block></value></block></value></block></value><statement name="statement"><block type="variables_set" inline="false"><field name="VAR">returnValue</field><value name="VALUE"><block type="math_number"><field name="number">1</field></block></value></block></statement>'+((strResult == '') ? '' : '<next>'+strResult+'</next>')+'</block>';
+				strResult = '<block type="control_if" inline="false"><value name="condition"><block type="math_andor" inline="true"><field name="andor">and</field><value name="left"><block type="math_andor" inline="true"><field name="andor">and</field><value name="left"><block type="math_equal" inline="true"><field name="cond">&lt;</field><value name="left"><block type="math_number"><field name="number">'+prop.x1+'</field></block></value><value name="right"><block type="input_sensor"><title name="sensor">'+that.sensorX+'</title></block></value></block></value><value name="right"><block type="math_equal" inline="true"><field name="cond">&lt;</field><value name="left"><block type="input_sensor"><title name="sensor">'+that.sensorX+'</title></block></value><value name="right"><block type="math_number"><field name="number">'+prop.x2+'</field></block></value></block></value></block></value><value name="right"><block type="math_andor" inline="true"><field name="andor">and</field><value name="left"><block type="math_equal" inline="true"><field name="cond">&lt;</field><value name="left"><block type="math_number"><field name="number">'+prop.y1+'</field></block></value><value name="right"><block type="input_sensor"><title name="sensor">'+that.sensorY+'</title></block></value></block></value><value name="right"><block type="math_equal" inline="true"><field name="cond">&lt;</field><value name="left"><block type="input_sensor"><title name="sensor">'+that.sensorY+'</title></block></value><value name="right"><block type="math_number"><field name="number">'+prop.y2+'</field></block></value></block></value></block></value></block></value><statement name="statement"><block type="variables_set" inline="false"><field name="VAR">returnValue</field><value name="VALUE">'+((areaName == '') ? '<block type="math_number"><field name="number">1</field></block>' : '<block type="variables_get"><field name="VAR">'+areaName+'</field></block>')+'</value></block></statement>'+((strResult == '') ? '' : '<next>'+strResult+'</next>')+'</block>';
 			});
 			
 			
 			//<block type="procedures_defreturn" inline="false"><mutation><arg name="[VAR1]"></arg></mutation><field name="NAME">[TITLE]</field><statement name="STACK">'+strResult+'</statement><value name="RETURN"><block type="variables_get"><field name="VAR">x</field></block></value></block>
 			
-			strResult = '<block type="procedures_defreturn" inline="false"><mutation><arg name="[VAR1]"></arg><arg name="[VAR2]"></arg></mutation><field name="NAME">[TITLE]</field><statement name="STACK"><block type="variables_set" inline="false"><field name="VAR">returnValue</field><value name="VALUE"><block type="math_number"><field name="number">0</field></block></value><next>'+strResult+'</next></block></statement><value name="RETURN"><block type="math_equal" inline="true"><field name="cond">=</field><value name="left"><block type="variables_get"><field name="VAR">returnValue</field></block></value><value name="right"><block type="math_number"><field name="number">1</field></block></value></block></value></block>';
+			var varArr = varStr.split('INNER');
+			
+			strResult = '<block type="procedures_defreturn" inline="false"><mutation></mutation><field name="NAME">[TITLE]</field><statement name="STACK"><block type="variables_set" inline="false"><field name="VAR">returnValue</field><value name="VALUE"><block type="math_number"><field name="number">0</field></block></value><next>'+varArr[0]+strResult+varArr[1]+'</next></block></statement><value name="RETURN"><block type="variables_get"><field name="VAR">returnValue</field></block></value></block></value></block>';
 			
 			if (that.type == 'switch') {
 				strResult = '';
+				var varStr = 'INNER';
+				var startVarValue = 8316;
 				areaArr.each(function(item, index){
 					var prop = {};
 					prop.x1 = Math.round(item.prop.startX / that.GP.width * 1023);
@@ -539,25 +562,33 @@ var Graph = new Class({
 					prop.y2 = Math.round((that.GP.height - item.prop.startY) / that.GP.height * 1023);
 					prop.y1 = Math.round((that.GP.height - (item.prop.startY + item.prop.height)) / that.GP.height * 1023);
 					
-					var leftStr = '<block type="math_equal" inline="true"><field name="cond">'+((prop.x1 < 256) ? '&lt;' : '&gt;' )+'</field><value name="left"><block type="variables_get"><field name="VAR">x</field></block></value><value name="right"><block type="math_number"><field name="number">512</field></block></value></block>';
+					var leftStr = '<block type="math_equal" inline="true"><field name="cond">'+((prop.x1 < 256) ? '&lt;' : '&gt;' )+'</field><value name="left"><block type="input_switch"><title name="switch">'+that.sensorX+'</title></block></value><value name="right"><block type="math_number"><field name="number">512</field></block></value></block>';
 					if (prop.x1 < 256 && prop.x2 > 768) {
 						leftStr = '<block type=​"control_true">​</block>​';
 						leftStr = '<block type="control_true"></block>';
 						//alert(leftStr);
 					}
-					var rightStr = '<block type="math_equal" inline="true"><field name="cond">'+((prop.y1 < 256) ? '&lt;' : '&gt;' )+'</field><value name="left"><block type="variables_get"><field name="VAR">y</field></block></value><value name="right"><block type="math_number"><field name="number">512</field></block></value></block>';
+					var rightStr = '<block type="math_equal" inline="true"><field name="cond">'+((prop.y1 < 256) ? '&lt;' : '&gt;' )+'</field><value name="left"><block type="input_switch"><title name="switch">'+that.sensorY+'</title></block></value><value name="right"><block type="math_number"><field name="number">512</field></block></value></block>';
 					if (prop.y1 < 256 && prop.y2 > 768) {
 						rightStr = '<block type=​"control_true">​</block>​';
 						rightStr = '<block type="control_true"></block>';
 					}
-					strResult = '<block type="control_if" inline="false"><value name="condition"><block type="math_andor" inline="true"><field name="andor">and</field><value name="left">'+leftStr+'</value><value name="right">'+rightStr+'</value></block></value><statement name="statement"><block type="variables_set" inline="false"><field name="VAR">returnValue</field><value name="VALUE"><block type="math_number"><field name="number">1</field></block></value></block></statement>'+((strResult == '') ? '' : '<next>'+strResult+'</next>')+'</block>';
+					
+					var areaName = '';
+					if (item.getElement('.areaName') && item.getElement('.areaName').get('text') != '') {
+						areaName = item.getElement('.areaName').get('text').clean().split(' ').join('-').split('_').join('-').camelCase();
+						//arrValue.push('<block type="variables_set" inline="false"><field name="VAR">'+areaName+'</field><value name="VALUE"><block type="math_number"><field name="number">'+startVarValue+'</field></block></value><next>INNER</next></block>');
+						varStr = varStr.split('INNER').join('<block type="variables_set" inline="false"><field name="VAR">'+areaName+'</field><value name="VALUE"><block type="math_number"><field name="number">'+startVarValue+'</field></block></value><next>INNER</next></block>');
+						startVarValue++;
+					}
+					strResult = '<block type="control_if" inline="false"><value name="condition"><block type="math_andor" inline="true"><field name="andor">and</field><value name="left">'+leftStr+'</value><value name="right">'+rightStr+'</value></block></value><statement name="statement"><block type="variables_set" inline="false"><field name="VAR">returnValue</field><value name="VALUE">'+((areaName == '') ? '<block type="math_number"><field name="number">1</field></block>' : '<block type="variables_get"><field name="VAR">'+areaName+'</field></block>')+'</value></block></statement>'+((strResult == '') ? '' : '<next>'+strResult+'</next>')+'</block>';
 					
 				});
 				
 				
 				//<block type="procedures_defreturn" inline="false"><mutation><arg name="[VAR1]"></arg></mutation><field name="NAME">[TITLE]</field><statement name="STACK">'+strResult+'</statement><value name="RETURN"><block type="variables_get"><field name="VAR">x</field></block></value></block>
-				
-				strResult = '<block type="procedures_defreturn" inline="false"><mutation><arg name="[VAR1]"></arg><arg name="[VAR2]"></arg></mutation><field name="NAME">[TITLE]</field><statement name="STACK"><block type="variables_set" inline="false"><field name="VAR">returnValue</field><value name="VALUE"><block type="math_number"><field name="number">0</field></block></value><next>'+strResult+'</next></block></statement><value name="RETURN"><block type="math_equal" inline="true"><field name="cond">=</field><value name="left"><block type="variables_get"><field name="VAR">returnValue</field></block></value><value name="right"><block type="math_number"><field name="number">1</field></block></value></block></value></block>';
+				var varArr = varStr.split('INNER');
+				strResult = '<block type="procedures_defreturn" inline="false"><mutation></mutation><field name="NAME">[TITLE]</field><statement name="STACK"><block type="variables_set" inline="false"><field name="VAR">returnValue</field><value name="VALUE"><block type="math_number"><field name="number">0</field></block></value><next>'+varArr[0]+strResult+varArr[1]+'</next></block></statement><value name="RETURN"><block type="variables_get"><field name="VAR">returnValue</field></block></value></block>';
 				
 				
 				
@@ -576,7 +607,7 @@ var Graph = new Class({
 			that.sensorScale.setScale(leftSensor, rightSensor);
 		}
 		
-		that.setType = function(type){
+		that.setType = function(type, var1, var2){
 			//alert(type);
 			that.type = type;
 			that.removeClass('snap');
@@ -591,13 +622,26 @@ var Graph = new Class({
 				that.snapToGrid = false;
 				that.setGridAmount(20,20);
 			}
+			
+			var1 = var1.toInt() || 1;
+			var1 = (var1 < 1) ? 1 : ((var1 > 8) ? 8 : var1 );
+			
+			var2 = var2.toInt() || 2;
+			var2 = (var2 < 1) ? 2 : ((var2 > 8) ? 8 : var2 );
+			
+			that.sensorX = var1;
+			that.sensorY = var2;
+			
+			$('sensor-X-'+var1).fireEvent('click');
+			$('sensor-Y-'+var2).fireEvent('click');
+			
 		}
 		
 		that.getTextData = function(){
 			var areaArr = that.getElements('.area');
 			var dataArr = [];
 			areaArr.each(function(item){
-				dataArr.push(item.prop.startY + '#' + item.prop.startX + '#' + item.prop.width + '#' + item.prop.height);
+				dataArr.push(item.prop.startY + '#' + item.prop.startX + '#' + item.prop.width + '#' + item.prop.height + '#' + ((item.getElement('.areaName') && item.getElement('.areaName').get('text') != '') ? item.getElement('.areaName').get('text') : ''));
 			});
 			
 			return dataArr;
@@ -620,6 +664,9 @@ var Graph = new Class({
 					};
 					currentArea.inject(that.graphArea);
 					currentArea.setPosition(areaPosition[0].toInt(), areaPosition[1].toInt(), areaPosition[2].toInt(), areaPosition[3].toInt());
+					if (areaPosition[4] && areaPosition[4].clean() != '') {
+						new Element('div', {'class': 'areaName', 'text': areaPosition[4].clean()}).inject(currentArea, 'top');
+					}
 				}
 			});
 			setTimeout(function(){
@@ -1215,6 +1262,18 @@ var Area = new Class({
 			
 			that.paddingLeft = event.client.x - that.getCoordinates().left;
 			that.paddingTop = event.client.y - that.getCoordinates().top;
+		});
+		
+		that.addEvent('dblclick', function(){
+			var name = prompt("Name of this area","");
+			if (name && name.clean() != '') {
+				that.areaName = name;
+				if (that.getElement('.areaName')) {
+					that.getElement('.areaName').set('text', name);
+				} else {
+					new Element('div', {'class': 'areaName', 'text': name}).inject(that, 'top');
+				}
+			}
 		});
 		
 		return that;

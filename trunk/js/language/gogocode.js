@@ -523,6 +523,14 @@ Blockly.GogoCode.input_sensor = function() {
   return [code, Blockly.GogoCode.ORDER_NONE];
 };
 
+Blockly.GogoCode.text = function() {
+  var text = this.getFieldValue('TEXT');
+  // TODO: Assemble GogoCode into code variable.
+  var code = '<span class="c290">'+text+'</span>';
+  // TODO: Change ORDER_NONE to the correct strength.
+  return [code, Blockly.GogoCode.ORDER_NONE];
+};
+
 Blockly.GogoCode.input__output__storage_setdp = function() {
   var value_dp = Blockly.GogoCode.valueToCode(this, 'DP', Blockly.GogoCode.ORDER_ATOMIC);
   // TODO: Assemble GogoCode into code variable.
@@ -667,13 +675,13 @@ Blockly.GogoCode.send_sms = function() {
   var text_phoneno = this.getTitleValue('phoneno');
   // TODO: Assemble JavaScript into code variable.
   var command = 'sudo gammu sendsms TEXT +66' + text_phoneno + ' -textutf8 "'+value_name+'"';
-  var code = '\ncommandString = \''+command+'\'\ncommands.getoutput(commandString)';
+  var code = '\ncommandString = \''+command+'\'\ncommands.getoutput(commandString)\n';
   return code;
 };
 
 Blockly.GogoCode.userfid = function() {
   // TODO: Assemble Python into code variable.
-  var code = '\nimport rfid_sl500\nrfid = rfid_sl500.RFID_Reader()\nrfid.connect("/dev/ttyUSB0")';
+  var code = '\nimport rfid_sl500\nrfid = rfid_sl500.RFID_Reader()\nrfid.connect("/dev/ttyUSB0")\n';
   return code;
 };
 
