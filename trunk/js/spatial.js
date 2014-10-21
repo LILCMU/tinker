@@ -86,16 +86,17 @@ var SensorScale = new Class({
 		that.setScale = function(x, y){
 			if (x < 0) {
 				that.v.addClass('disabled');
-			} else if (x != 0) {
+			} else /*if (x != 0)*/ {
 				that.v.removeClass('disabled');
 				that.v.setStyle('left', obj.GP.width * x);
 			}
 			if (y < 0) {
 				that.h.addClass('disabled');
-			} else if (y != 1) {
+			} else /*if (y != 1)*/ {
 				that.h.removeClass('disabled');
 				that.h.setStyle('top', obj.GP.height * (1 - y));
 			}
+			kk(x+', '+ y);
 		};
 		
 		return that;
@@ -111,6 +112,7 @@ var Spatial = new Class({
 		
 		that.snapToGrid = false;
 		that.zIndex = 1;
+		that.yAxis = true;
 		
 		that.GP = { // graphic position
 			'top': 20,
@@ -131,8 +133,9 @@ var Spatial = new Class({
 		
 		that.setGridAmount = function(x, y){
 			that.gridAmount.x = x;
-			that.gridAmount.y = y;
+			that.gridAmount.y = (that.yAxis) ? y : 1 ;
 			that.setGridScale();
+			document.fireEvent('gridAmountChange');
 		}
 		
 		that.setGridScale = function(){
@@ -159,25 +162,40 @@ var Spatial = new Class({
 			that.setGridScale();
 		}
 		
+		that.setWidth = function(width){
+			that.GP.width = width;
+			that.setGP();
+		}
+		
+		that.setHeight = function(height){
+			that.GP.height = height;
+			that.setGP();
+		}
+		
 		that.drawCanvas = function(){
+			that.canvas.setStyle('width', that.GP.width + px).setStyle('height', that.GP.height + px);
 			that.canvas.set('width', that.GP.width).set('height', that.GP.height);
 			var ctx = that.canvas.getContext("2d");
 			ctx.lineWidth = 1;
 			ctx.save();
 			ctx.restore();
-			for (var i = 0, j = 0; i <= that.gridScale.x * that.gridAmount.x; i+=that.gridScale.x, j++) {
+			var step = Math.ceil(that.gridAmount.x / 20);
+			for (var i = 0, j = 0; i <= that.gridScale.x * that.gridAmount.x; j++) {
 				ctx.strokeStyle = (j % 5 == 0) ? 'rgba(0, 0, 0, 0.25)' : 'rgba(0, 0, 0, 0.15)';
 				ctx.beginPath();
 				ctx.moveTo(Math.round(i), 0);
 				ctx.lineTo(Math.round(i), that.gridScale.y * that.gridAmount.y);
 				ctx.stroke();
+				i += (that.gridScale.x * step);
 			}
-			for (var i = 0, j=0; i <= that.gridScale.y * that.gridAmount.y; i+=that.gridScale.y, j++) {
+			step = Math.ceil(that.gridAmount.y / 20);
+			for (var i = 0, j=0; i <= that.gridScale.y * that.gridAmount.y; j++) {
 				ctx.strokeStyle = (j % 5 == 0) ? 'rgba(0, 0, 0, 0.25)' : 'rgba(0, 0, 0, 0.15)';
 				ctx.beginPath();
 				ctx.moveTo(0, Math.round(i));
 				ctx.lineTo(that.gridScale.x * that.gridAmount.x, Math.round(i));
 				ctx.stroke();
+				i += (that.gridScale.y * step);
 			}
 			ctx.save();
 		}
@@ -235,6 +253,23 @@ var Graph = new Class({
 		that.sensorX = 1;
 		that.sensorY = 2;
 		
+		that.input = {
+			'X': {
+				'type': 'Sensor',
+				'value': 1, 
+				'snapToGrid': false,
+				'max': 1024,
+				'min': 0
+			},
+			'Y': {
+				'type': 'Sensor',
+				'value': 1, 
+				'snapToGrid': false,
+				'max': 1024,
+				'min': 0
+			}
+		};
+		
 		for (var i = 0; i < 16; i++) {
 			var sensorNo = (i % 8) + 1;
 			var axis = (i < 8) ? 'X' : 'Y';
@@ -255,7 +290,7 @@ var Graph = new Class({
 					'height': (that.GP.height / 8) + px
 				};
 			}
-			new Element('div', {
+			var sensorBTN = new Element('div', {
 				'id': 'sensor-'+axis+'-'+sensorNo, 
 				'class': mouseEvent+' sensor'+axis+' '+((i == 0 || i == 9) ? "sensorOn" : "")+' '+((i == 1 || i == 8) ? "disabled1" : ""), 
 				'text': sensorNo,
@@ -266,17 +301,19 @@ var Graph = new Class({
 			.addEvent('click', function(){
 				var nextState = !this.hasClass('sensorOn');
 				
-				var opAxis = (this.get('data-axis') == 'X') ? 'Y' : 'X';
-				var curWay = (this.get('data-axis') == 'X') ? 'v' : 'h';
-				var diffWay = (this.get('data-axis') == 'X') ? 'h' : 'v'; 
+				var curAxis = this.get('data-axis');
+				var opAxis = (curAxis == 'X') ? 'Y' : 'X';
+				var curWay = (curAxis == 'X') ? 'v' : 'h';
+				var diffWay = (curAxis == 'X') ? 'h' : 'v'; 
 				
 				if (this.hasClass('sensorOn')) {
-					this.removeClass('sensorOn');
-					$('sensor-'+opAxis+'-'+this.get('data-ss')).removeClass('disabled');
-					that.SS[curWay] = false;
-					that["sensor"+this.get('data-axis')] = 0;
+					//this.removeClass('sensorOn');
+					//$('sensor-'+opAxis+'-'+this.get('data-ss')).removeClass('disabled');
+					//that.SS[curWay] = false;
+					
+					//that["sensor"+curAxis] = 0;
 				} else {
-					that.controlArea.getElements('.sensor'+this.get('data-axis')).removeClass('sensorOn');
+					that.controlArea.getElements('.sensor'+curAxis).removeClass('sensorOn');
 					that.controlArea.getElements('.sensor'+opAxis).removeClass('disabled');
 					that.SS[curWay] = true;
 					if (!this.hasClass('disabled')) {
@@ -289,11 +326,20 @@ var Graph = new Class({
 						this.removeClass('disabled').addClass('sensorOn');
 						//$('sensor-'+opAxis+'-'+this.get('data-ss')).addClass('disabled').removeClass('sensorOn');
 					}
-					that["sensor"+this.get('data-axis')] = this.get('data-ss').toInt();
+					that["sensor"+curAxis] = this.get('data-ss').toInt();
+					
+					var str = (that.type == 'switch') ? 'Switch ' : 'Sensor ' ;
+					
+					if (curAxis == 'X') {
+						$('selectLeftSensor').set('text', str+this.get('data-ss'));
+					} else {
+						$('selectRightSensor').set('text', str+this.get('data-ss'));
+					}
+					
 				}
 				
 				setTimeout(function(){
-					that.getParent('.contentSpatial').fireEvent('changeGraph', that);
+					that.getParent('.contentSpatial').fireEvent('changeSensor', that);
 				}, 10);
 				
 				setTimeout(function(){
@@ -303,20 +349,35 @@ var Graph = new Class({
 				
 			})
 			.inject(that.controlArea);
+			
+			
+			/**
+			if (i == 0 || i == 9) {
+				setTimeout(function(){
+					sensorBTN.fireEvent('click');
+					
+				}, 10);
+			}
+			
+			/***/
 		}
 		
+		
+		
 		that.controlArea.getElements('.sensorX, .sensorY').addClass('fast').addClass('flipOutX');
-		var selectLeftSensor = new Element('div', {'id': 'selectLeftSensor', 'text': 'Left Sensor'});
+		var selectLeftSensor = new Element('div', {'id': 'selectLeftSensor', 'text': 'Sensor X'});
 		selectLeftSensor.inject(that.controlArea);
 		selectLeftSensor.addEvent('click', function(){
-			that.controlArea.getElements('.sensorX').removeClass('flipOutX').addClass('flipInX');
+			//that.controlArea.getElements('.sensorX').removeClass('flipOutX').addClass('flipInX');
+			document.fireEvent('showInputPopup', 'X');
 		});
 		
 		//that.controlArea.getElements('.sensorX, .sensorY').fade('hide');
-		var selectRightSensor = new Element('div', {'id': 'selectRightSensor', 'text': 'Right Sensor'});
+		var selectRightSensor = new Element('div', {'id': 'selectRightSensor', 'text': 'Right Sensor x'});
 		selectRightSensor.inject(that.controlArea);
 		selectRightSensor.addEvent('click', function(){
-			that.controlArea.getElements('.sensorY').removeClass('flipOutX').addClass('flipInX');
+			//that.controlArea.getElements('.sensorY').removeClass('flipOutX').addClass('flipInX');
+			document.fireEvent('showInputPopup', 'Y');
 		});
 		
 		var switchLabel = new Element('div', {'class': 'switchLabel', 'html': '<div class="label1">Right Pressed</div><div class="label2">None Pressed</div><div class="label3">Both Pressed</div><div class="label4">Left Pressed</div>'});
@@ -327,10 +388,11 @@ var Graph = new Class({
 				document.body.currentArea = null;
 				$$('.currentArea').removeClass('currentArea');
 			}
+			that.graphArea.addClass('mouseIsDown');
 		});
 		
 		that.addEvent(mouseMove, function(event){
-			if ($(document.body).hasClass('mouseIsDown')) {
+			if ($(document.body).hasClass('mouseIsDown') && that.graphArea.hasClass('mouseIsDown')) {
 				if (!document.body.currentArea) {
 					var currentArea = new Area(that);
 					currentArea.inject(that.graphArea);
@@ -397,12 +459,23 @@ var Graph = new Class({
 					//printIf(prop.newX, prop.width, prop.newY, prop.height);
 				} else {
 					var prop = {'minWidth': that.gridScale.x, 'minHeight': that.gridScale.y};
+					//var prop = {'minWidth': 20, 'minHeight': 20};
 					prop.startX = (that.SS.v) ? that.gx(Math.min(SPX, CPX) - that.GP.left) : 0;
 					prop.startY = (that.SS.h) ? that.gy(Math.min(SPY, CPY) - that.GP.top) : 0;
 					prop.width = (that.SS.v) ? Math.max(Math.abs(DX), prop.minWidth) : that.GP.width;
 					prop.height = (that.SS.h) ? Math.max(Math.abs(DY), prop.minHeight) : that.GP.height;
 					
 					//k('startY: '+prop.startY+', spy: '+SPY+', cpy: '+CPY+', gp top: '+that.GP.top);
+					kk(SPX+', '+CPX+', '+that.GP.left);
+					kk(prop.startX);
+					
+					if ((prop.startX+prop.minWidth) > that.GP.width) {
+						prop.startX = that.GP.width - prop.width;
+					}
+					
+					if ((prop.startY+prop.minHeight) > that.GP.height) {
+						prop.startY = that.GP.height - prop.height;
+					}
 					
 					currentArea.setStyles({
 						'top': prop.startY+px,
@@ -412,7 +485,6 @@ var Graph = new Class({
 					});
 					
 					//printIf(prop.startX, prop.width, prop.startY, prop.height);
-					
 					currentArea.prop = prop;
 					
 				}
@@ -442,6 +514,7 @@ var Graph = new Class({
 				}, 10);
 			document.body.selectingArea = false;
 			//document.body.currentArea = null;
+			that.graphArea.removeClass('mouseIsDown');
 			
 		});
 		
@@ -465,7 +538,7 @@ var Graph = new Class({
 			document.body.selectingArea = false;
 		}
 		
-		that.gx = function(number){
+		that.gx0 = function(number){
 			if (that.snapToGrid) {
 				var newNum = Math.round(Math.round(number / that.gridScale.x) * that.gridScale.x) ;
 				return newNum;
@@ -474,8 +547,26 @@ var Graph = new Class({
 			return number;
 		};
 		
-		that.gy = function(number){
+		that.gy0 = function(number){
 			if (that.snapToGrid) {
+				var newNum = Math.round(Math.round(number / that.gridScale.y) * that.gridScale.y) ;
+				return newNum;
+				//return ((newNum % (gridScale * 2) ) == 0 ) ? newNum : number;
+			}
+			return number;
+		};
+		
+		that.gx = function(number){
+			if (that.input.X.snapToGrid) {
+				var newNum = Math.round(Math.round(number / that.gridScale.x) * that.gridScale.x) ;
+				return newNum;
+				//return ((newNum % (gridScale * 2) ) == 0 ) ? newNum : number;
+			}
+			return number;
+		};
+		
+		that.gy = function(number){
+			if (that.input.Y.snapToGrid) {
 				var newNum = Math.round(Math.round(number / that.gridScale.y) * that.gridScale.y) ;
 				return newNum;
 				//return ((newNum % (gridScale * 2) ) == 0 ) ? newNum : number;
@@ -497,29 +588,10 @@ var Graph = new Class({
 			return strResult;
 		};
 		
-		that.convertToBlockly = function(){
+		that.convertToBlockly0 = function(){
 			var strResult = '';
 			var areaArr = that.getElements('.area');
-			areaArr.each(function(item, index){
-				var prop = {};
-				prop.x1 = Math.round(item.prop.startX / that.GP.width * 1023);
-				prop.x2 = Math.round((item.prop.startX + item.prop.width) / that.GP.width * 1023);
-				prop.y2 = Math.round((that.GP.height - item.prop.startY) / that.GP.height * 1023);
-				prop.y1 = Math.round((that.GP.height - (item.prop.startY + item.prop.height)) / that.GP.height * 1023);
-				//strArr.push("( ("+prop.x1+" < sensor1 and sensor1 < "+prop.x2+") and ("+prop.y1+" < sensor2 and sensor2 < "+prop.y2+") )");
-				//var strBlock = 
-				strResult = '<block type="procedures_ifreturn" inline="true"><mutation value="1"></mutation><value name="CONDITION"><block type="logic_operation" inline="true"><field name="OP">AND</field><value name="A"><block type="logic_operation" inline="true"><field name="OP">AND</field><value name="A"><block type="logic_compare" inline="true"><field name="OP">LT</field><value name="A"><block type="math_number"><field name="NUM">'+prop.x1+'</field></block></value><value name="B"><block type="variables_get"><field name="VAR">sensor1</field></block></value></block></value><value name="B"><block type="logic_compare" inline="true"><field name="OP">LT</field><value name="A"><block type="variables_get"><field name="VAR">sensor1</field></block></value><value name="B"><block type="math_number"><field name="NUM">'+prop.x2+'</field></block></value></block></value></block></value><value name="B"><block type="logic_operation" inline="true"><field name="OP">AND</field><value name="A"><block type="logic_compare" inline="true"><field name="OP">LT</field><value name="A"><block type="math_number"><field name="NUM">'+prop.y1+'</field></block></value><value name="B"><block type="variables_get"><field name="VAR">sensor2</field></block></value></block></value><value name="B"><block type="logic_compare" inline="true"><field name="OP">LT</field><value name="A"><block type="variables_get"><field name="VAR">sensor2</field></block></value><value name="B"><block type="math_number"><field name="NUM">'+prop.y2+'</field></block></value></block></value></block></value></block></value><value name="VALUE"><block type="logic_boolean"><field name="BOOL">TRUE</field></block></value>'+((strResult == '') ? '' : '<next>'+strResult+'</next>')+'</block>';
-				
-			});
-			//var strResult = 'if ( ' + strArr.join(' or ') + ' )';
-			strResult = '<block type="procedures_defreturn" inline="false"><mutation><arg name="sensor1"></arg><arg name="sensor2"></arg></mutation><field name="NAME">convertGraph</field><statement name="STACK">'+strResult+'</statement><value name="RETURN"><block type="logic_boolean"><field name="BOOL">FALSE</field></block></value></block>';
-			//return strResult;
 			
-			
-			
-			//<block type="procedure_procedure"><field name="pname">main</field><statement name="statement">...</statement></block>
-			
-			strResult = '';
 			var varStr = 'INNER';
 			var startVarValue = 8316;
 			areaArr.each(function(item, index){
@@ -528,15 +600,9 @@ var Graph = new Class({
 				prop.x2 = Math.round((item.prop.startX + item.prop.width) / that.GP.width * 1023);
 				prop.y2 = Math.round((that.GP.height - item.prop.startY) / that.GP.height * 1023);
 				prop.y1 = Math.round((that.GP.height - (item.prop.startY + item.prop.height)) / that.GP.height * 1023);
-				//strArr.push("( ("+prop.x1+" < sensor1 and sensor1 < "+prop.x2+") and ("+prop.y1+" < sensor2 and sensor2 < "+prop.y2+") )");
-				//var strBlock = 
-				//strResult = '<block type="procedures_ifreturn" inline="true"><mutation value="1"></mutation><value name="CONDITION"><block type="logic_operation" inline="true"><field name="OP">AND</field><value name="A"><block type="logic_operation" inline="true"><field name="OP">AND</field><value name="A"><block type="logic_compare" inline="true"><field name="OP">LT</field><value name="A"><block type="math_number"><field name="NUM">'+prop.x1+'</field></block></value><value name="B"><block type="variables_get"><field name="VAR">sensor1</field></block></value></block></value><value name="B"><block type="logic_compare" inline="true"><field name="OP">LT</field><value name="A"><block type="variables_get"><field name="VAR">sensor1</field></block></value><value name="B"><block type="math_number"><field name="NUM">'+prop.x2+'</field></block></value></block></value></block></value><value name="B"><block type="logic_operation" inline="true"><field name="OP">AND</field><value name="A"><block type="logic_compare" inline="true"><field name="OP">LT</field><value name="A"><block type="math_number"><field name="NUM">'+prop.y1+'</field></block></value><value name="B"><block type="variables_get"><field name="VAR">sensor2</field></block></value></block></value><value name="B"><block type="logic_compare" inline="true"><field name="OP">LT</field><value name="A"><block type="variables_get"><field name="VAR">sensor2</field></block></value><value name="B"><block type="math_number"><field name="NUM">'+prop.y2+'</field></block></value></block></value></block></value></block></value><value name="VALUE"><block type="logic_boolean"><field name="BOOL">TRUE</field></block></value>'+((strResult == '') ? '' : '<next>'+strResult+'</next>')+'</block>';
-				
-				//strResult = '<block type="control_if" inline="false"><value name="condition"><block type="math_andor" inline="true"><field name="andor">and</field><value name="left"><block type="math_equal" inline="true"><field name="cond">&lt;</field><value name="left"><block type="math_number"><field name="number">'+prop.x1+'</field></block></value><value name="right"><block type="variables_get"><field name="VAR">[VAR1]</field></block></value></block></value><value name="right"><block type="math_equal" inline="true"><field name="cond">&lt;</field><value name="left"><block type="variables_get"><field name="VAR">[VAR1]</field></block></value><value name="right"><block type="math_number"><field name="number">'+prop.x2+'</field></block></value></block></value></block></value><statement name="statement"><block type="control_if" inline="false"><value name="condition"><block type="math_andor" inline="true"><field name="andor">and</field><value name="left"><block type="math_equal" inline="true"><field name="cond">&lt;</field><value name="left"><block type="math_number"><field name="number">'+prop.y1+'</field></block></value><value name="right"><block type="variables_get"><field name="VAR">[VAR2]</field></block></value></block></value><value name="right"><block type="math_equal" inline="true"><field name="cond">&lt;</field><value name="left"><block type="variables_get"><field name="VAR">[VAR2]</field></block></value><value name="right"><block type="math_number"><field name="number">'+prop.y2+'</field></block></value></block></value></block></value><statement name="statement"><block type="variables_set" inline="false"><field name="VAR">returnValue</field><value name="VALUE"><block type="math_number"><field name="number">1</field></block></value></block></statement></block></statement>'+((strResult == '') ? '' : '<next>'+strResult+'</next>')+'</block>';
 				var areaName = '';
 				if (item.getElement('.areaName') && item.getElement('.areaName').get('text') != '') {
 					areaName = item.getElement('.areaName').get('text').clean().split(' ').join('-').split('_').join('-').camelCase();
-					//arrValue.push('<block type="variables_set" inline="false"><field name="VAR">'+areaName+'</field><value name="VALUE"><block type="math_number"><field name="number">'+startVarValue+'</field></block></value><next>INNER</next></block>');
 					varStr = varStr.split('INNER').join('<block type="variables_set" inline="false"><field name="VAR">'+areaName+'</field><value name="VALUE"><block type="math_number"><field name="number">'+startVarValue+'</field></block></value><next>INNER</next></block>');
 					startVarValue++;
 				}
@@ -544,8 +610,6 @@ var Graph = new Class({
 				strResult = '<block type="control_if" inline="false"><value name="condition"><block type="math_andor" inline="true"><field name="andor">and</field><value name="left"><block type="math_andor" inline="true"><field name="andor">and</field><value name="left"><block type="math_equal" inline="true"><field name="cond">&lt;</field><value name="left"><block type="math_number"><field name="number">'+prop.x1+'</field></block></value><value name="right"><block type="input_sensor"><title name="sensor">'+that.sensorX+'</title></block></value></block></value><value name="right"><block type="math_equal" inline="true"><field name="cond">&lt;</field><value name="left"><block type="input_sensor"><title name="sensor">'+that.sensorX+'</title></block></value><value name="right"><block type="math_number"><field name="number">'+prop.x2+'</field></block></value></block></value></block></value><value name="right"><block type="math_andor" inline="true"><field name="andor">and</field><value name="left"><block type="math_equal" inline="true"><field name="cond">&lt;</field><value name="left"><block type="math_number"><field name="number">'+prop.y1+'</field></block></value><value name="right"><block type="input_sensor"><title name="sensor">'+that.sensorY+'</title></block></value></block></value><value name="right"><block type="math_equal" inline="true"><field name="cond">&lt;</field><value name="left"><block type="input_sensor"><title name="sensor">'+that.sensorY+'</title></block></value><value name="right"><block type="math_number"><field name="number">'+prop.y2+'</field></block></value></block></value></block></value></block></value><statement name="statement"><block type="variables_set" inline="false"><field name="VAR">returnValue</field><value name="VALUE">'+((areaName == '') ? '<block type="math_number"><field name="number">1</field></block>' : '<block type="variables_get"><field name="VAR">'+areaName+'</field></block>')+'</value></block></statement>'+((strResult == '') ? '' : '<next>'+strResult+'</next>')+'</block>';
 			});
 			
-			
-			//<block type="procedures_defreturn" inline="false"><mutation><arg name="[VAR1]"></arg></mutation><field name="NAME">[TITLE]</field><statement name="STACK">'+strResult+'</statement><value name="RETURN"><block type="variables_get"><field name="VAR">x</field></block></value></block>
 			
 			var varArr = varStr.split('INNER');
 			
@@ -562,13 +626,13 @@ var Graph = new Class({
 					prop.y2 = Math.round((that.GP.height - item.prop.startY) / that.GP.height * 1023);
 					prop.y1 = Math.round((that.GP.height - (item.prop.startY + item.prop.height)) / that.GP.height * 1023);
 					
-					var leftStr = '<block type="math_equal" inline="true"><field name="cond">'+((prop.x1 < 256) ? '&lt;' : '&gt;' )+'</field><value name="left"><block type="input_switch"><title name="switch">'+that.sensorX+'</title></block></value><value name="right"><block type="math_number"><field name="number">512</field></block></value></block>';
+					var leftStr = '<block type="math_equal" inline="true"><field name="cond">'+((prop.x1 < 256) ? '&lt;' : '&gt;' )+'</field><value name="left"><block type="input_sensor"><title name="sensor">'+that.sensorX+'</title></block></value><value name="right"><block type="math_number"><field name="number">512</field></block></value></block>';
 					if (prop.x1 < 256 && prop.x2 > 768) {
 						leftStr = '<block type=​"control_true">​</block>​';
 						leftStr = '<block type="control_true"></block>';
 						//alert(leftStr);
 					}
-					var rightStr = '<block type="math_equal" inline="true"><field name="cond">'+((prop.y1 < 256) ? '&lt;' : '&gt;' )+'</field><value name="left"><block type="input_switch"><title name="switch">'+that.sensorY+'</title></block></value><value name="right"><block type="math_number"><field name="number">512</field></block></value></block>';
+					var rightStr = '<block type="math_equal" inline="true"><field name="cond">'+((prop.y1 < 256) ? '&lt;' : '&gt;' )+'</field><value name="left"><block type="input_sensor"><title name="sensor">'+that.sensorY+'</title></block></value><value name="right"><block type="math_number"><field name="number">512</field></block></value></block>';
 					if (prop.y1 < 256 && prop.y2 > 768) {
 						rightStr = '<block type=​"control_true">​</block>​';
 						rightStr = '<block type="control_true"></block>';
@@ -577,7 +641,6 @@ var Graph = new Class({
 					var areaName = '';
 					if (item.getElement('.areaName') && item.getElement('.areaName').get('text') != '') {
 						areaName = item.getElement('.areaName').get('text').clean().split(' ').join('-').split('_').join('-').camelCase();
-						//arrValue.push('<block type="variables_set" inline="false"><field name="VAR">'+areaName+'</field><value name="VALUE"><block type="math_number"><field name="number">'+startVarValue+'</field></block></value><next>INNER</next></block>');
 						varStr = varStr.split('INNER').join('<block type="variables_set" inline="false"><field name="VAR">'+areaName+'</field><value name="VALUE"><block type="math_number"><field name="number">'+startVarValue+'</field></block></value><next>INNER</next></block>');
 						startVarValue++;
 					}
@@ -586,13 +649,110 @@ var Graph = new Class({
 				});
 				
 				
-				//<block type="procedures_defreturn" inline="false"><mutation><arg name="[VAR1]"></arg></mutation><field name="NAME">[TITLE]</field><statement name="STACK">'+strResult+'</statement><value name="RETURN"><block type="variables_get"><field name="VAR">x</field></block></value></block>
 				var varArr = varStr.split('INNER');
 				strResult = '<block type="procedures_defreturn" inline="false"><mutation></mutation><field name="NAME">[TITLE]</field><statement name="STACK"><block type="variables_set" inline="false"><field name="VAR">returnValue</field><value name="VALUE"><block type="math_number"><field name="number">0</field></block></value><next>'+varArr[0]+strResult+varArr[1]+'</next></block></statement><value name="RETURN"><block type="variables_get"><field name="VAR">returnValue</field></block></value></block>';
 				
 				
 				
 			}
+			
+			return strResult;
+			
+		};
+		
+		that.convertToBlockly = function(){
+			var strResult = '';
+			var areaArr = that.getElements('.area');
+			
+			var varStr = 'INNER';
+			var startVarValue = 8316;
+			
+			areaArr.each(function(item, index){
+				var prop = {};
+				prop.x1 = Math.round(item.prop.startX / that.GP.width * 1023);
+				prop.x2 = Math.round((item.prop.startX + item.prop.width) / that.GP.width * 1023);
+				prop.y2 = Math.round((that.GP.height - item.prop.startY) / that.GP.height * 1023);
+				prop.y1 = Math.round((that.GP.height - (item.prop.startY + item.prop.height)) / that.GP.height * 1023);
+				
+				var leftStr = '';
+				var rightStr = '';
+				
+				if (that.input.X.type == 'Sensor') {
+					var leftStr = '<block type="math_andor" inline="true"><field name="andor">and</field><value name="left"><block type="math_equal" inline="true"><field name="cond">&lt;</field><value name="left"><block type="math_number"><field name="number">'+prop.x1+'</field></block></value><value name="right"><block type="input_sensor"><title name="sensor">'+that.input.X.value+'</title></block></value></block></value><value name="right"><block type="math_equal" inline="true"><field name="cond">&lt;</field><value name="left"><block type="input_sensor"><title name="sensor">'+that.input.X.value+'</title></block></value><value name="right"><block type="math_number"><field name="number">'+prop.x2+'</field></block></value></block></value></block>';
+				} else if (that.input.X.type == 'Switch') {
+					var leftStr = '<block type="math_equal" inline="true"><field name="cond">'+((prop.x1 < 256) ? '&lt;' : '&gt;' )+'</field><value name="left"><block type="input_sensor"><title name="sensor">'+that.input.X.value+'</title></block></value><value name="right"><block type="math_number"><field name="number">512</field></block></value></block>';
+					if (prop.x1 < 256 && prop.x2 > 768) {
+						leftStr = '<block type="control_true"></block>';
+					}
+				}
+				
+				if (that.input.Y.type == 'Sensor') {
+					var rightStr = '<block type="math_andor" inline="true"><field name="andor">and</field><value name="left"><block type="math_equal" inline="true"><field name="cond">&lt;</field><value name="left"><block type="math_number"><field name="number">'+prop.y1+'</field></block></value><value name="right"><block type="input_sensor"><title name="sensor">'+that.input.Y.value+'</title></block></value></block></value><value name="right"><block type="math_equal" inline="true"><field name="cond">&lt;</field><value name="left"><block type="input_sensor"><title name="sensor">'+that.input.Y.value+'</title></block></value><value name="right"><block type="math_number"><field name="number">'+prop.y2+'</field></block></value></block></value></block>';
+				} else if (that.input.Y.type == 'Switch') {
+					var rightStr = '<block type="math_equal" inline="true"><field name="cond">'+((prop.y1 < 256) ? '&lt;' : '&gt;' )+'</field><value name="left"><block type="input_sensor"><title name="sensor">'+that.input.Y.value+'</title></block></value><value name="right"><block type="math_number"><field name="number">512</field></block></value></block>';
+					if (prop.y1 < 256 && prop.y2 > 768) {
+						rightStr = '<block type="control_true"></block>';
+					}
+				}
+				
+				
+				var areaName = '';
+				if (item.getElement('.areaName') && item.getElement('.areaName').get('text') != '') {
+					areaName = item.getElement('.areaName').get('text').clean().split(' ').join('-').split('_').join('-').camelCase();
+					varStr = varStr.split('INNER').join('<block type="variables_set" inline="false"><field name="VAR">'+areaName+'</field><value name="VALUE"><block type="math_number"><field name="number">'+startVarValue+'</field></block></value><next>INNER</next></block>');
+					startVarValue++;
+				}
+				
+				strResult = '<block type="control_if" inline="false"><value name="condition"><block type="math_andor" inline="true"><field name="andor">and</field><value name="left">'+leftStr+'</value><value name="right">'+rightStr+'</value></block></value><statement name="statement"><block type="variables_set" inline="false"><field name="VAR">returnValue</field><value name="VALUE">'+((areaName == '') ? '<block type="math_number"><field name="number">1</field></block>' : '<block type="variables_get"><field name="VAR">'+areaName+'</field></block>')+'</value></block></statement>'+((strResult == '') ? '' : '<next>'+strResult+'</next>')+'</block>';
+			});
+			
+			
+			var varArr = varStr.split('INNER');
+			
+			strResult = '<block type="procedures_defreturn" inline="false"><mutation></mutation><field name="NAME">[TITLE]</field><statement name="STACK"><block type="variables_set" inline="false"><field name="VAR">returnValue</field><value name="VALUE"><block type="math_number"><field name="number">0</field></block></value><next>'+varArr[0]+strResult+varArr[1]+'</next></block></statement><value name="RETURN"><block type="variables_get"><field name="VAR">returnValue</field></block></value></block></value></block>';
+			
+			/***
+			if (that.type == 'switch') {
+				strResult = '';
+				var varStr = 'INNER';
+				var startVarValue = 8316;
+				areaArr.each(function(item, index){
+					var prop = {};
+					prop.x1 = Math.round(item.prop.startX / that.GP.width * 1023);
+					prop.x2 = Math.round((item.prop.startX + item.prop.width) / that.GP.width * 1023);
+					prop.y2 = Math.round((that.GP.height - item.prop.startY) / that.GP.height * 1023);
+					prop.y1 = Math.round((that.GP.height - (item.prop.startY + item.prop.height)) / that.GP.height * 1023);
+					
+					var leftStr = '<block type="math_equal" inline="true"><field name="cond">'+((prop.x1 < 256) ? '&lt;' : '&gt;' )+'</field><value name="left"><block type="input_sensor"><title name="sensor">'+that.sensorX+'</title></block></value><value name="right"><block type="math_number"><field name="number">512</field></block></value></block>';
+					if (prop.x1 < 256 && prop.x2 > 768) {
+						leftStr = '<block type=​"control_true">​</block>​';
+						leftStr = '<block type="control_true"></block>';
+						//alert(leftStr);
+					}
+					var rightStr = '<block type="math_equal" inline="true"><field name="cond">'+((prop.y1 < 256) ? '&lt;' : '&gt;' )+'</field><value name="left"><block type="input_sensor"><title name="sensor">'+that.sensorY+'</title></block></value><value name="right"><block type="math_number"><field name="number">512</field></block></value></block>';
+					if (prop.y1 < 256 && prop.y2 > 768) {
+						rightStr = '<block type=​"control_true">​</block>​';
+						rightStr = '<block type="control_true"></block>';
+					}
+					
+					var areaName = '';
+					if (item.getElement('.areaName') && item.getElement('.areaName').get('text') != '') {
+						areaName = item.getElement('.areaName').get('text').clean().split(' ').join('-').split('_').join('-').camelCase();
+						varStr = varStr.split('INNER').join('<block type="variables_set" inline="false"><field name="VAR">'+areaName+'</field><value name="VALUE"><block type="math_number"><field name="number">'+startVarValue+'</field></block></value><next>INNER</next></block>');
+						startVarValue++;
+					}
+					strResult = '<block type="control_if" inline="false"><value name="condition"><block type="math_andor" inline="true"><field name="andor">and</field><value name="left">'+leftStr+'</value><value name="right">'+rightStr+'</value></block></value><statement name="statement"><block type="variables_set" inline="false"><field name="VAR">returnValue</field><value name="VALUE">'+((areaName == '') ? '<block type="math_number"><field name="number">1</field></block>' : '<block type="variables_get"><field name="VAR">'+areaName+'</field></block>')+'</value></block></statement>'+((strResult == '') ? '' : '<next>'+strResult+'</next>')+'</block>';
+					
+				});
+				
+				
+				var varArr = varStr.split('INNER');
+				strResult = '<block type="procedures_defreturn" inline="false"><mutation></mutation><field name="NAME">[TITLE]</field><statement name="STACK"><block type="variables_set" inline="false"><field name="VAR">returnValue</field><value name="VALUE"><block type="math_number"><field name="number">0</field></block></value><next>'+varArr[0]+strResult+varArr[1]+'</next></block></statement><value name="RETURN"><block type="variables_get"><field name="VAR">returnValue</field></block></value></block>';
+				
+				
+				
+			}
+			/***/
 			
 			return strResult;
 			
@@ -608,19 +768,27 @@ var Graph = new Class({
 		}
 		
 		that.setType = function(type, var1, var2){
-			//alert(type);
+			
 			that.type = type;
 			that.removeClass('snap');
 			that.getParent().removeClass('switch');
+			that.setHeight(400);
+			that.snapToGrid = false;
+			$$('#selectLeftSensor, .sensorX').setStyle('top', '430px');
+			$('selectRightSensor').removeClass('hideLabel');
 			if (type == 'switch') {
 				that.snapToGrid = true;
 				that.addClass('snap');
 				that.getParent().addClass('switch');
 				that.setGridAmount(2,2);
-				
 			} else if (type == 'sensor') {
-				that.snapToGrid = false;
 				that.setGridAmount(20,20);
+			} else if (type == 'onesensor') {
+				that.setGridAmount(20,1);
+				that.setHeight(100);
+				$$('#selectLeftSensor, .sensorX').setStyle('top', '130px');
+				$('selectRightSensor').addClass('hideLabel');
+				//that.SS = {'h': true, 'v': true};
 			}
 			
 			var1 = var1.toInt() || 1;
@@ -632,9 +800,49 @@ var Graph = new Class({
 			that.sensorX = var1;
 			that.sensorY = var2;
 			
-			$('sensor-X-'+var1).fireEvent('click');
-			$('sensor-Y-'+var2).fireEvent('click');
+//			
+//			setTimeout(function () {
+//				$('sensor-X-'+that.sensorX).fireEvent('click');
+//				$('sensor-Y-'+that.sensorY).fireEvent('click');
+//				
+//			}, 50);
 			
+		}
+		
+		that.enableYAxis = function(value){
+			that.yAxis = value;
+			if (value) {
+				that.setHeight(400);
+				$$('#selectLeftSensor, .sensorX').setStyle('top', '430px');
+				$('selectRightSensor').removeClass('hideLabel');
+			} else {
+				that.setHeight(100);
+				$$('#selectLeftSensor, .sensorX').setStyle('top', '130px');
+				$('selectRightSensor').addClass('hideLabel');
+				that.setGridAmount(that.gridAmount.x, 1);
+			}
+		}
+		
+		that.setTypeNew = function(axis, value, type, min, max){
+			that.input[axis] = {
+				'type': type,
+				'value': value, 
+				'snapToGrid': (((max - min) <= 40) || type == 'Switch'),
+				'max': max.toInt() || 1000,
+				'min': min.toInt() || 0
+			}
+			var amountX = that.input.X.max - that.input.X.min;
+			amountX = (that.input.X.type == 'Switch') ? 2 : amountX;
+			var amountY = that.input.Y.max - that.input.Y.min;
+			amountY = (that.input.Y.type == 'Switch') ? 2 : amountY;
+			
+			if (axis == 'X') {
+				$('selectLeftSensor').set('text', type + ' ' + value);
+			} else {
+				$('selectRightSensor').set('text', type + ' ' + value);
+			}
+			
+			that.setGridAmount(amountX, amountY);
 		}
 		
 		that.getTextData = function(){
@@ -644,7 +852,7 @@ var Graph = new Class({
 				dataArr.push(item.prop.startY + '#' + item.prop.startX + '#' + item.prop.width + '#' + item.prop.height + '#' + ((item.getElement('.areaName') && item.getElement('.areaName').get('text') != '') ? item.getElement('.areaName').get('text') : ''));
 			});
 			
-			return dataArr;
+			return dataArr; 
 		}
 		
 		that.setArea = function(areaArr){
@@ -664,6 +872,10 @@ var Graph = new Class({
 					};
 					currentArea.inject(that.graphArea);
 					currentArea.setPosition(areaPosition[0].toInt(), areaPosition[1].toInt(), areaPosition[2].toInt(), areaPosition[3].toInt());
+					currentArea.prop.startX = currentArea.prop.newX;
+					currentArea.prop.startY = currentArea.prop.newY;
+					currentArea.prop.width = currentArea.prop.newW;
+					currentArea.prop.height = currentArea.prop.newH;
 					if (areaPosition[4] && areaPosition[4].clean() != '') {
 						new Element('div', {'class': 'areaName', 'text': areaPosition[4].clean()}).inject(currentArea, 'top');
 					}
@@ -671,7 +883,12 @@ var Graph = new Class({
 			});
 			setTimeout(function(){
 				that.getParent('.contentSpatial').fireEvent('changeGraph', that);
-			}, 10);
+			}, 110);
+		}
+		
+		that.resetArea = function(areaArr){
+			//changeGraph
+			that.setArea(areaArr);
 		}
 		
 		that.setGP();
@@ -807,7 +1024,7 @@ var Converter = new Class({
 							break;
 						}
 						case 'enter': {
-							kk('enter');
+							
 							that.gate.hideInput.select();
 							break;
 						}
@@ -1180,15 +1397,15 @@ var Area = new Class({
 				top = top + height;
 				height = 0 - height;
 			}
-			top = Math.min(Math.max(top, 0), obj.GP.height - that.prop.minHeight);
+			top = Math.min(Math.max(top, 0), obj.GP.height - obj.gridScale.y);
 			top = (obj.SS.h) ? top : 0;
 			var diffLeft = left;
-			left = Math.min(Math.max(left, 0), obj.GP.width - that.prop.minWidth);
+			left = Math.min(Math.max(left, 0), obj.GP.width - obj.gridScale.x);
 			deffLeft = left - diffLeft;
 			left = (obj.SS.v) ? left : 0;
-			height = Math.min(Math.max(height, that.prop.minHeight), obj.GP.height - top);
+			height = Math.min(Math.max(height, obj.gridScale.y), obj.GP.height - top);
 			height = (obj.SS.h) ? height : obj.GP.height;
-			width = Math.min(Math.max(width, that.prop.minWidth), obj.GP.width - left);
+			width = Math.min(Math.max(width, obj.gridScale.x), obj.GP.width - left);
 			width = (obj.SS.v) ? width : obj.GP.width;
 			that.setStyles({
 				'top': top+px,
@@ -1273,6 +1490,10 @@ var Area = new Class({
 				} else {
 					new Element('div', {'class': 'areaName', 'text': name}).inject(that, 'top');
 				}
+				setTimeout(function(){
+					obj.getParent('.contentSpatial').fireEvent('changeSensor', obj);
+					obj.getParent('.contentSpatial').fireEvent('changeGraph', obj);
+				}, 10);
 			}
 		});
 		

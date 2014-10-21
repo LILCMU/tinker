@@ -666,7 +666,7 @@ Blockly.GogoCode.math_not = function() {
 
 Blockly.GogoCode.use_sms = function() {
   // TODO: Assemble Python into code variable.
-  var code = '\nimport commands';
+  var code = 'import commands\n';
   return code;
 };
 
@@ -687,7 +687,7 @@ Blockly.GogoCode.userfid = function() {
 
 Blockly.GogoCode.read_from_rfid = function() {
   // TODO: Assemble Python into code variable.
-  var code = '\nrfid.read_String()'
+  var code = 'rfid.read_String()\n'
   // TODO: Change ORDER_NONE to the correct strength.
   return [code, Blockly.GogoCode.ORDER_NONE];
 };
@@ -695,50 +695,117 @@ Blockly.GogoCode.read_from_rfid = function() {
 Blockly.GogoCode.write_to_rfid = function() {
   var value_name = Blockly.GogoCode.valueToCode(this, 'NAME', Blockly.GogoCode.ORDER_ATOMIC);
   // TODO: Assemble Python into code variable.
-  var code = '\nrfid.write_String("string")';
+  var code = 'rfid.write_String("string")\n';
   return code;
 };
 
 Blockly.GogoCode.use_finer_scan = function() {
   // TODO: Assemble Python into code variable.
-  var code = '\nimport fingerscan\nfp = fingerscan.fingerPrint()\nfp.connect("/dev/ttyACM0")';
+  var code = 'import fingerscan\nfp = fingerscan.fingerPrint()\nfp.connect("/dev/ttyACM0")\n';
   return code;
 };
 
 Blockly.GogoCode.identify_finger = function() {
   // TODO: Assemble Python into code variable.
-  var code = '\nfp.identify()';
+  var code = 'fp.identify()\n';
   // TODO: Change ORDER_NONE to the correct strength.
   return [code, Blockly.GogoCode.ORDER_NONE];
 };
 
 Blockly.GogoCode.enroll_finger = function() {
   // TODO: Assemble Python into code variable.
-  var code = '\nfp.enrollOneTime()';
+  var code = 'fp.enrollOneTime()\n';
   return code;
 };
 
 
 Blockly.GogoCode.use_camera = function() {
   // TODO: Assemble Python into code variable.
-  var code = '\nuse_camera ';
+  var code = 'usecamera\n';
   return code;
 };
 
 Blockly.GogoCode.close_camera = function() {
   // TODO: Assemble Python into code variable.
-  var code = '\nclose_camera ';
+  var code = 'closecamera\n';
+  return code;
+};
+
+Blockly.GogoCode.start_find_face = function() {
+  // TODO: Assemble Python into code variable.
+  var code = 'startfindface\n';
+  return code;
+};
+
+Blockly.GogoCode.stop_find_face = function() {
+  // TODO: Assemble Python into code variable.
+  var code = 'stopfindface\n';
+  return code;
+};
+
+Blockly.GogoCode.take_snapshot = function() {
+  // TODO: Assemble Python into code variable.
+  var code = 'takesnapshot\n';
   return code;
 };
 
 Blockly.GogoCode.found_face = function() {
   // TODO: Assemble Python into code variable.
-  var code = 'face_found? ';
+  var code = 'facefound?';
   // TODO: Change ORDER_NONE to the correct strength.
   return [code, Blockly.GogoCode.ORDER_NONE];
 };
 
+Blockly.GogoCode.camera_is_on = function() {
+  // TODO: Assemble Python into code variable.
+  var code = 'cameraison?';
+  // TODO: Change ORDER_NONE to the correct strength.
+  return [code, Blockly.GogoCode.ORDER_NONE];
+};
 
+Blockly.GogoCode.find_face_is_on = function() {
+  // TODO: Assemble Python into code variable.
+  var code = 'isfindface?';
+  // TODO: Change ORDER_NONE to the correct strength.
+  return [code, Blockly.GogoCode.ORDER_NONE];
+};
+
+/**     Sound    **/
+
+Blockly.GogoCode['play_sound'] = function(block) {
+  var value_string = Blockly.GogoCode.valueToCode(block, 'string', Blockly.GogoCode.ORDER_ATOMIC);
+  // TODO: Assemble JavaScript into code variable.
+  var code = 'playsound "'+value_string+'"\n';
+  return code;
+};
+
+Blockly.GogoCode['stop_sound'] = function() {
+  // TODO: Assemble Python into code variable.
+  var code = 'stopsound\n';
+  return code;
+};
+
+/**     Image    **/
+
+Blockly.GogoCode['show_image'] = function(block) {
+  var value_string = Blockly.GogoCode.valueToCode(block, 'string', Blockly.GogoCode.ORDER_ATOMIC);
+  // TODO: Assemble JavaScript into code variable.
+  var code = 'showimage "'+value_string+'"\n';
+  return code;
+};
+
+Blockly.GogoCode['hide_image'] = function() {
+  // TODO: Assemble Python into code variable.
+  var code = 'hideimage\n';
+  return code;
+};
+
+Blockly.GogoCode['screen_tapped'] = function() {
+  // TODO: Assemble Python into code variable.
+  var code = 'screentapped?';
+  // TODO: Change ORDER_NONE to the correct strength.
+  return [code, Blockly.GogoCode.ORDER_NONE];
+};
 
 /****    VARIABLE    ****/ 
 
@@ -835,3 +902,23 @@ Paste your new language here
 
 ****/
 
+Blockly.GogoCode['test_condition'] = function(block) {
+  var statements_name = Blockly.GogoCode.statementToCode(block, 'NAME');
+  // TODO: Assemble JavaScript into code variable.
+  var code = statements_name;
+  return code;
+};
+
+Blockly.GogoCode['test_variable'] = function(block) {
+  var text_var_name = block.getFieldValue('var_name');
+  // TODO: Assemble JavaScript into code variable.
+  var code = text_var_name;
+  return code;
+};
+
+Blockly.GogoCode['test_do_sth'] = function(block) {
+  // TODO: Assemble JavaScript into code variable.
+  var code = '..sss.';
+  // TODO: Change ORDER_NONE to the correct strength.
+  return [code, Blockly.GogoCode.ORDER_NONE];
+};

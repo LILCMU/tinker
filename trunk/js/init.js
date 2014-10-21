@@ -207,9 +207,15 @@ var condBlock = new Class({
 
 var checkTitle = function(name, obj){
 	var blockName = [];
-	obj.data.each(function(item){
+	//var dataArr = obj.data || obj.json;
+	obj.data && obj.data.each(function(item){
 		blockName.push(item.block.split(';;')[0]);
 	});
+	
+	obj.json && obj.json.each(function(item){
+		blockName.push(item.name);
+	});
+	
 	var titleCount = '';
 	while (blockName.indexOf(name+titleCount) != -1) {
 		titleCount = (titleCount == '') ? 2 : titleCount + 1;
@@ -444,6 +450,7 @@ var initSpatial = function(){
 	condition.getElement('.iframe').set('src', 'graphPreview.html');
 	
 	condition.getElement('.mainArea p').set('text', 'Condition Lab');
+	condition.getElement('.mainArea h3').set('html', 'Amount inputs: &nbsp;&nbsp;&nbsp;<input id="radioOneInput" type="radio" checked name="amountInput" /> 1, &nbsp;&nbsp;&nbsp;&nbsp;<input id="radioTwoInput" type="radio" name="amountInput" /> 2');
 	condition.getElement('.procedure p').set('text', 'Graph Blocks');
 	
 	condition.addBlockToToolbox = function(block){
@@ -488,35 +495,55 @@ var initSpatial = function(){
 		Blockly.Toolbox.tree_.children_[1].setExpanded(true);
 	}
 	
-	condition.data = [];
+	condition.json = [];
+	
+	//condition.data = [];
 	condition.storage = window.localStorage.getItem('conditionBlock');
 	if (condition.storage) {
-		var dataArr = condition.storage.split('::');
-		var testBlock;
-		dataArr.each(function(item, index){
-			var itemArr = item.split('||');
-			var blockData = itemArr[0].split(';;');
-			var spatialData = itemArr[1].split(';;');
-			condition.data.push({'block': itemArr[0], 'spatial': itemArr[1]});
-			testBlock = new condBlock();
-			testBlock.setTitle(blockData[0]);
-			testBlock.setVar1(blockData[1]);
-			testBlock.setVar2(blockData[2]);
-			testBlock.sensorType = (blockData[3]) ? blockData[3] : 'sensor' ;
-			testBlock.inject(condition.getElement('.procedure'));
-			//testBlock.blockIndex = index;
-			var pointArr = [];
-			var pointData;
+		//var dataArr = condition.storage.split('::');
+		var newBlock;
+		condition.json = JSON.decode(condition.storage);
+		condition.json.each(function(item, index){
+//			
+//			var itemArr = item.split('||');
+//			var blockData = itemArr[0].split(';;');
+//			var spatialData = itemArr[1].split(';;');
+//			condition.data.push({'block': itemArr[0], 'spatial': itemArr[1]});
+//			newBlock = new condBlock();
+//			newBlock.setTitle(blockData[0]);
+//			newBlock.setVar1(blockData[1]);
+//			newBlock.setVar2(blockData[2]);
+//			newBlock.sensorType = (blockData[3]) ? blockData[3] : 'sensor' ;
+//			newBlock.inject(condition.getElement('.procedure'));
+//			
+			newBlock = new condBlock();
+			newBlock.setTitle(item.name);
+			newBlock.setVar1(item.ssX.name);
+			newBlock.setVar2(item.ssY.name);
+			newBlock.sensorType = item.type;
+			newBlock.inject(condition.getElement('.procedure'));
+			
+//			condition.json.push({
+//				'name': block.title,
+//				'ssX': block.var1,
+//				'ssY': block.var2, 
+//				'type': block.sensorType, 
+//				'area': []
+//			});
+			
+			//newBlock.blockIndex = index;
+			//var pointArr = [];
+			//var pointData;
 //			spatialData.each(function(item){
 //				pointData = item.split('#');
 //				pointArr.push({'x': pointData[0].toInt(), 'y': pointData[1].toInt()});
 //			});
-			testBlock.area = spatialData;
-			condition.addBlockToToolbox(testBlock);
+			newBlock.area = item.area;
+			condition.addBlockToToolbox(newBlock);
 		});
 		
-		condition.currentBlock = testBlock;
-		condition.currentData = condition.data.length - 1;
+		condition.currentBlock = newBlock;
+		condition.currentData = condition.json.length - 1;
 		
 //		setTimeout(function(){
 //			mapping.currentBlock.fireEvent('click');
@@ -525,13 +552,16 @@ var initSpatial = function(){
 	}
 	
 	condition.saveData  = function(){
-		var dataArr = [];
+//		var dataArr = []; 
+//		
+//		condition.data.each(function(item){
+//			dataArr.push(item.block+'||'+item.spatial);
+//		});
+//		kk(JSON.encode(condition.json));
+//		condition.storage = dataArr.join('::');
+		condition.storage = JSON.encode(condition.json);
 		
-		condition.data.each(function(item){
-			dataArr.push(item.block+'||'+item.spatial);
-		});
-		condition.storage = dataArr.join('::');
-		kk(condition.storage);
+		//kk(condition.storage);
 		window.localStorage.setItem('conditionBlock', condition.storage);
 	}
 	
@@ -548,11 +578,29 @@ var initSpatial = function(){
 		
 		var currentSpatial = condition.getElement('.wrapper').getFirst();
 		
-		condition.setType(condition.currentBlock.sensorType);
+		//condition.setType(condition.currentBlock.sensorType);
 		condition.currentBlock.area.clean();
 		//kk(condition.currentBlock.area);
 		
+		//condition.json[condition.currentData].name
+		var json = condition.json[condition.currentData];
+		
+		kk('select block');
+		kk(json);
+		
+		//currentSpatial.setTypeNew(axis, value, type, min, max);
+		currentSpatial.setTypeNew('X', json.ssX.name, json.ssX.type, json.ssX.min, json.ssX.max);
+		if (json.oneInput) {
+			condition.spatial.enableYAxis(false);
+			$('radioOneInput').checked = true;
+		} else {
+			condition.spatial.enableYAxis(true);
+			currentSpatial.setTypeNew('Y', json.ssY.name, json.ssY.type, json.ssY.min, json.ssY.max);
+			$('radioTwoInput').checked = true;
+		}
 		currentSpatial.setArea(condition.currentBlock.area);
+		
+		
 	});
 	
 	condition.addEvent('changeBlockContent', function(item){
@@ -568,11 +616,22 @@ var initSpatial = function(){
 			
 			/**  save data to storage  **/
 			block = item.getParent('.condBlock') || item;
-			condition.data[condition.currentData].block = block.title+';;'+block.var1+';;'+block.var2+';;'+block.sensorType;
+			//condition.data[condition.currentData].block = block.title+';;'+block.var1+';;'+block.var2+';;'+block.sensorType;
+			condition.json[condition.currentData].name = block.title;
+			//condition.json[condition.currentData].ssX = block.var1;
+			//condition.json[condition.currentData].ssY = block.var2;
+			//condition.json[condition.currentData].type = block.sensorType;
 			condition.saveData();
 			condition.removeBlockFromToolbox(block);
 			condition.addBlockToToolbox(block);
 		}, 10);
+	});
+	
+	condition.addEvent('changeSensor', function(item){
+		condition.currentBlock.var1 = item.sensorX;
+		condition.currentBlock.var2 = item.sensorY;
+		
+		condition.fireEvent('changeBlockContent', condition.currentBlock); //this line make slow
 	});
 	
 	condition.addEvent('changeGraph', function(item){
@@ -582,14 +641,13 @@ var initSpatial = function(){
 		condition.updateBlock();
 		condition.currentBlock.area = item.getTextData(); 
 		
-		condition.currentBlock.var1 = item.sensorX;
-		condition.currentBlock.var2 = item.sensorY;
 		
 		/**  save data to storage  **/
-		condition.data[condition.currentData].spatial = item.getTextData().join(';;');
+		//condition.data[condition.currentData].spatial = item.getTextData().join(';;');
+		
+		condition.json[condition.currentData].area = item.getTextData();
 		condition.saveData();
 		
-		condition.fireEvent('changeBlockContent', condition.currentBlock);
 		//alert(mapping.currentBlock.points);
 	});
 	
@@ -630,13 +688,13 @@ var initSpatial = function(){
 	}
 	
 	condition.getElement('.deleteBlock').addEvent('click', function(){
-		if (condition.data.length > 1) {
+		if (condition.json.length > 1) {
 			var prevBlock = condition.currentBlock.getPrevious();
 			if (condition.currentData == 0) {
 				prevBlock = condition.currentBlock.getNext();
 			}
-			var currentData = condition.data[condition.currentData];
-			condition.data.erase(currentData);
+			var currentData = condition.json[condition.currentData];
+			condition.json.erase(currentData);
 			condition.removeBlockFromToolbox(condition.currentBlock);
 			condition.currentBlock.destroy();
 			
@@ -656,8 +714,18 @@ var initSpatial = function(){
 		/**  add data for save to storage  **/
 		block.setTitle(checkTitle(block.title, condition));
 		
-		condition.data.push({'block': block.title+';;'+block.var1+';;'+block.var2+';;'+block.sensorType, 'spatial': ''});
-		condition.currentData = condition.data.length - 1;
+		//condition.data.push({'block': block.title+';;'+block.var1+';;'+block.var2+';;'+block.sensorType, 'spatial': ''});
+		
+		condition.json.push({
+			'name': block.title,
+			'ssX': {'name': block.var1, 'type': 'Sensor', 'min': 0, 'max': 1024},
+			'ssY': {'name': block.var2, 'type': 'Sensor', 'min': 0, 'max': 1024}, 
+			'oneInput': true,
+			//'type': block.sensorType, 
+			'area': []
+		});
+		
+		condition.currentData = condition.json.length - 1;
 		block.fireEvent('click');
 		condition.addBlockToToolbox(block);
 	});
@@ -671,7 +739,8 @@ var initSpatial = function(){
 		condition.setType(type);
 		var block = condition.currentBlock;
 		block.sensorType = type;
-		condition.data[condition.currentData].block = block.title+';;'+block.var1+';;'+block.var2+';;'+block.sensorType;
+		//condition.data[condition.currentData].block = block.title+';;'+block.var1+';;'+block.var2+';;'+block.sensorType;
+		condition.json[condition.currentData].type = type;
 		condition.saveData();
 	}
 	
@@ -724,6 +793,108 @@ var initSpatial = function(){
 		}
 	//});
 	}, 500);
+	
+	
+	
+	
+	$('selectInputPopup').addEvent(mouse.click, function(){
+		this.addClass('displayNone');
+	});
+	
+	$('inputPopupConfirm').addEvent(mouse.click, function(){
+		k('confirm');
+		var value, min, max;
+		var axis = $('selectInputPopup').axis;
+		var type = $('selectInputPopup').type;
+		if (type == 'Variable') {
+			value = $('inputVariableName').get('value');
+			min = $('inputVariableMin').get('value');
+			max = $('inputVariableMax').get('value');
+		} else {
+			$('inputPopupLeft').getChildren().each(function(item){
+				if (item.checked) {
+					value = item.get('value');
+				}
+			});
+			min = 0;
+			max = 1024;
+		}
+		condition.spatial.setTypeNew(axis, value, type, min, max);
+		condition.json[condition.currentData]['ss'+axis].name = value;
+		condition.json[condition.currentData]['ss'+axis].type = type;
+		condition.json[condition.currentData]['ss'+axis].min = min;
+		condition.json[condition.currentData]['ss'+axis].max = max;
+		condition.saveData();
+		$('selectInputPopup').fireEvent(mouse.click);
+	});
+	
+	$('inputPopupCancel').addEvent(mouse.click, function(){
+		$('selectInputPopup').fireEvent(mouse.click);
+	});
+	
+//	$('radioOneInput').addEvent('change', function(){
+//		if (this.checked) {
+//			condition.spatial.enableYAxis(false);
+//			condition.json[condition.currentData].oneInput = true;
+//			condition.saveData();
+//		}
+//	});
+//	
+//	$('radioTwoInput').addEvent('change', function(){
+//		if (this.checked) {
+//			condition.spatial.enableYAxis(true);
+//			var json = condition.json[condition.currentData];
+//			condition.spatial.setTypeNew('Y', json.ssY.name, json.ssY.type, json.ssY.min, json.ssY.max);
+//			condition.json[condition.currentData].oneInput = false;
+//			condition.saveData();
+//		}
+//	});
+	
+	$$('#radioOneInput, #radioTwoInput').addEvent('change', function(){
+		var yAxis = $('radioTwoInput').checked;
+		condition.spatial.enableYAxis(yAxis);
+		condition.json[condition.currentData].oneInput = !yAxis;
+		condition.saveData();
+		if (yAxis) {
+			var json = condition.json[condition.currentData];
+			condition.spatial.setTypeNew('Y', json.ssY.name, json.ssY.type, json.ssY.min, json.ssY.max);
+		}
+	});
+	
+	$$('#radioPopupSensor, #radioPopupVariable, #radioPopupSwitch').addEvent('change', function(){
+		if (!$('radioPopupVariable').checked) {
+			$('inputPopupLeft').removeClass('disabled');
+			$('inputPopupRight').addClass('disabled');
+		} else {
+			$('inputPopupLeft').addClass('disabled');
+			$('inputPopupRight').removeClass('disabled');
+		}
+		$('selectInputPopup').type = this.get('id').split('Popup')[1];
+	});
+	
+	document.addEvent('showInputPopup', function(axis){
+		$('selectInputPopup').axis = axis;
+		$('selectInputPopup').removeClass('displayNone');
+		
+		k('radioPopup'+condition.json[condition.currentData]['ss'+axis].type);
+		$('radioPopup'+condition.json[condition.currentData]['ss'+axis].type).checked = true;
+		$('radioPopup'+condition.json[condition.currentData]['ss'+axis].type).fireEvent('change');
+		if (condition.json[condition.currentData]['ss'+axis].type == 'Variable') {
+			$('inputVariableName').set('value', condition.json[condition.currentData]['ss'+axis].name);
+			
+		} else {
+			$('inputPopupLeft').getChildren().each(function(item){
+				if (item.get('value') == condition.json[condition.currentData]['ss'+axis].name) {
+					item.checked = true;
+				}
+			});
+		}
+	});
+	
+	document.addEvent('gridAmountChange', function(){
+		condition.spatial.resetArea(condition.currentBlock.area);
+		
+	});
 	
 	
 	/***
@@ -779,7 +950,7 @@ document.addEvent('spatialIsReady', function(){
 	var mainArea = condition.getElement('.mainArea');
 	var titleElem = mainArea.getFirst('p');
 	
-	var list = new Element('div', {'class': 'conditionType', 'html': '<div data-type="sensor">sensor</div><div data-type="switch">switch</div>'});
+	var list = new Element('div', {'class': 'conditionType', 'html': '<div data-type="onesensor">1 sensor</div><div data-type="sensor">2 sensors</div><div data-type="switch">2 switches</div>'});
 	list.inject(mainArea);
 	list.fade('hide');
 	list.getElements('div').each(function(item){
@@ -788,9 +959,9 @@ document.addEvent('spatialIsReady', function(){
 			this.addClass('selected');
 			condition.setTypeAndSave(this.get('data-type'));
 				
-			setTimeout(function(){
-				list.fade('out');
-			}, 200);
+			list.fade('out');
+//			setTimeout(function(){
+//			}, 200);
 		});
 	});
 	

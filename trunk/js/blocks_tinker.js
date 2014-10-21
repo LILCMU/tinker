@@ -209,7 +209,6 @@ Blockly.Blocks['i2c_write'] = {
     this.appendDummyInput()
         .appendField("Write I2C register:");
     this.appendValueInput("value")
-        .setCheck("null")
         .appendField("write ");
     this.appendDummyInput()
         .appendField(" to ")
@@ -785,7 +784,7 @@ Blockly.Blocks.math_andor = {
     this.setColour(10);
      this.appendValueInput( "left" ).setCheck(Boolean);
     var input =  this.appendValueInput( "right" ).setCheck(Boolean);
-    input.appendField(new Blockly.FieldDropdown([["AND", "AND"], ["OR", "OR"]]), "andor");
+    input.appendField(new Blockly.FieldDropdown([["and", "and"], ["or", "or"]]), "andor");
     this.setInputsInline(true);
     this.setOutput(true, Boolean);
     this.setTooltip('Reports bitwise AND/OR of two inputs.');
@@ -941,7 +940,7 @@ Blockly.Blocks.use_camera = {
   init: function() {
     this.setColour(160);
     this.appendDummyInput()
-        .appendTitle("Use Camera");
+        .appendTitle("Use camera");
     this.setInputsInline(true);
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
@@ -954,7 +953,46 @@ Blockly.Blocks.close_camera = {
   init: function() {
     this.setColour(160);
     this.appendDummyInput()
-        .appendTitle("Close Camera");
+        .appendTitle("Close camera");
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setTooltip('');
+  }
+};
+
+Blockly.Blocks.start_find_face = {
+  helpUrl: 'http://www.example.com/',
+  init: function() {
+    this.setColour(160);
+    this.appendDummyInput()
+        .appendTitle("Start Find-Face");
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setTooltip('');
+  }
+};
+
+Blockly.Blocks.stop_find_face = {
+  helpUrl: 'http://www.example.com/',
+  init: function() {
+    this.setColour(160);
+    this.appendDummyInput()
+        .appendTitle("Stop Find-Face");
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setTooltip('');
+  }
+};
+
+Blockly.Blocks.take_snapshot = {
+  helpUrl: 'http://www.example.com/',
+  init: function() {
+    this.setColour(160);
+    this.appendDummyInput()
+        .appendTitle("Take snapshot");
     this.setInputsInline(true);
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
@@ -967,7 +1005,99 @@ Blockly.Blocks.found_face = {
   init: function() {
     this.setColour(160);
     this.appendDummyInput()
-        .appendTitle("Found Face?");
+        .appendTitle("Found a Face?");
+    this.setInputsInline(true);
+    this.setOutput(true, Boolean);
+    this.setTooltip('');
+  }
+};
+
+Blockly.Blocks.camera_is_on = {
+  helpUrl: 'http://www.example.com/',
+  init: function() {
+    this.setColour(160);
+    this.appendDummyInput()
+        .appendTitle("Camera is on?");
+    this.setInputsInline(true);
+    this.setOutput(true, Boolean);
+    this.setTooltip('');
+  }
+};
+
+Blockly.Blocks.find_face_is_on = {
+  helpUrl: 'http://www.example.com/',
+  init: function() {
+    this.setColour(160);
+    this.appendDummyInput()
+        .appendTitle("Find-Face is on?");
+    this.setInputsInline(true);
+    this.setOutput(true, Boolean);
+    this.setTooltip('');
+  }
+};
+
+/**     Sound    **/
+
+Blockly.Blocks['play_sound'] = {
+  init: function() {
+    this.setHelpUrl('http://www.example.com/');
+    this.setColour(170);
+    this.appendValueInput("string")
+        .appendField("Play Sound");
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, "null");
+    this.setNextStatement(true, "null");
+    this.setTooltip('');
+  }
+};
+
+Blockly.Blocks['stop_sound'] = {
+  helpUrl: 'http://www.example.com/',
+  init: function() {
+    this.setColour(170);
+    this.appendDummyInput()
+        .appendTitle("Stop sound");
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setTooltip('');
+  }
+};
+
+/**     Image    **/
+
+Blockly.Blocks['show_image'] = {
+  init: function() {
+    this.setHelpUrl('http://www.example.com/');
+    this.setColour(165);
+    this.appendValueInput("string")
+        .appendField("Show image");
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, "null");
+    this.setNextStatement(true, "null");
+    this.setTooltip('');
+  }
+};
+
+Blockly.Blocks['hide_image'] = {
+  helpUrl: 'http://www.example.com/',
+  init: function() {
+    this.setColour(165);
+    this.appendDummyInput()
+        .appendTitle("Hide image");
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setTooltip('');
+  }
+};
+
+Blockly.Blocks['screen_tapped'] = {
+  helpUrl: 'http://www.example.com/',
+  init: function() {
+    this.setColour(165);
+    this.appendDummyInput()
+        .appendTitle("Screen tapped?");
     this.setInputsInline(true);
     this.setOutput(true, Boolean);
     this.setTooltip('');
@@ -1046,3 +1176,77 @@ Blockly.Blocks.procedure_procedure = {
 Paste your new language here
 
 ****/
+
+Blockly.Blocks['test_condition'] = {
+  init: function() {
+    this.setHelpUrl('http://www.example.com/');
+    this.setColour(210);
+    this.appendDummyInput()
+        .appendField("inputs");
+    this.appendStatementInput("NAME");
+    this.setTooltip('');
+  }
+};
+
+Blockly.Blocks['test_variable'] = {
+  init: function() {
+    this.setHelpUrl('http://www.example.com/');
+    this.setColour(210);
+    this.appendDummyInput()
+        .appendField("input name:")
+        .appendField(new Blockly.FieldTextInput("x"), "var_name");
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
+Blockly.Blocks['test_do_sth'] = {
+  init: function() {
+    this.setHelpUrl('http://www.example.com/');
+    this.setColour(210);
+    this.appendDummyInput()
+        .appendField("do something");
+    this.setOutput(true);
+    this.setTooltip('');
+    this.setMutator(new Blockly.Mutator(['test_variable']));
+    this.arguments_ = [];
+  },
+  decompose: function(workspace) {
+    var containerBlock = Blockly.Block.obtain(workspace,
+                                           'test_condition');
+    containerBlock.initSvg();
+    
+    //***
+    var connection = containerBlock.getInput('NAME').connection;
+    kk(connection);
+    for (var x = 0; x < this.arguments_.length; x++) {
+      var paramBlock = Blockly.Block.obtain(workspace, 'procedures_mutatorarg');
+      paramBlock.initSvg();
+      paramBlock.setFieldValue(this.arguments_[x], 'var_name');
+      // Store the old location.
+      paramBlock.oldLocation = x;
+      connection.connect(paramBlock.previousConnection);
+      connection = paramBlock.nextConnection;
+    }
+    /***/
+    // Initialize procedure's callers with blank IDs.
+    //Blockly.Procedures.mutateCallers(this.getFieldValue('var_name'), this.workspace, this.arguments_, null);
+    return containerBlock;
+  },
+  compose: function(containerBlock) {
+  	/***
+  	this.arguments_ = [];
+  	this.paramIds_ = [];
+  	var paramBlock = containerBlock.getInputTargetBlock('NAME');
+  	while (paramBlock) {
+  	  this.arguments_.push(paramBlock.getFieldValue('var_name'));
+  	  this.paramIds_.push(paramBlock.id);
+  	  paramBlock = paramBlock.nextConnection &&
+  	      paramBlock.nextConnection.targetBlock();
+  	}
+  	this.updateParams_();
+  	/***/
+  	//Blockly.Procedures.mutateCallers(this.getFieldValue('var_name'), this.workspace, this.arguments_, this.paramIds_);
+  }
+};

@@ -81,6 +81,9 @@ animation-prototype {
 
 .contentSpatial .mainArea p {
 	padding-left: 20px;
+	font-size: 1.25em;
+	margin-top: 6px;
+	margin-bottom: 10px;
 }
 
 .contentSpatial#conditionMainArea .mainArea p {
@@ -106,6 +109,12 @@ animation-prototype {
 }
 #conditionMainArea .mainArea p:hover {
 	/*color: blue;*/
+}
+
+.contentSpatial .mainArea h3 {
+	padding-left: 20px;
+	font-size: 1.12em;
+	margin: 0;
 }
 
 .contentSpatial .wrapper {
@@ -157,6 +166,9 @@ animation-prototype {
 	background-color: rgb(123, 170, 241);
 }
 
+.hideLabel {
+	visibility: hidden;
+}
 
 #selectLeftSensor {
 	position: absolute;
