@@ -1104,6 +1104,64 @@ Blockly.Blocks['screen_tapped'] = {
   }
 };
 
+/****    Data Recording    ****/
+
+Blockly.Blocks['new_record'] = {
+  init: function() {
+    this.setHelpUrl('http://www.example.com/');
+    this.setColour(130);
+    this.appendValueInput("string")
+        .appendField("New record file for");
+    this.setInputsInline(true);
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
+Blockly.Blocks['record_as'] = {
+  init: function() {
+    this.setHelpUrl('http://www.example.com/');
+    this.setColour(130);
+    this.appendValueInput("expression")
+        .appendField("Record");
+    this.appendValueInput("string")
+        .appendField("as");
+    this.setInputsInline(true);
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
+Blockly.Blocks['show_plot'] = {
+  init: function() {
+    this.setHelpUrl('http://www.example.com/');
+    this.setColour(130);
+    this.appendValueInput("string")
+        .appendField("Show plot of ");
+    this.setInputsInline(true);
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
+Blockly.Blocks['show_plot_expression'] = {
+  init: function() {
+    this.setHelpUrl('http://www.example.com/');
+    this.setColour(130);
+    this.appendValueInput("expression")
+        .appendField("Show plot for last ");
+    this.appendValueInput("string")
+        .appendField("values of ");
+    this.setInputsInline(true);
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
 
 /****    VARIABLE    ****/
 
