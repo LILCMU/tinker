@@ -456,11 +456,52 @@ var initSpatial = function(){
 	condition.addBlockToToolbox = function(block){
 		var graphToolbox = mainToolbox.getElement('.toolGraphBlock');
 		var blockID = 'block-'+now();
-		var newBlock = new Element('block', {'id': blockID, 'html': '<mutation name="'+block.title+'"></mutation>'});
+		//var newBlock = new Element('block', {'id': blockID, 'html': '<mutation name="'+block.title+'"></mutation>'});
+		
+		/***
+		'<mutation name="'+block.title+'"><arg name="'+block.var1+'"></arg></mutation>
+		<value name="'+sth+'">
+			<block type="variables_get"><field name="VAR">'+sth+'</field></block>
+		</value>'
+		/****/
+		
+		var blockIndex = 0;
+		condition.getElement('.procedure').getChildren('.condBlock').each(function(item, index){
+			if (item === block) {
+				blockIndex = index;
+			}
+		});
+		
+		//condition.json[blockIndex]['ssX'].name = value;
+		//condition.json[blockIndex]['ssX'].type = type;
+		
+		var xStr1 = '';
+		var xStr2 = '';
+		var yStr1 = '';
+		var yStr2 = '';
+		
+		var varCount = 0;
+		
+		if (condition.json[blockIndex]['ssX'].type == 'Variable') {
+			xStr1 = '<arg name="'+condition.json[blockIndex]['ssX'].name+'"></arg>';
+			xStr2 = '<value name="ARG'+varCount+'"><block type="variables_get"><field name="VAR">'+condition.json[blockIndex]['ssX'].name+'</field></block></value>';
+			varCount++;
+		}
+		
+		if (condition.json[blockIndex]['ssY'].type == 'Variable') {
+			yStr1 = '<arg name="'+condition.json[blockIndex]['ssY'].name+'"></arg>';
+			yStr2 = '<value name="ARG'+varCount+'"><block type="variables_get"><field name="VAR">'+condition.json[blockIndex]['ssY'].name+'</field></block></value>';
+		}
+		//var valueStr = (xStr1 != '' || yStr1 != '') 
+		
+		var newBlock = new Element('block', {'id': blockID, 'html': '<mutation name="'+block.title+'">'+xStr1+yStr1+'</mutation>'+xStr2+yStr2});
+		
 		block.blockID = blockID;
 		newBlock.setAttribute('type', 'procedures_callreturn');
 		newBlock.setAttribute('class', 'tinkerBlock');
 		newBlock.inject(graphToolbox);
+		kk('block'+blockIndex);
+		kk(newBlock);
 		
 		block.varID = [];
 		block.area.each(function(item){
@@ -808,8 +849,8 @@ var initSpatial = function(){
 		var type = $('selectInputPopup').type;
 		if (type == 'Variable') {
 			value = $('inputVariableName').get('value');
-			min = $('inputVariableMin').get('value');
-			max = $('inputVariableMax').get('value');
+			min = $('inputVariableMin').get('value').toInt() || 0;
+			max = $('inputVariableMax').get('value').toInt() || 1024;
 		} else {
 			$('inputPopupLeft').getChildren().each(function(item){
 				if (item.checked) {
@@ -826,6 +867,7 @@ var initSpatial = function(){
 		condition.json[condition.currentData]['ss'+axis].max = max;
 		condition.saveData();
 		$('selectInputPopup').fireEvent(mouse.click);
+		condition.fireEvent('changeBlockContent', condition.currentBlock);
 	});
 	
 	$('inputPopupCancel').addEvent(mouse.click, function(){
@@ -872,6 +914,10 @@ var initSpatial = function(){
 		$('selectInputPopup').type = this.get('id').split('Popup')[1];
 	});
 	
+	$$('#inputPopupRight input').addEvent('keyup', function(){
+		return false;
+	});
+	
 	document.addEvent('showInputPopup', function(axis){
 		$('selectInputPopup').axis = axis;
 		$('selectInputPopup').removeClass('displayNone');
@@ -881,6 +927,8 @@ var initSpatial = function(){
 		$('radioPopup'+condition.json[condition.currentData]['ss'+axis].type).fireEvent('change');
 		if (condition.json[condition.currentData]['ss'+axis].type == 'Variable') {
 			$('inputVariableName').set('value', condition.json[condition.currentData]['ss'+axis].name);
+			$('inputVariableMin').set('value', condition.json[condition.currentData]['ss'+axis].min);
+			$('inputVariableMax').set('value', condition.json[condition.currentData]['ss'+axis].max);
 			
 		} else {
 			$('inputPopupLeft').getChildren().each(function(item){
@@ -972,7 +1020,11 @@ document.addEvent('spatialIsReady', function(){
 });
 
 var normalWS = function(){
-	var ws = new wsImpl('ws://localhost:8316/ws');
+	try {
+		var ws = new wsImpl('ws://localhost:8316/ws');
+	} catch (error) {
+		return;
+	}
 	
 	ws.onmessage = function (evt) {
 		//console.log(evt.data);

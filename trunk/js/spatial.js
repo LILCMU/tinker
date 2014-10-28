@@ -669,30 +669,43 @@ var Graph = new Class({
 			
 			areaArr.each(function(item, index){
 				var prop = {};
-				prop.x1 = Math.round(item.prop.startX / that.GP.width * 1023);
-				prop.x2 = Math.round((item.prop.startX + item.prop.width) / that.GP.width * 1023);
-				prop.y2 = Math.round((that.GP.height - item.prop.startY) / that.GP.height * 1023);
-				prop.y1 = Math.round((that.GP.height - (item.prop.startY + item.prop.height)) / that.GP.height * 1023);
+				var range = {
+					'x': that.input.X.max - that.input.X.min,
+					'y': that.input.Y.max - that.input.Y.min
+				};
+				prop.x1 = Math.round(item.prop.startX / that.GP.width * range.x);
+				prop.x2 = Math.round((item.prop.startX + item.prop.width) / that.GP.width * range.x);
+				prop.y2 = Math.round((that.GP.height - item.prop.startY) / that.GP.height * range.y);
+				prop.y1 = Math.round((that.GP.height - (item.prop.startY + item.prop.height)) / that.GP.height * range.y);
+				
 				
 				var leftStr = '';
 				var rightStr = '';
 				
 				if (that.input.X.type == 'Sensor') {
-					var leftStr = '<block type="math_andor" inline="true"><field name="andor">and</field><value name="left"><block type="math_equal" inline="true"><field name="cond">&lt;</field><value name="left"><block type="math_number"><field name="number">'+prop.x1+'</field></block></value><value name="right"><block type="input_sensor"><title name="sensor">'+that.input.X.value+'</title></block></value></block></value><value name="right"><block type="math_equal" inline="true"><field name="cond">&lt;</field><value name="left"><block type="input_sensor"><title name="sensor">'+that.input.X.value+'</title></block></value><value name="right"><block type="math_number"><field name="number">'+prop.x2+'</field></block></value></block></value></block>';
+					leftStr = '<block type="math_andor" inline="true"><field name="andor">and</field><value name="left"><block type="math_equal" inline="true"><field name="cond">&lt;</field><value name="left"><block type="math_number"><field name="number">'+prop.x1+'</field></block></value><value name="right"><block type="input_sensor"><title name="sensor">'+that.input.X.value+'</title></block></value></block></value><value name="right"><block type="math_equal" inline="true"><field name="cond">&lt;</field><value name="left"><block type="input_sensor"><title name="sensor">'+that.input.X.value+'</title></block></value><value name="right"><block type="math_number"><field name="number">'+prop.x2+'</field></block></value></block></value></block>';
 				} else if (that.input.X.type == 'Switch') {
-					var leftStr = '<block type="math_equal" inline="true"><field name="cond">'+((prop.x1 < 256) ? '&lt;' : '&gt;' )+'</field><value name="left"><block type="input_sensor"><title name="sensor">'+that.input.X.value+'</title></block></value><value name="right"><block type="math_number"><field name="number">512</field></block></value></block>';
+					leftStr = '<block type="math_equal" inline="true"><field name="cond">'+((prop.x1 < 256) ? '&lt;' : '&gt;' )+'</field><value name="left"><block type="input_sensor"><title name="sensor">'+that.input.X.value+'</title></block></value><value name="right"><block type="math_number"><field name="number">512</field></block></value></block>';
 					if (prop.x1 < 256 && prop.x2 > 768) {
 						leftStr = '<block type="control_true"></block>';
 					}
+				} else if (that.input.X.type == 'Variable') {
+					leftStr = '<block type="math_andor" inline="true"><field name="andor">and</field><value name="left"><block type="math_equal" inline="true"><field name="cond">&lt;</field><value name="left"><block type="math_number"><field name="number">'+prop.x1+'</field></block></value><value name="right"><block type="variables_get"><field name="VAR">'+that.input.X.value+'</field></block></value></block></value><value name="right"><block type="math_equal" inline="true"><field name="cond">&lt;</field><value name="left"><block type="variables_get"><field name="VAR">'+that.input.X.value+'</field></block></value><value name="right"><block type="math_number"><field name="number">'+prop.x2+'</field></block></value></block></value></block>';
+					
 				}
 				
-				if (that.input.Y.type == 'Sensor') {
+				if (!that.yAxis) {
+					rightStr = '<block type="control_true"></block>';
+				} else if (that.input.Y.type == 'Sensor') {
 					var rightStr = '<block type="math_andor" inline="true"><field name="andor">and</field><value name="left"><block type="math_equal" inline="true"><field name="cond">&lt;</field><value name="left"><block type="math_number"><field name="number">'+prop.y1+'</field></block></value><value name="right"><block type="input_sensor"><title name="sensor">'+that.input.Y.value+'</title></block></value></block></value><value name="right"><block type="math_equal" inline="true"><field name="cond">&lt;</field><value name="left"><block type="input_sensor"><title name="sensor">'+that.input.Y.value+'</title></block></value><value name="right"><block type="math_number"><field name="number">'+prop.y2+'</field></block></value></block></value></block>';
 				} else if (that.input.Y.type == 'Switch') {
 					var rightStr = '<block type="math_equal" inline="true"><field name="cond">'+((prop.y1 < 256) ? '&lt;' : '&gt;' )+'</field><value name="left"><block type="input_sensor"><title name="sensor">'+that.input.Y.value+'</title></block></value><value name="right"><block type="math_number"><field name="number">512</field></block></value></block>';
 					if (prop.y1 < 256 && prop.y2 > 768) {
 						rightStr = '<block type="control_true"></block>';
 					}
+				}else if (that.input.Y.type == 'Variable') {
+					rightStr = '<block type="math_andor" inline="true"><field name="andor">and</field><value name="left"><block type="math_equal" inline="true"><field name="cond">&lt;</field><value name="left"><block type="math_number"><field name="number">'+prop.y1+'</field></block></value><value name="right"><block type="variables_get"><field name="VAR">'+that.input.Y.value+'</field></block></value></block></value><value name="right"><block type="math_equal" inline="true"><field name="cond">&lt;</field><value name="left"><block type="variables_get"><field name="VAR">'+that.input.Y.value+'</field></block></value><value name="right"><block type="math_number"><field name="number">'+prop.y2+'</field></block></value></block></value></block>';
+					
 				}
 				
 				
@@ -707,9 +720,12 @@ var Graph = new Class({
 			});
 			
 			
+			var mutation = '';
+			if (that.input.X.type == 'Variable') mutation += '<arg name="'+that.input.X.value+'"></arg>';
+			if (that.input.Y.type == 'Variable') mutation += '<arg name="'+that.input.Y.value+'"></arg>';
 			var varArr = varStr.split('INNER');
 			
-			strResult = '<block type="procedures_defreturn" inline="false"><mutation></mutation><field name="NAME">[TITLE]</field><statement name="STACK"><block type="variables_set" inline="false"><field name="VAR">returnValue</field><value name="VALUE"><block type="math_number"><field name="number">0</field></block></value><next>'+varArr[0]+strResult+varArr[1]+'</next></block></statement><value name="RETURN"><block type="variables_get"><field name="VAR">returnValue</field></block></value></block></value></block>';
+			strResult = '<block type="procedures_defreturn" inline="false"><mutation>'+mutation+'</mutation><field name="NAME">[TITLE]</field><statement name="STACK"><block type="variables_set" inline="false"><field name="VAR">returnValue</field><value name="VALUE"><block type="math_number"><field name="number">0</field></block></value><next>'+varArr[0]+strResult+varArr[1]+'</next></block></statement><value name="RETURN"><block type="variables_get"><field name="VAR">returnValue</field></block></value></block></value></block>';
 			
 			/***
 			if (that.type == 'switch') {
