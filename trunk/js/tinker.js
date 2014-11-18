@@ -554,9 +554,13 @@ function autoloadBlock(){
 	//return;
 	var xml = Blockly.Xml.textToDom('<xml><block type="procedure_procedure" x="250" y="50"><title name="pname">main</title></block></xml>');
 	xml.editable = false;
+	xml.deletable = false;
 	Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, xml);
 	
 	var loadedBlock = window.localStorage.getItem('autoSaveBlock');
+	if (!(loadedBlock.split('procedure_procedure')[1])) {
+		loadedBlock = loadedBlock.split('</xml>')[0]+'<block type="procedure_procedure" x="100" y="50"><title name="pname">main</title></block></xml>';
+	}
 	try {
 	  var xml = Blockly.Xml.textToDom(loadedBlock);
 	} catch (e) {

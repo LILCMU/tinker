@@ -6,12 +6,16 @@ document.addEvent('domready', function(){
 	
 	$('gogoMonitor').dispose().inject('content_gogomon');
 	startWebSocket();
+	
+	//localStorage.setItem('conditionBlock', 'hello');
 });
 
 window.addEvent('BlocklyIsReady', function(){
 	initSpatial();
 	
 	setupContentGogocode();
+	
+	setupTest();
 });
 
 var setupContentGogocode = function(){
@@ -26,6 +30,23 @@ var setupContentGogocode = function(){
 				window.getSelection().addRange(range);
 			}
 			range.deleteContents();
+		}
+	});
+}
+
+var setupTest = function(){
+	var count = 0;
+	var testFn = function(){
+		if ($('gogoStatus').hasClass('runTest')) {
+			setTimeout(function(){testFn()}, 30);
+			count++;
+			ws.onmessage({'data':'burst::'+((count+100)%1024)+'-'+((count+200)%1024)+'-'+((count+300)%1024)+'-'+((count+400)%1024)+'-'+((count+500)%1024)+'-'+((count+600)%1024)+'-'+((count+700)%1024)+'-'+((count+800)%1024)+''})
+		}
+	}
+	$('gogoStatus').addClass('mouseEvent').addEvent(mouse.click, function(){
+		$('gogoStatus').toggleClass('runTest');
+		if ($('gogoStatus').hasClass('runTest')) {
+			testFn();
 		}
 	});
 }
@@ -540,56 +561,36 @@ var initSpatial = function(){
 	
 	//condition.data = [];
 	condition.storage = window.localStorage.getItem('conditionBlock');
+
 	if (condition.storage) {
 		//var dataArr = condition.storage.split('::');
-		var newBlock;
-		condition.json = JSON.decode(condition.storage);
-		condition.json.each(function(item, index){
-//			
-//			var itemArr = item.split('||');
-//			var blockData = itemArr[0].split(';;');
-//			var spatialData = itemArr[1].split(';;');
-//			condition.data.push({'block': itemArr[0], 'spatial': itemArr[1]});
-//			newBlock = new condBlock();
-//			newBlock.setTitle(blockData[0]);
-//			newBlock.setVar1(blockData[1]);
-//			newBlock.setVar2(blockData[2]);
-//			newBlock.sensorType = (blockData[3]) ? blockData[3] : 'sensor' ;
-//			newBlock.inject(condition.getElement('.procedure'));
-//			
-			newBlock = new condBlock();
-			newBlock.setTitle(item.name);
-			newBlock.setVar1(item.ssX.name);
-			newBlock.setVar2(item.ssY.name);
-			newBlock.sensorType = item.type;
-			newBlock.inject(condition.getElement('.procedure'));
+		var storageError = false;
+		try {
+			JSON.decode(condition.storage);
+		} catch (error) {
+			storageError = true;
+			condition.storage = undefined;
+		}
+		if (!storageError) {
+
+			var newBlock;
+			kk(condition.storage);
+			condition.json = JSON.decode(condition.storage);
+			condition.json.each(function(item, index){
+				newBlock = new condBlock();
+				newBlock.setTitle(item.name);
+				newBlock.setVar1(item.ssX.name);
+				newBlock.setVar2(item.ssY.name);
+				newBlock.sensorType = item.type;
+				newBlock.inject(condition.getElement('.procedure'));
+				newBlock.area = item.area;
+				condition.addBlockToToolbox(newBlock);
+			});
 			
-//			condition.json.push({
-//				'name': block.title,
-//				'ssX': block.var1,
-//				'ssY': block.var2, 
-//				'type': block.sensorType, 
-//				'area': []
-//			});
-			
-			//newBlock.blockIndex = index;
-			//var pointArr = [];
-			//var pointData;
-//			spatialData.each(function(item){
-//				pointData = item.split('#');
-//				pointArr.push({'x': pointData[0].toInt(), 'y': pointData[1].toInt()});
-//			});
-			newBlock.area = item.area;
-			condition.addBlockToToolbox(newBlock);
-		});
-		
-		condition.currentBlock = newBlock;
-		condition.currentData = condition.json.length - 1;
-		
-//		setTimeout(function(){
-//			mapping.currentBlock.fireEvent('click');
-//			
-//		}, 10);
+			condition.currentBlock = newBlock;
+			condition.currentData = condition.json.length - 1;
+	
+		}
 	}
 	
 	condition.saveData  = function(){

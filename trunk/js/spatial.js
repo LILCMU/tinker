@@ -83,6 +83,16 @@ var SensorScale = new Class({
 			'class': 'ssScale'
 		}).inject(that);
 		
+		that.dot = new Element('div', {
+			'id': 'ssScale-dot',
+			'class': 'ssScale', 
+			'styles': {
+				'width': 7+px, 
+				'height': 7+px,
+				'border-radius': 3+px
+			}
+		}).inject(that);
+		
 		that.setScale = function(x, y){
 			if (x < 0) {
 				that.v.addClass('disabled');
@@ -96,8 +106,24 @@ var SensorScale = new Class({
 				that.h.removeClass('disabled');
 				that.h.setStyle('top', obj.GP.height * (1 - y));
 			}
+			if (x > 0 && y > 0) {
+				that.dot.setStyles({
+					'left': (obj.GP.width * x - 3)+px, 
+					'top': (obj.GP.height * (1 - y) - 3)+px,
+					'display': 'block'
+				});
+			} else {
+				that.dot.setStyles({
+					'display': 'none'
+				});
+			}
 			kk(x+', '+ y);
 		};
+		
+		that.setThickness = function(v1, v2){
+			that.v.setStyle('width', v1+px);
+			that.h.setStyle('height', v2+px);
+		}
 		
 		return that;
 	}
@@ -831,11 +857,13 @@ var Graph = new Class({
 				that.setHeight(400);
 				$$('#selectLeftSensor, .sensorX').setStyle('top', '430px');
 				$('selectRightSensor').removeClass('hideLabel');
+				that.sensorScale.setThickness(1, 1);
 			} else {
 				that.setHeight(100);
 				$$('#selectLeftSensor, .sensorX').setStyle('top', '130px');
 				$('selectRightSensor').addClass('hideLabel');
 				that.setGridAmount(that.gridAmount.x, 1);
+				that.sensorScale.setThickness(2, 0);
 			}
 		}
 		

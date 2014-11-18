@@ -1227,6 +1227,7 @@ Blockly.Blocks.procedure_procedure = {
     var input = this.appendDummyInput();
     input.appendField("                   end");
     this.setTooltip('Main procedure.');
+    this.setDeletable(false);
   }
 };
 /****
