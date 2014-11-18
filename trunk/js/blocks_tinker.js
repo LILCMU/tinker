@@ -324,13 +324,13 @@ Blockly.Blocks.action_motor = {
 //    .appendField(",")
 //    .appendField(new Blockly.FieldDropdown([["", 0], ["d", 8]]), "d");
     
-    .appendField(new Blockly.FieldDropdown([["a", "a"], [" ", ""]]), "a")
+    .appendField(new Blockly.FieldDropdown([["a", "a"], [" - ", ""]]), "a")
     .appendField(",")
-    .appendField(new Blockly.FieldDropdown([[" ", ""], ["b", "b"]]), "b")
+    .appendField(new Blockly.FieldDropdown([[" - ", ""], ["b", "b"]]), "b")
     .appendField(",")
-    .appendField(new Blockly.FieldDropdown([[" ", ""], ["c", "c"]]), "c")
+    .appendField(new Blockly.FieldDropdown([[" - ", ""], ["c", "c"]]), "c")
     .appendField(",")
-    .appendField(new Blockly.FieldDropdown([[" ", ""], ["d", "d"]]), "d");
+    .appendField(new Blockly.FieldDropdown([[" - ", ""], ["d", "d"]]), "d");
     //var input =  this.appendValueInput( "NAME", "motor");
     //input.appendField("to");
     this.setPreviousStatement(true, null);
