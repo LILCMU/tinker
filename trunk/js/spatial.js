@@ -70,7 +70,8 @@ var SensorScale = new Class({
 		var that = this;
 		
 		that = new Element('div', {
-			'id': 'ssScale'
+			'id': 'ssScale', 
+			'class': 'eventNone selectNone'
 		});
 		
 		that.h = new Element('div', {
@@ -87,9 +88,9 @@ var SensorScale = new Class({
 			'id': 'ssScale-dot',
 			'class': 'ssScale', 
 			'styles': {
-				'width': 7+px, 
-				'height': 7+px,
-				'border-radius': 3+px
+				'width': 11+px, 
+				'height': 11+px,
+				'border-radius': 5+px
 			}
 		}).inject(that);
 		
@@ -106,10 +107,10 @@ var SensorScale = new Class({
 				that.h.removeClass('disabled');
 				that.h.setStyle('top', obj.GP.height * (1 - y));
 			}
-			if (x > 0 && y > 0) {
+			if (x >= 0 && y >= 0) {
 				that.dot.setStyles({
-					'left': (obj.GP.width * x - 3)+px, 
-					'top': (obj.GP.height * (1 - y) - 3)+px,
+					'left': (obj.GP.width * x - 5)+px, 
+					'top': (obj.GP.height * (1 - y) - 5)+px,
 					'display': 'block'
 				});
 			} else {
@@ -117,7 +118,7 @@ var SensorScale = new Class({
 					'display': 'none'
 				});
 			}
-			kk(x+', '+ y);
+			//kk(x+', '+ y);
 		};
 		
 		that.setThickness = function(v1, v2){
@@ -214,6 +215,12 @@ var Spatial = new Class({
 				ctx.stroke();
 				i += (that.gridScale.x * step);
 			}
+			ctx.strokeStyle = 'rgba(0, 0, 0, 0.25)';
+			ctx.beginPath();
+			ctx.moveTo(that.gridScale.x * that.gridAmount.x, 0);
+			ctx.lineTo(that.gridScale.x * that.gridAmount.x, that.gridScale.y * that.gridAmount.y);
+			ctx.stroke();
+			
 			step = Math.ceil(that.gridAmount.y / 20);
 			for (var i = 0, j=0; i <= that.gridScale.y * that.gridAmount.y; j++) {
 				ctx.strokeStyle = (j % 5 == 0) ? 'rgba(0, 0, 0, 0.25)' : 'rgba(0, 0, 0, 0.15)';
@@ -223,11 +230,17 @@ var Spatial = new Class({
 				ctx.stroke();
 				i += (that.gridScale.y * step);
 			}
+			ctx.strokeStyle = 'rgba(0, 0, 0, 0.25)';
+			ctx.beginPath();
+			ctx.moveTo(0, that.gridScale.y * that.gridAmount.y);
+			ctx.lineTo(that.gridScale.x * that.gridAmount.x, that.gridScale.y * that.gridAmount.y);
+			ctx.stroke();
+			
 			ctx.save();
 		}
 		
 		that.canvas = new Element('canvas', {
-			'class': 'canvasGraphic'
+			'class': 'canvasGraphic selectNone eventNone'
 		}).inject(that);
 		
 		that.controlArea = new Element('div', {
@@ -412,7 +425,11 @@ var Graph = new Class({
 		that.graphArea.addEvent(mouseDown, function(){
 			if (!document.body.selectingArea) {
 				document.body.currentArea = null;
-				$$('.currentArea').removeClass('currentArea');
+				//$$('.currentArea').removeClass('currentArea');
+				$$('.currentArea').each(function(item){
+					item.setStyle('background-color', 'hsla('+item.areaColor+', 91%, 56%, 0.3)');
+					item.removeClass('currentArea');
+				});
 			}
 			that.graphArea.addClass('mouseIsDown');
 		});
@@ -492,8 +509,8 @@ var Graph = new Class({
 					prop.height = (that.SS.h) ? Math.max(Math.abs(DY), prop.minHeight) : that.GP.height;
 					
 					//k('startY: '+prop.startY+', spy: '+SPY+', cpy: '+CPY+', gp top: '+that.GP.top);
-					kk(SPX+', '+CPX+', '+that.GP.left);
-					kk(prop.startX);
+					//kk(SPX+', '+CPX+', '+that.GP.left);
+					//kk(prop.startX);
 					
 					if ((prop.startX+prop.minWidth) > that.GP.width) {
 						prop.startX = that.GP.width - prop.width;
@@ -689,6 +706,11 @@ var Graph = new Class({
 		that.convertToBlockly = function(){
 			var strResult = '';
 			var areaArr = that.getElements('.area');
+			var newArr = [];
+			areaArr.each(function(item){
+				newArr[that.zIndex - item.zIndex] = item;
+			});
+			areaArr = newArr.clean();
 			
 			var varStr = 'INNER';
 			var startVarValue = 8316;
@@ -737,7 +759,7 @@ var Graph = new Class({
 				
 				var areaName = '';
 				if (item.getElement('.areaName') && item.getElement('.areaName').get('text') != '') {
-					areaName = item.getElement('.areaName').get('text').clean().split(' ').join('-').split('_').join('-').camelCase();
+					areaName = item.getElement('.areaName').get('text').clean().split(' ').join('-').split('_').join('-').camelCase().split('-').join('');
 					varStr = varStr.split('INNER').join('<block type="variables_set" inline="false"><field name="VAR">'+areaName+'</field><value name="VALUE"><block type="math_number"><field name="number">'+startVarValue+'</field></block></value><next>INNER</next></block>');
 					startVarValue++;
 				}
@@ -802,11 +824,43 @@ var Graph = new Class({
 		
 		that.updateSensor = function(rs){
 			var rsArr = rs.split(':');
-			var rightElem = that.controlArea.getElement('.sensorY.sensorOn');
-			var rightSensor = (rightElem) ? rsArr[rightElem.get('data-ss') - 1].toInt() / 1024 : -1;
-			var leftElem = that.controlArea.getElement('.sensorX.sensorOn');
-			var leftSensor = (leftElem) ? rsArr[leftElem.get('data-ss') - 1].toInt() / 1024 : -1;
-			that.sensorScale.setScale(leftSensor, rightSensor);
+			//var rightElem = that.controlArea.getElement('.sensorY.sensorOn');
+			//var rightSensor = (rightElem) ? rsArr[rightElem.get('data-ss') - 1].toInt() / 1024 : -1;
+			//var leftElem = that.controlArea.getElement('.sensorX.sensorOn');
+			//var leftSensor = (leftElem) ? rsArr[leftElem.get('data-ss') - 1].toInt() / 1024 : -1;
+			
+			//that.yAxis 
+			//kk(that.input.X.value - 1);
+			var xSensor = rsArr[that.input.X.value - 1].toInt() / 1024;
+			var ySensor = (that.yAxis) ? rsArr[that.input.Y.value - 1].toInt() / 1024 : -1;
+			
+			that.sensorScale.setScale(xSensor, ySensor);
+			//
+			that.highlightArea(xSensor, ySensor);
+		}
+		
+		that.highlightArea = function(x, y){
+			
+			x = that.GP.width * x;
+			y = that.GP.height * (1 - y);
+			var noArea = true;
+			var areaArr = that.graphArea.getElements('.area');
+			var newArr = [];
+			areaArr.each(function(item){
+				newArr[that.zIndex - item.zIndex] = item;
+			});
+			areaArr = newArr.clean();
+			areaArr.each(function(item){
+				//kk('hi');
+				//kk(item.prop);
+				item.removeClass('highlight');
+				if (!noArea) return;
+				if ((item.prop.startX < x && x < (item.prop.startX + item.prop.width)) && ( !that.yAxis || (item.prop.startY < y && y < (item.prop.startY + item.prop.height)))) {
+					item.addClass('highlight');
+					noArea = false;
+				}
+			});
+			
 		}
 		
 		that.setType = function(type, var1, var2){
@@ -851,19 +905,29 @@ var Graph = new Class({
 			
 		}
 		
+		that.expandGraph = function(expand){
+			if (expand) {
+				that.setWidth(800);
+				that.getParent().setStyle('width', 880 + px);
+			} else {
+				that.setWidth(400);
+				that.getParent().setStyle('width', 480 + px);
+			}
+		}
+		
 		that.enableYAxis = function(value){
 			that.yAxis = value;
 			if (value) {
 				that.setHeight(400);
 				$$('#selectLeftSensor, .sensorX').setStyle('top', '430px');
 				$('selectRightSensor').removeClass('hideLabel');
-				that.sensorScale.setThickness(1, 1);
+				that.sensorScale.setThickness(2, 2);
 			} else {
 				that.setHeight(100);
 				$$('#selectLeftSensor, .sensorX').setStyle('top', '130px');
 				$('selectRightSensor').addClass('hideLabel');
 				that.setGridAmount(that.gridAmount.x, 1);
-				that.sensorScale.setThickness(2, 0);
+				that.sensorScale.setThickness(6, 0);
 			}
 		}
 		
@@ -880,6 +944,8 @@ var Graph = new Class({
 			var amountY = that.input.Y.max - that.input.Y.min;
 			amountY = (that.input.Y.type == 'Switch') ? 2 : amountY;
 			
+			//alert(amountY);
+			
 			if (axis == 'X') {
 				$('selectLeftSensor').set('text', type + ' ' + value);
 			} else {
@@ -893,7 +959,7 @@ var Graph = new Class({
 			var areaArr = that.getElements('.area');
 			var dataArr = [];
 			areaArr.each(function(item){
-				dataArr.push(item.prop.startY + '#' + item.prop.startX + '#' + item.prop.width + '#' + item.prop.height + '#' + ((item.getElement('.areaName') && item.getElement('.areaName').get('text') != '') ? item.getElement('.areaName').get('text') : ''));
+				dataArr.push(item.prop.startY + '#' + item.prop.startX + '#' + item.prop.width + '#' + item.prop.height + '#' + ((item.getElement('.areaName') && item.getElement('.areaName').get('text') != '') ? item.getElement('.areaName').get('text') : '') + '#' + item.areaColor);
 			});
 			
 			return dataArr; 
@@ -922,6 +988,11 @@ var Graph = new Class({
 					currentArea.prop.height = currentArea.prop.newH;
 					if (areaPosition[4] && areaPosition[4].clean() != '') {
 						new Element('div', {'class': 'areaName', 'text': areaPosition[4].clean()}).inject(currentArea, 'top');
+						currentArea.areaName = areaPosition[4].clean();
+					}
+					if (areaPosition[5]) {
+						currentArea.areaColor = areaPosition[5].toInt();
+						currentArea.setStyle('background-color', 'hsla('+currentArea.areaColor+', 91%, 56%, 0.3)');
 					}
 				}
 			});
@@ -933,6 +1004,22 @@ var Graph = new Class({
 		that.resetArea = function(areaArr){
 			//changeGraph
 			that.setArea(areaArr);
+		}
+		
+		that.rearrangeArea = function(){
+			var areaArr = that.graphArea.getElements('.area');
+			var newArr = [];
+			areaArr.each(function(item){
+				newArr[item.zIndex] = item;
+			});
+			kk('newArr');
+			kk(newArr.clean());
+			areaArr = newArr.clean();
+			areaArr.each(function(item, index){
+				item.setStyle('z-index', index+1);
+				item.zIndex = index+1;
+			});
+			that.zIndex = areaArr.length;
 		}
 		
 		that.setGP();
@@ -954,7 +1041,7 @@ var Converter = new Class({
 		that.graphArea.addEvent('click', function(event){
 			
 			//that.points.push({'x': event.event.offsetX, 'y': event.event.offsetY});
-			kk(that.lineClickIndex);
+			//kk(that.lineClickIndex);
 			if (that.lineClickIndex != 0) {
 				var newPoint = {
 					'x': event.client.x - that.graphArea.getCoordinates().left,
@@ -1432,6 +1519,9 @@ var Area = new Class({
 		that = new Element('div', {'class': 'area currentArea', 'styles': {'z-index': ++obj.zIndex}});
 		//that.prop = {'minWidth': obj.gridScale.x, 'minHeight': obj.gridScale.y};
 		
+		that.zIndex = obj.zIndex;
+		that.areaColor = 213;
+		
 		that.setPosition = function(top, left, width, height){
 			if (width < 0) {
 				left = left + width;
@@ -1515,17 +1605,50 @@ var Area = new Class({
 			
 		}
 		
+		new Element('div', {'class': 'changeNameBTN mouseEvent'}).addEvent(mouse.click, function(event){
+			event.stop();
+			var name = prompt("Name of this area", ((that.areaName) ? that.areaName : ''));
+			if (name && name.clean() != '') {
+				that.areaName = name;
+				if (that.getElement('.areaName')) {
+					that.getElement('.areaName').set('text', name);
+				} else {
+					new Element('div', {'class': 'areaName', 'text': name}).inject(that, 'top');
+				}
+				setTimeout(function(){
+					obj.getParent('.contentSpatial').fireEvent('changeSensor', obj);
+					obj.getParent('.contentSpatial').fireEvent('changeGraph', obj);
+				}, 10);
+			}
+		}).inject(that);
+		
+		new Element('div', {'class': 'changeColorBTN mouseEvent'}).addEvent(mouse.click, function(event){
+			event.stop();
+			var color = prompt("Color of this area (0 - 360)", that.areaColor);
+			if (color && color.toInt()) {
+				that.areaColor = color % 360;
+				that.setStyle('background-color', 'hsla('+color+',100%,50%,'+((that.hasClass('currentArea')) ? '0.65' : '0.3')+')');
+			}
+		}).inject(that);
+		
 		that.addEvent(mouseDown, function(event){
 			document.body.currentArea = this;
 			document.body.selectingArea = true;
-			$$('.currentArea').removeClass('currentArea');
-			document.body.currentArea.setStyle('z-index', ++obj.zIndex).addClass('currentArea');
+			
+			$$('.currentArea').each(function(item){
+				item.setStyle('background-color', 'hsla('+item.areaColor+', 91%, 56%, 0.3)');
+				item.removeClass('currentArea');
+			});
+			document.body.currentArea.setStyles({'z-index': ++obj.zIndex, 'background-color': 'hsla('+document.body.currentArea.areaColor+', 91%, 56%, 0.65)'}).addClass('currentArea');
+			document.body.currentArea.zIndex = obj.zIndex;
+			
+			obj.rearrangeArea();
 			
 			that.paddingLeft = event.client.x - that.getCoordinates().left;
 			that.paddingTop = event.client.y - that.getCoordinates().top;
 		});
 		
-		that.addEvent('dblclick', function(){
+		that.addEvent('dblclick0', function(){
 			var name = prompt("Name of this area","");
 			if (name && name.clean() != '') {
 				that.areaName = name;

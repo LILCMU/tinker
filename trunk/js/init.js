@@ -9,7 +9,7 @@ document.addEvent('domready', function(){
 	
 	//localStorage.setItem('conditionBlock', 'hello');
 });
-
+     
 window.addEvent('BlocklyIsReady', function(){
 	initSpatial();
 	

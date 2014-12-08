@@ -479,6 +479,11 @@ animation-prototype {
 
 .canvasGraphic, .graphArea {
 	position: absolute;
+
+}
+
+.canvasGraphic {
+	z-index: 199;
 }
 
 #conditionMainArea .graphArea {
@@ -504,6 +509,7 @@ animation-prototype {
 	position: relative;
 	width: 100%;
 	height: 100%;
+	z-index: 200;
 }
 
 .ssScale {	
@@ -579,13 +585,20 @@ animation-prototype {
 
 .area {
 	position: absolute;
-	background-color: rgba(101, 152, 221, 0.67);
+	background-color: hsla(213, 91%, 56%, 0.3);
 	cursor: move;
+	padding: 6px;
+	margin-top: -6px;
+	margin-left: -6px;
+}
+
+.area.highlight {
+	background-color: rgba(100, 221, 120, 0.67) !important;
 }
 
 .currentArea {	
 	/*border: 1px solid #1c5eb5;*/
-	background-color: rgba(42, 128, 245, 0.78);
+	background-color: hsla(213, 91%, 56%, 0.78);
 }
 
 .areaName {
@@ -606,6 +619,7 @@ animation-prototype {
 }
 .areaSide.TT {
 	top: 0;
+	left: 0;
 	border-top: 1px solid #1c5eb5;
 	cursor: n-resize;
 }
@@ -614,6 +628,7 @@ animation-prototype {
 }
 .areaSide.BB {
 	bottom: 0;
+	left: 0;
 	border-bottom: 1px solid #1c5eb5;
 	cursor: s-resize;
 }
@@ -628,6 +643,7 @@ animation-prototype {
 }
 .areaSide.LL {
 	left: 0;
+	top: 0;
 	border-left: 1px solid #1c5eb5;
 	cursor: w-resize;
 }
@@ -636,6 +652,7 @@ animation-prototype {
 }
 .areaSide.RR {
 	right: 0;
+	top: 0;
 	border-right: 1px solid #1c5eb5;
 	cursor: e-resize;
 }
@@ -710,6 +727,31 @@ animation-prototype {
 	border-right: 4px solid #1c5eb5;
 }
 
+.changeNameBTN, 
+.changeColorBTN {
+	position: absolute;
+	width: 10px;
+	height: 10px;
+	right: -14px;
+	cursor: pointer;
+	display: none;
+}
+
+.currentArea .changeNameBTN, 
+.currentArea .changeColorBTN {
+	display: block;
+}
+
+.changeNameBTN {
+	top: 0;
+	background-color: gray;
+}
+
+.changeColorBTN {
+	top: 18px;
+	background-color: #689be4;
+}
+
 
 /****  Converter  ****/
 
@@ -768,7 +810,7 @@ animation-prototype {
 	width: 86px;
 	text-align: center;
 	pointer-events: none;
-	z-index: 25;
+	z-index: 225;
 	font-size: 12px;
 }
 .converter .popupPoint::after {
@@ -793,7 +835,7 @@ animation-prototype {
 	border: 5px solid #3399ee;
 	margin: -5px;
 	border-radius: 5px;
-	z-index: 20;
+	z-index: 220;
 }
 .converter .point:hover,
 .converter .point.selected{
@@ -807,7 +849,7 @@ animation-prototype {
 	-webkit-transform-origin: 0px 0px;
 	-webkit-transition: opacity 0.5s linear;
 	opacity: 1;
-	z-index: 15;
+	z-index: 215;
 	margin: -1px;
 }
 .converter .line:hover {

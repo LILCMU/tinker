@@ -557,6 +557,8 @@ function autoloadBlock(){
 	xml.deletable = false;
 	Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, xml);
 	
+	//return;
+	
 	var loadedBlock = window.localStorage.getItem('autoSaveBlock');
 	if (!(loadedBlock.split('procedure_procedure')[1])) {
 		loadedBlock = loadedBlock.split('</xml>')[0]+'<block type="procedure_procedure" x="100" y="50"><title name="pname">main</title></block></xml>';

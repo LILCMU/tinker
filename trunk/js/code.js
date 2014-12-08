@@ -343,6 +343,8 @@ Code.writeToGogoBoard = function(){
 	
 	code = code.split('newline').join('\n');
 	
+	code = code.split('and true').join('');
+	
 	ws.send('logo::'+code);
 	kk('logo::'+code);
 }

@@ -635,7 +635,9 @@ Blockly.GogoCode.math_operator = function() {
   // TODO: Assemble GogoCode into code variable.
   //var code = '<span class="c10">( '+value_1stnum.slice(1, value_1stnum.length-1)+' '+dropdown_op+' '+value_2ndnum.slice(1, value_2ndnum.length-1) +' )</span>';
   var code = '<span class="c10">( '+value_1stnum+' '+dropdown_op+' '+value_2ndnum +' )</span>';
+  code = code.split('×').join('*');
   // TODO: Change ORDER_NONE to the correct strength.
+  alert(code);
   return [code, Blockly.GogoCode.ORDER_NONE];
 };
 
