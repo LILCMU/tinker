@@ -302,8 +302,10 @@ Blockly.GogoCode['i2c_write'] = function(block) {
 };
 
 Blockly.GogoCode['i2c_read'] = function(block) {
-  var text_reg_addr = block.getFieldValue('reg_addr');
-  var text_i2c_addr = block.getFieldValue('i2c_addr');
+//  var text_reg_addr = block.getFieldValue('reg_addr');
+//  var text_i2c_addr = block.getFieldValue('i2c_addr');
+  var text_reg_addr = Blockly.GogoCode.valueToCode(block, 'reg_addr', Blockly.GogoCode.ORDER_ATOMIC);
+  var text_i2c_addr = Blockly.GogoCode.valueToCode(block, 'i2c_addr', Blockly.GogoCode.ORDER_ATOMIC);
   var code = '<span class="c210">i2cread [reg_address: '+text_reg_addr+', i2c_address: '+text_i2c_addr+']</span>\n';
   var code = '<span class="c210">i2cread '+text_i2c_addr+' '+text_reg_addr+'</span>';
   return [code, Blockly.GogoCode.ORDER_NONE];

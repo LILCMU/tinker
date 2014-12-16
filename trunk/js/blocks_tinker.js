@@ -242,7 +242,7 @@ Blockly.Blocks['i2c_write'] = {
     this.appendValueInput("value")
         .appendField("Write I2C register: write ");
     this.appendValueInput("reg_addr")
-        .appendField("to register address ");
+        .appendField("to register ");
     this.appendValueInput("i2c_addr")
         .appendField(", I2C address ");
     this.setInputsInline(true);
@@ -257,12 +257,18 @@ Blockly.Blocks['i2c_read'] = {
   init: function() {
     this.setHelpUrl('http://www.example.com/');
     this.setColour(210);
-    this.appendDummyInput()
-        .appendField("Read I2C register:")
-        .appendField("read from ")
-        .appendField(new Blockly.FieldTextInput("register address"), "reg_addr")
-        .appendField(", ")
-        .appendField(new Blockly.FieldTextInput("I2C address"), "i2c_addr");
+//    this.appendDummyInput()
+//        .appendField("Read I2C register:")
+//        .appendField("read from ")
+//        .appendField(new Blockly.FieldTextInput("register address"), "reg_addr")
+//        .appendField(", ")
+//        .appendField(new Blockly.FieldTextInput("I2C address"), "i2c_addr");
+//    this.appendValueInput("value")
+//        .appendField("");
+    this.appendValueInput("reg_addr")
+        .appendField("Read I2C register: read from register ");
+    this.appendValueInput("i2c_addr")
+        .appendField(", I2C address ");
     this.setInputsInline(true);
     this.setOutput(true);
     this.setTooltip('');
