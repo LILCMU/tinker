@@ -201,6 +201,8 @@ Blockly.Blocks['recorder_eraseall'] = {
     this.setTooltip('');
   }
 };
+/***
+
 
 Blockly.Blocks['i2c_write'] = {
   init: function() {
@@ -221,6 +223,35 @@ Blockly.Blocks['i2c_write'] = {
     this.setTooltip('');
   }
 };
+/***/
+
+//***
+Blockly.Blocks['i2c_write'] = {
+  init: function() {
+    this.setHelpUrl('http://www.example.com/');
+    this.setColour(210);
+//    this.appendDummyInput()
+//        .appendField("Write I2C register:");
+//    this.appendValueInput("value")
+//        .appendField("write ");
+//    this.appendValueInput("reg_addr")
+//        .appendField("to ");
+//    this.appendValueInput("i2c_addr")
+//        .appendField(", ");
+//    this.setInputsInline(true);
+    this.appendValueInput("value")
+        .appendField("Write I2C register: write ");
+    this.appendValueInput("reg_addr")
+        .appendField("to register address ");
+    this.appendValueInput("i2c_addr")
+        .appendField(", I2C address ");
+    this.setInputsInline(true);
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+/***/
 
 Blockly.Blocks['i2c_read'] = {
   init: function() {

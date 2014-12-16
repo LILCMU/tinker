@@ -353,12 +353,12 @@ var initTinker = function() {
 	});
 	
 	
-	autoloadBlock();
 	setTimeout(function(){
 		document.fireEvent('initReady');
+		Blockly.bindEvent_(Blockly.mainWorkspace.getCanvas(), 'blocklyWorkspaceChange', null, onWorkspaceChange);
 	}, 100);
+	autoloadBlock();
 
-	Blockly.bindEvent_(Blockly.mainWorkspace.getCanvas(), 'blocklyWorkspaceChange', null, onWorkspaceChange);
 	
 	return 0;
 	//startWebSocket();
@@ -560,6 +560,8 @@ function autoloadBlock(){
 	//return;
 	
 	var loadedBlock = window.localStorage.getItem('autoSaveBlock');
+	//alert(loadedBlock.split('procedure_procedure')[1]);
+	if (!loadedBlock) return;
 	if (!(loadedBlock.split('procedure_procedure')[1])) {
 		loadedBlock = loadedBlock.split('</xml>')[0]+'<block type="procedure_procedure" x="100" y="50"><title name="pname">main</title></block></xml>';
 	}

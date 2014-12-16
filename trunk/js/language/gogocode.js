@@ -291,9 +291,11 @@ Blockly.GogoCode['recorder_eraseall'] = function(block) {
 };
 
 Blockly.GogoCode['i2c_write'] = function(block) {
-  var value_value = Blockly.GogoCode.valueToCode(block, 'TEXT', Blockly.GogoCode.ORDER_ATOMIC);
-  var text_reg_addr = block.getFieldValue('reg_addr');
-  var text_i2c_addr = block.getFieldValue('i2c_addr');
+  var value_value = Blockly.GogoCode.valueToCode(block, 'value', Blockly.GogoCode.ORDER_ATOMIC);
+  var text_reg_addr = Blockly.GogoCode.valueToCode(block, 'reg_addr', Blockly.GogoCode.ORDER_ATOMIC);
+  var text_i2c_addr = Blockly.GogoCode.valueToCode(block, 'i2c_addr', Blockly.GogoCode.ORDER_ATOMIC);
+//  var text_reg_addr = block.getFieldValue('reg_addr');
+//  var text_i2c_addr = block.getFieldValue('i2c_addr');
   var code = '<span class="c210">i2cwrite [write: \''+value_value+'\', reg_address: '+text_reg_addr+', i2c_address: '+text_i2c_addr+']</span>\n';
   var code = '<span class="c210">i2cwrite '+text_i2c_addr+' '+text_reg_addr+' '+value_value+'</span>\n';
   return code;
@@ -637,7 +639,7 @@ Blockly.GogoCode.math_operator = function() {
   var code = '<span class="c10">( '+value_1stnum+' '+dropdown_op+' '+value_2ndnum +' )</span>';
   code = code.split('×').join('*');
   // TODO: Change ORDER_NONE to the correct strength.
-  alert(code);
+  
   return [code, Blockly.GogoCode.ORDER_NONE];
 };
 
@@ -910,11 +912,9 @@ Blockly.GogoCode['procedures_defreturn'] = function(block) {
   }
   var code = '(main ' + funcName + '[' + args.join(', ') + '] {\n' +
       branch + returnValue + '} )';
-  //alert(returnValue);
   code = Blockly.GogoCode.scrub_(block, code);
   code = '[p]<span class="c0">newline</span><span class="c0">newline</span>to '+funcName+' '+ args.join(' ')+'<span class="c0">newline</span>\n '+branch+'\n<span class="c0">newline</span>'+returnValue+'\n<span class="c0">newline</span>end\n [/p]';
   Blockly.GogoCode.definitions_[funcName] = code;
-  //alert(code);
   return null;
 };
 
