@@ -727,6 +727,47 @@ animation-prototype {
 	border-right: 4px solid #1c5eb5;
 }
 
+.boundNumber {
+	pointer-events: none;
+	display: none;
+	position: absolute;
+	font-size: 11px;
+	color: #1fc609;
+}
+.currentArea .boundNumber {
+	display: block;
+}
+
+.boundNumber.top {
+	top: -11px;
+	width: 100%;
+	left: 0;
+	text-align: center;
+}
+.boundNumber.bottom {
+	bottom: -14px;
+	width: 100%;
+	left: 0;
+	text-align: center;
+}
+.boundNumber.left {
+	top: 50%;
+	right: 100%;
+	margin: -6px 3px;
+	text-align: right;
+}
+.boundNumber.right {
+	top: 50%;
+	left: 100%;
+	margin: -6px 3px;
+	text-align: left;
+}
+
+.oneInput .boundNumber.top,
+.oneInput .boundNumber.bottom {
+	display: none;
+}
+
 .changeNameBTN, 
 .changeColorBTN {
 	position: absolute;

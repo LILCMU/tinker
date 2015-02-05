@@ -140,30 +140,48 @@ var Spatial = new Class({
 		that.snapToGrid = false;
 		that.zIndex = 1;
 		that.yAxis = true;
+        that.expand = false;
+
+        that.input = {'X':{'min': 0, 'max': 1000}, 'Y':{'min': 0, 'max': 1000}};
 		
 		that.GP = { // graphic position
 			'top': 20,
 			'left': 60,
 			'width': 400,
 			'height': 400
-		}
+		};
 		
 		that.gridAmount = {
 			'x': 20,
 			'y': 20
-		}
+		};
 		
 		that.gridScale = {
 			'x': that.GP.width / that.gridAmount.x,
 			'y': that.GP.height / that.gridAmount.y
-		}
+		};
+		
+		that.step = {
+			'x': 20,
+			'y': 20
+		};
+		
+		that.stepArr = {
+			'x': [],
+			'y': []
+		};
+		
+		that.init = {
+			'x': 0,
+			'y': 0
+		};
 		
 		that.setGridAmount = function(x, y){
 			that.gridAmount.x = x;
 			that.gridAmount.y = (that.yAxis) ? y : 1 ;
 			that.setGridScale();
 			document.fireEvent('gridAmountChange');
-		}
+		};
 		
 		that.setGridScale = function(){
 			that.gridScale.x = that.GP.width / that.gridAmount.x;
@@ -187,54 +205,121 @@ var Spatial = new Class({
 			});
 			
 			that.setGridScale();
-		}
+		};
 		
 		that.setWidth = function(width){
 			that.GP.width = width;
 			that.setGP();
-		}
+		};
 		
 		that.setHeight = function(height){
 			that.GP.height = height;
 			that.setGP();
-		}
+		};
 		
 		that.drawCanvas = function(){
-			that.canvas.setStyle('width', that.GP.width + px).setStyle('height', that.GP.height + px);
-			that.canvas.set('width', that.GP.width).set('height', that.GP.height);
+			that.canvas.setStyle('width', (that.GP.width+10) + px).setStyle('height', (that.GP.height+10) + px);
+			that.canvas.set('width', that.GP.width+10).set('height', that.GP.height+10);
 			var ctx = that.canvas.getContext("2d");
 			ctx.lineWidth = 1;
 			ctx.save();
 			ctx.restore();
-			var step = Math.ceil(that.gridAmount.x / 20);
-			for (var i = 0, j = 0; i <= that.gridScale.x * that.gridAmount.x; j++) {
-				ctx.strokeStyle = (j % 5 == 0) ? 'rgba(0, 0, 0, 0.25)' : 'rgba(0, 0, 0, 0.15)';
+            ctx.font = "10px Arial";
+            ctx.strokeStyle = 'rgba(0, 0, 0, 0.4)' ;
+
+
+			ctx.beginPath();
+			ctx.moveTo(0, 0);
+			ctx.lineTo(0, that.gridScale.y * that.gridAmount.y);
+			ctx.stroke();
+
+
+//var i = (step * 0.5) * that.gridScale.x;
+//if (i > 10) {
+//	i = Math.ceil((i * 2) * 0.1) * 5;
+//	//i = (i - that.input.X.min + (step * 0.5)) * that.gridScale.x;
+//}
+//alert(i);
+//var i = 1;
+			//alert(step);
+			//alert(that.gridScale.x);
+			
+			var i = 0;
+			that.step.x = Math.ceil(that.gridAmount.x / ((that.expand) ? 40 : 20));
+			if (that.step.x > 10) {
+				that.step.x = Math.round((that.step.x * 2) * 0.1) * 5;
+				i = (Math.ceil((that.input.X.min * 1) * 0.1) * 10) - that.input.X.min;
+				i = (i * that.gridScale.x);
+				//i += (that.gridScale.x * step);
+			}
+			that.init.x = i;
+			that.stepArr.x = [0];
+			
+			for (var j = 1; i <= that.gridScale.x * that.gridAmount.x; j++) {
+				ctx.strokeStyle = (j % 5 == 0) ? 'rgba(0, 0, 0, 0.4)' : 'rgba(0, 0, 0, 0.15)';
 				ctx.beginPath();
 				ctx.moveTo(Math.round(i), 0);
+				
+                if (j % 2 == 0) {
+                	var mathNO = Math.round((i / (that.gridScale.x * that.gridAmount.x)) * (that.input.X.max-that.input.X.min));
+                	mathNO += that.input.X.min;
+                    ctx.fillText( mathNO, Math.round(i) - 7, that.gridScale.y * that.gridAmount.y );
+                }
+                
 				ctx.lineTo(Math.round(i), that.gridScale.y * that.gridAmount.y);
 				ctx.stroke();
-				i += (that.gridScale.x * step);
+				
+				that.stepArr.x.push(i);
+				i += (that.gridScale.x * that.step.x);
 			}
-			ctx.strokeStyle = 'rgba(0, 0, 0, 0.25)';
+			ctx.strokeStyle = 'rgba(0, 0, 0, 0.4)';
 			ctx.beginPath();
 			ctx.moveTo(that.gridScale.x * that.gridAmount.x, 0);
 			ctx.lineTo(that.gridScale.x * that.gridAmount.x, that.gridScale.y * that.gridAmount.y);
 			ctx.stroke();
+			that.stepArr.x.push(400);
 			
-			step = Math.ceil(that.gridAmount.y / 20);
-			for (var i = 0, j=0; i <= that.gridScale.y * that.gridAmount.y; j++) {
-				ctx.strokeStyle = (j % 5 == 0) ? 'rgba(0, 0, 0, 0.25)' : 'rgba(0, 0, 0, 0.15)';
-				ctx.beginPath();
-				ctx.moveTo(0, Math.round(i));
-				ctx.lineTo(that.gridScale.x * that.gridAmount.x, Math.round(i));
-				ctx.stroke();
-				i += (that.gridScale.y * step);
-			}
-			ctx.strokeStyle = 'rgba(0, 0, 0, 0.25)';
+			
+			ctx.strokeStyle = 'rgba(0, 0, 0, 0.4)';
 			ctx.beginPath();
 			ctx.moveTo(0, that.gridScale.y * that.gridAmount.y);
 			ctx.lineTo(that.gridScale.x * that.gridAmount.x, that.gridScale.y * that.gridAmount.y);
 			ctx.stroke();
+			
+			i = (that.gridScale.y * that.gridAmount.y);
+			that.step.y = Math.ceil(that.gridAmount.y / 20);
+			if (that.step.y > 10) {
+				that.step.y = Math.round((that.step.y * 2) * 0.1) * 5;
+				i -= ((Math.ceil((that.input.Y.min * 1) * 0.1) * 10) - that.input.Y.min) * that.gridScale.y;
+				//i -= that.gridScale.y * step;
+			}
+			that.init.y = i;
+			that.stepArr.y = [400];
+			
+			for (var j = 1; i >= 0 ; j++) {
+				ctx.strokeStyle = (j % 5 == 0) ? 'rgba(0, 0, 0, 0.4)' : 'rgba(0, 0, 0, 0.15)';
+				ctx.beginPath();
+				ctx.moveTo(0, Math.round(i));
+				
+                if (j % 2 == 0) {
+                    ctx.fillText(Math.round(that.input.Y.max-((i / (that.gridScale.y * that.gridAmount.y)) * (that.input.Y.max-that.input.Y.min))), 0, Math.round(i) + 4 );
+                }
+                
+                ctx.lineTo(that.gridScale.x * that.gridAmount.x, Math.round(i));
+				ctx.stroke();
+				
+				that.stepArr.y.unshift(i);
+				i -= (that.gridScale.y * that.step.y);
+			}
+			ctx.strokeStyle = 'rgba(0, 0, 0, 0.4)';
+			ctx.beginPath();
+			ctx.moveTo(0, 0);
+			ctx.lineTo(that.gridScale.x * that.gridAmount.x, 0);
+			ctx.stroke();
+			that.stepArr.y.unshift(0);
+			
+			kk(that.stepArr.x);
+			kk(that.stepArr.y);
 			
 			ctx.save();
 		}
@@ -274,6 +359,7 @@ var Graph = new Class({
 		that.SS = {'h': true, 'v': true};
 		that.addClass('graph');
 		that.type = 'sensor';
+        that.expand = false;
 		that.setStyles({
 			'width': '100%', 
 			'height': '100%'
@@ -451,6 +537,17 @@ var Graph = new Class({
 				var DX = that.gx(CPX - that.GP.left) - that.gx(SPX - that.GP.left);
 				var DY = that.gy(CPY- that.GP.top) - that.gy(SPY - that.GP.top);
 				
+//				var newNum = Math.max(DX + currentArea.prop.startX, 0);
+//				if (that.step.x > 10) {
+//					for (var i = 0; i < that.stepArr.x.length; i++) {
+//						if (newNum < that.stepArr.x[i]) break;
+//					}
+//					newNum = ((that.stepArr.x[i] - newNum) < (newNum - that.stepArr.x[i-1])) ? that.stepArr.x[i] : that.stepArr.x[i-1] ;
+//					newNum = Math.round(newNum * 0.1) * 10;
+//				}
+//				kk('DX: '+DX+', newNum'+newNum);
+//				DX = newNum - currentArea.prop.startX;
+				
 				if (currentArea.hasClass('resize')) {
 					var corner = currentArea.getFirst('.mouseDown');
 					var prop = currentArea.prop;
@@ -531,6 +628,7 @@ var Graph = new Class({
 					currentArea.prop = prop;
 					
 				}
+				currentArea.updateBound();
 			} else {
 				// *** kk(event.event.offsetX +", "+ event.event.offsetY);
 				
@@ -600,8 +698,27 @@ var Graph = new Class({
 		};
 		
 		that.gx = function(number){
-			if (that.input.X.snapToGrid) {
+			if ( that.input.X.snapToGrid) {
 				var newNum = Math.round(Math.round(number / that.gridScale.x) * that.gridScale.x) ;
+//				newNum = Math.round(number * 0.1) * 10;
+//				kk(that.step.x * that.gridScale.x);
+//				newNum = 0;
+//				while (newNum < number) {
+//					newNum = ((newNum == 0) ? that.init.x : newNum + (that.step.x * that.gridScale.x) );
+//				}
+//				newNum = Math.round(newNum * 0.1) * 10;
+//				kk('sanp x: ' + number + ', ' + newNum);
+
+
+//				if (that.step.x > 10) {
+//					for (var i = 0; i < that.stepArr.x.length; i++) {
+//						if (newNum < that.stepArr.x[i]) break;
+//					}
+//					newNum = ((that.stepArr.x[i] - newNum) < (newNum - that.stepArr.x[i-1])) ? that.stepArr.x[i] : that.stepArr.x[i-1] ;
+//					newNum = Math.round(newNum * 0.1) * 10;
+//				}
+				
+				//kk('newNum : ' + newNum);
 				return newNum;
 				//return ((newNum % (gridScale * 2) ) == 0 ) ? newNum : number;
 			}
@@ -611,6 +728,7 @@ var Graph = new Class({
 		that.gy = function(number){
 			if (that.input.Y.snapToGrid) {
 				var newNum = Math.round(Math.round(number / that.gridScale.y) * that.gridScale.y) ;
+				//kk('snap y: ' + number);
 				return newNum;
 				//return ((newNum % (gridScale * 2) ) == 0 ) ? newNum : number;
 			}
@@ -903,17 +1021,26 @@ var Graph = new Class({
 //				
 //			}, 50);
 			
-		}
+		};
 		
 		that.expandGraph = function(expand){
-			if (expand) {
-				that.setWidth(800);
-				that.getParent().setStyle('width', 880 + px);
+            that.expand = expand;
+            if (expand) {
+                //that.gridAmount.y = 40;
+				that.setWidth(1000);
+				that.getParent().setStyles({
+                    'width': 1150 + px,
+                    'z-index': 200,
+                    'background-color': 'white'
+                });
 			} else {
+                //that.gridAmount.y = 20;
 				that.setWidth(400);
 				that.getParent().setStyle('width', 480 + px);
 			}
-		}
+
+            document.fireEvent('gridAmountChange');
+		};
 		
 		that.enableYAxis = function(value){
 			that.yAxis = value;
@@ -922,14 +1049,16 @@ var Graph = new Class({
 				$$('#selectLeftSensor, .sensorX').setStyle('top', '430px');
 				$('selectRightSensor').removeClass('hideLabel');
 				that.sensorScale.setThickness(2, 2);
+				that.removeClass('oneInput');
 			} else {
 				that.setHeight(100);
 				$$('#selectLeftSensor, .sensorX').setStyle('top', '130px');
 				$('selectRightSensor').addClass('hideLabel');
 				that.setGridAmount(that.gridAmount.x, 1);
 				that.sensorScale.setThickness(6, 0);
+				that.addClass('oneInput');
 			}
-		}
+		};
 		
 		that.setTypeNew = function(axis, value, type, min, max){
 			that.input[axis] = {
@@ -953,13 +1082,13 @@ var Graph = new Class({
 			}
 			
 			that.setGridAmount(amountX, amountY);
-		}
+		};
 		
 		that.getTextData = function(){
 			var areaArr = that.getElements('.area');
 			var dataArr = [];
 			areaArr.each(function(item){
-				dataArr.push(item.prop.startY + '#' + item.prop.startX + '#' + item.prop.width + '#' + item.prop.height + '#' + ((item.getElement('.areaName') && item.getElement('.areaName').get('text') != '') ? item.getElement('.areaName').get('text') : '') + '#' + item.areaColor);
+				dataArr.push(item.prop.startY + '#' + ((that.expand) ? Math.round(item.prop.startX * 0.4) : item.prop.startX ) + '#' + ((that.expand) ? Math.round(item.prop.width * 0.4) : item.prop.width ) + '#' + item.prop.height + '#' + ((item.getElement('.areaName') && item.getElement('.areaName').get('text') != '') ? item.getElement('.areaName').get('text') : '') + '#' + item.areaColor);
 			});
 			
 			return dataArr; 
@@ -971,6 +1100,10 @@ var Graph = new Class({
 				item = item.clean();
 				if (item != '') {
 					var areaPosition = item.split('#');
+                    if (that.expand) {
+                        areaPosition[1] = areaPosition[1].toInt() * 2.5;
+                        areaPosition[2] = areaPosition[2].toInt() * 2.5;
+                    }
 					var currentArea = new Area(that);
 					currentArea.prop = {
 						'minWidth': that.gridScale.x, 
@@ -1523,6 +1656,15 @@ var Area = new Class({
 		that.areaColor = 213;
 		
 		that.setPosition = function(top, left, width, height){
+//			kk('old left: '+left);
+//			if (obj.step.x > 10) {
+//				for (var i = 0; i < obj.stepArr.x.length; i++) {
+//					if (left < obj.stepArr.x[i]) break;
+//				}
+//				left = ((obj.stepArr.x[i] - left) < (left - obj.stepArr.x[i-1])) ? obj.stepArr.x[i] : obj.stepArr.x[i-1] ;
+//				//left = Math.round(left * 0.1) * 10;
+//			}
+//			kk('new left: '+left);
 			if (width < 0) {
 				left = left + width;
 				width = 0 - width;
@@ -1533,6 +1675,8 @@ var Area = new Class({
 			}
 			top = Math.min(Math.max(top, 0), obj.GP.height - obj.gridScale.y);
 			top = (obj.SS.h) ? top : 0;
+			
+			
 			var diffLeft = left;
 			left = Math.min(Math.max(left, 0), obj.GP.width - obj.gridScale.x);
 			deffLeft = left - diffLeft;
@@ -1552,6 +1696,28 @@ var Area = new Class({
 			that.prop.newW = width;
 			that.prop.newH = height;
 			
+			that.updateBound();
+		};
+		
+		that.updateBound = function(){
+			//kk(that.prop);
+			var prop = {};
+			var range = {
+				'x': obj.input.X.max - obj.input.X.min,
+				'y': obj.input.Y.max - obj.input.Y.min
+			};
+			prop.x1 = Math.round(that.getStyle('left').toInt() / obj.GP.width * range.x);
+			prop.x2 = Math.round((that.getStyle('left').toInt() + that.getStyle('width').toInt()) / obj.GP.width * range.x);
+			prop.y2 = Math.round((obj.GP.height - that.getStyle('top').toInt()) / obj.GP.height * range.y);
+			prop.y1 = Math.round((obj.GP.height - (that.getStyle('top').toInt() + that.getStyle('height').toInt())) / obj.GP.height * range.y);
+			
+			that.getElement('.boundNumber.top').set('text', prop.y2+obj.input.Y.min);
+			that.getElement('.boundNumber.bottom').set('text', prop.y1+obj.input.Y.min);
+			that.getElement('.boundNumber.left').set('text', prop.x1+obj.input.X.min);
+			that.getElement('.boundNumber.right').set('text', prop.x2+obj.input.X.min);
+			
+//			that.getElement('.boundNumber.left').set('text', Math.round((prop.x1 + obj.input.X.min) * 0.1) * 10);
+//			that.getElement('.boundNumber.right').set('text', Math.round((prop.x2 + obj.input.X.min) * 0.1) * 10);
 		};
 		
 		var cornerType = ['TT', 'BB', 'LL', 'RR', 'TL', 'TR', 'BL', 'BR'];
@@ -1605,6 +1771,11 @@ var Area = new Class({
 			
 		}
 		
+		new Element('div', {'class': 'boundNumber top'}).inject(that);
+		new Element('div', {'class': 'boundNumber left'}).inject(that);
+		new Element('div', {'class': 'boundNumber right'}).inject(that);
+		new Element('div', {'class': 'boundNumber bottom'}).inject(that);
+		
 		new Element('div', {'class': 'changeNameBTN mouseEvent'}).addEvent(mouse.click, function(event){
 			event.stop();
 			var name = prompt("Name of this area", ((that.areaName) ? that.areaName : ''));
@@ -1646,6 +1817,7 @@ var Area = new Class({
 			
 			that.paddingLeft = event.client.x - that.getCoordinates().left;
 			that.paddingTop = event.client.y - that.getCoordinates().top;
+			
 		});
 		
 		that.addEvent('dblclick0', function(){
