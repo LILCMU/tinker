@@ -487,6 +487,15 @@ Blockly.GogoCode.control_ifelse = function() {
   return code;
 };
 
+Blockly.GogoCode['control_if_state_change'] = function() {
+  var value_condition = Blockly.GogoCode.valueToCode(this, 'condition', Blockly.GogoCode.ORDER_ATOMIC);
+  var statements_statement = Blockly.GogoCode.statementToCode(this, 'statement');
+  
+  //var code = 'if '+value_condition.slice(1, value_condition.length-1)+' [\n'+statements_statement+']\n';
+  var code = '<span class="c120">if state change '+ value_condition +' \n[\n'+statements_statement+'\n]</span>\n';
+  return code;
+};
+
 Blockly.GogoCode.control_waituntil = function() {
   var value_name = Blockly.GogoCode.valueToCode(this, 'NAME', Blockly.GogoCode.ORDER_ATOMIC);
   // TODO: Assemble GogoCode into code variable.
@@ -788,6 +797,13 @@ Blockly.GogoCode['play_sound'] = function(block) {
 Blockly.GogoCode['stop_sound'] = function() {
   // TODO: Assemble Python into code variable.
   var code = 'stopsound\n';
+  return code;
+};
+
+Blockly.GogoCode['say'] = function(block) {
+  var value_string = Blockly.GogoCode.valueToCode(block, 'string', Blockly.GogoCode.ORDER_ATOMIC);
+  // TODO: Assemble JavaScript into code variable.
+  var code = 'say "'+value_string+'"\n';
   return code;
 };
 

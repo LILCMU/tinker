@@ -582,6 +582,21 @@ Blockly.Blocks.control_ifelse = {
   }
 };
 
+
+Blockly.Blocks['control_if_state_change'] = {
+  category: 'Control',
+  helpUrl: 'http://www.example.com/',
+  init: function() {
+    this.setColour(125);
+    this.appendValueInput( "condition" ).setCheck(Boolean).appendField("if state change");
+    var input =  this.appendStatementInput( "statement", null);
+    input.appendField("do");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setTooltip('If input expression is true, then do some statements.');
+  }
+};
+
 Blockly.Blocks.control_waituntil = {
   category: 'Control',
   helpUrl: 'http://www.example.com/',
@@ -1097,6 +1112,19 @@ Blockly.Blocks['stop_sound'] = {
     this.setInputsInline(true);
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
+    this.setTooltip('');
+  }
+};
+
+Blockly.Blocks['say'] = {
+  init: function() {
+    this.setHelpUrl('http://www.example.com/');
+    this.setColour(170);
+    this.appendValueInput("string")
+        .appendField("Say");
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, "null");
+    this.setNextStatement(true, "null");
     this.setTooltip('');
   }
 };

@@ -171,6 +171,11 @@ var Spatial = new Class({
 			'y': []
 		};
 		
+		that.lineNumArr = {
+			'x': [],
+			'y': []
+		};
+		
 		that.init = {
 			'x': 0,
 			'y': 0
@@ -254,15 +259,17 @@ var Spatial = new Class({
 			}
 			that.init.x = i;
 			that.stepArr.x = [0];
+			that.lineNumArr.x = [that.input.X.min];
 			
 			for (var j = 1; i <= that.gridScale.x * that.gridAmount.x; j++) {
 				ctx.strokeStyle = (j % 5 == 0) ? 'rgba(0, 0, 0, 0.4)' : 'rgba(0, 0, 0, 0.15)';
 				ctx.beginPath();
 				ctx.moveTo(Math.round(i), 0);
 				
+            	var mathNO = Math.round((i / (that.gridScale.x * that.gridAmount.x)) * (that.input.X.max-that.input.X.min));
+            	mathNO += that.input.X.min;
+            	that.lineNumArr.x.push(mathNO);
                 if (j % 2 == 0) {
-                	var mathNO = Math.round((i / (that.gridScale.x * that.gridAmount.x)) * (that.input.X.max-that.input.X.min));
-                	mathNO += that.input.X.min;
                     ctx.fillText( mathNO, Math.round(i) - 7, that.gridScale.y * that.gridAmount.y );
                 }
                 
@@ -278,6 +285,7 @@ var Spatial = new Class({
 			ctx.lineTo(that.gridScale.x * that.gridAmount.x, that.gridScale.y * that.gridAmount.y);
 			ctx.stroke();
 			that.stepArr.x.push(400);
+			that.lineNumArr.x.push(that.input.X.max);
 			
 			
 			ctx.strokeStyle = 'rgba(0, 0, 0, 0.4)';
@@ -295,14 +303,17 @@ var Spatial = new Class({
 			}
 			that.init.y = i;
 			that.stepArr.y = [400];
+			that.lineNumArr.y = [that.input.Y.min];
 			
 			for (var j = 1; i >= 0 ; j++) {
 				ctx.strokeStyle = (j % 5 == 0) ? 'rgba(0, 0, 0, 0.4)' : 'rgba(0, 0, 0, 0.15)';
 				ctx.beginPath();
 				ctx.moveTo(0, Math.round(i));
 				
+				var mathNO = Math.round(that.input.Y.max-((i / (that.gridScale.y * that.gridAmount.y)) * (that.input.Y.max-that.input.Y.min)));
+				that.lineNumArr.y.push(mathNO);
                 if (j % 2 == 0) {
-                    ctx.fillText(Math.round(that.input.Y.max-((i / (that.gridScale.y * that.gridAmount.y)) * (that.input.Y.max-that.input.Y.min))), 0, Math.round(i) + 4 );
+                    ctx.fillText( mathNO, 0, Math.round(i) + 4 );
                 }
                 
                 ctx.lineTo(that.gridScale.x * that.gridAmount.x, Math.round(i));
@@ -317,9 +328,15 @@ var Spatial = new Class({
 			ctx.lineTo(that.gridScale.x * that.gridAmount.x, 0);
 			ctx.stroke();
 			that.stepArr.y.unshift(0);
+			that.lineNumArr.y.push(that.input.Y.max);
 			
+			kk('===00===');
 			kk(that.stepArr.x);
 			kk(that.stepArr.y);
+			
+			kk('===11===');
+			kk(that.lineNumArr.x);
+			kk(that.lineNumArr.y);
 			
 			ctx.save();
 		}
@@ -383,6 +400,7 @@ var Graph = new Class({
 				'type': 'Sensor',
 				'value': 1, 
 				'snapToGrid': false,
+				'userSnap': true,
 				'max': 1024,
 				'min': 0
 			},
@@ -390,6 +408,7 @@ var Graph = new Class({
 				'type': 'Sensor',
 				'value': 1, 
 				'snapToGrid': false,
+				'userSnap': true,
 				'max': 1024,
 				'min': 0
 			}
@@ -485,6 +504,16 @@ var Graph = new Class({
 			}
 			
 			/***/
+		}
+		
+		that.snapX = function(){
+			if ((that.step.x > 10) && that.input.X.userSnap) return true;
+			return false;
+		}
+		
+		that.snapY = function(){
+			if ((that.step.y > 10) && that.input.Y.userSnap) return true;
+			return false;
 		}
 		
 		
@@ -591,6 +620,13 @@ var Graph = new Class({
 					prop.newX = Math.min(Math.max(prop.startX + DX, 0), that.GP.width - prop.width);
 					prop.newY = Math.min(Math.max(prop.startY + DY, 0), that.GP.height - prop.height);
 					
+					if (that.snapX()) {
+						prop.newX = returnClosest(prop.newX, that.stepArr.x);
+					}
+					if (that.snapY()) {
+						prop.newY = returnClosest(prop.newY, that.stepArr.y);
+					}
+					
 					currentArea.setStyles({
 						'top': prop.newY+px,
 						'left': prop.newX+px
@@ -616,6 +652,16 @@ var Graph = new Class({
 					if ((prop.startY+prop.minHeight) > that.GP.height) {
 						prop.startY = that.GP.height - prop.height;
 					}
+					
+					prop.startX = returnClosest(prop.startX, that.stepArr.x);
+					var right = prop.startX + prop.width;
+					right = returnClosest(right, that.stepArr.x);
+					prop.width = right - prop.startX;
+					
+					prop.startY = returnClosest(prop.startY, that.stepArr.y);
+					var bottom = prop.startY + prop.height;
+					bottom = returnClosest(bottom, that.stepArr.y);
+					prop.height = bottom - prop.startY;
 					
 					currentArea.setStyles({
 						'top': prop.startY+px,
@@ -1065,6 +1111,7 @@ var Graph = new Class({
 				'type': type,
 				'value': value, 
 				'snapToGrid': (((max - min) <= 40) || type == 'Switch'),
+				'userSnap': true,
 				'max': max.toInt() || 1000,
 				'min': min.toInt() || 0
 			}
@@ -1656,15 +1703,42 @@ var Area = new Class({
 		that.areaColor = 213;
 		
 		that.setPosition = function(top, left, width, height){
+		
+		
+		/***/
 //			kk('old left: '+left);
-//			if (obj.step.x > 10) {
+			if (obj.step.x > 10) {
 //				for (var i = 0; i < obj.stepArr.x.length; i++) {
 //					if (left < obj.stepArr.x[i]) break;
 //				}
 //				left = ((obj.stepArr.x[i] - left) < (left - obj.stepArr.x[i-1])) ? obj.stepArr.x[i] : obj.stepArr.x[i-1] ;
-//				//left = Math.round(left * 0.1) * 10;
-//			}
+				//left = Math.round(left * 0.1) * 10;
+				left = returnClosest(left, obj.stepArr.x);
+				var right = left + width;
+				right = returnClosest(right, obj.stepArr.x);
+				width = right - left;
+				
+			}
 //			kk('new left: '+left);
+			
+			/***
+			if (obj.step.x > 10) {
+				for (var i = 0; i < obj.stepArr.x.length; i++) {
+					if (right < obj.stepArr.x[i]) break;
+				}
+				right = ((obj.stepArr.x[i] - right) < (right - obj.stepArr.x[i-1])) ? obj.stepArr.x[i] : obj.stepArr.x[i-1] ;
+				//left = Math.round(left * 0.1) * 10;
+			}
+			/***/
+			
+			if (obj.step.y > 10) {
+				top = returnClosest(top, obj.stepArr.y);
+				var bottom = top + height;
+				bottom = returnClosest(bottom, obj.stepArr.y);
+				height = bottom - top;
+			}
+			
+			
 			if (width < 0) {
 				left = left + width;
 				width = 0 - width;
@@ -1839,6 +1913,15 @@ var Area = new Class({
 		return that;
 	}
 });
+
+var returnClosest = function(num, arr){
+	num = Math.max(0, Math.min(arr[arr.length-1], num));
+	for (var i = 0; i < arr.length; i++) {
+		if (num < arr[i]) break;
+	}
+	num = ((arr[i] - num) < (num - arr[i-1])) ? arr[i] : arr[i-1] ;
+	return num;
+}
 
 var printIf = function(startX, width, startY, height){
 	var prop = {};

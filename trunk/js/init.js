@@ -252,16 +252,20 @@ var initSpatial = function(){
 	
 	document.addEvent('boardTypeIsChanged', function(){
 		var addOn = mainToolbox.getElement('#addOnModules');
+		var blockIfStateChange = $('block_control_if_state_change');
+		
 		if ($('boardOptions').get('value') == 'gogoBoard') {
-			var rpiElem = addOn.getElements('.rPiBlocks');
+			var rpiElem = $('categoryAllBlocks').getElements('.rPiBlocks');
 			rpiElem.each(function(item){
 				item.dispose();
 			});
+			
 		} else if ($('boardOptions').get('value') == 'rPi') {
 			var rpiElem = $('rPiBlocks').getChildren();
 			rpiElem.each(function(item){
 				item.clone().inject(addOn);
 			});
+			blockIfStateChange.clone().inject($('block_control_ifelse'), 'after');
 		}
 		Blockly.updateToolbox(mainToolbox);
 		Blockly.Toolbox.tree_.children_[1].setExpanded(true);

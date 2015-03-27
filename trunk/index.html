@@ -79,6 +79,10 @@ Update : 26 July 2014 - 2:28pm
          langSrc: BlocklyApps.languagePack()}));
   </script>
   
+  <xml style="display: none">
+  <block id="block_control_if_state_change" type="control_if_state_change" inline="false" class="rPiBlocks"></block>
+  </xml>
+    
   
   <category id="rPiBlocks">
   	
@@ -113,6 +117,11 @@ Update : 26 July 2014 - 2:28pm
   			</value>
   		</block>
   		<block type="stop_sound"></block>
+  		<block type="say" inline="true">
+  				<value name="string">
+  				  <block type="text"></block>
+  				</value>
+  			</block>
   	</category>
   	<category name="Image" class="rPiBlocks">
   		<block type="show_image" inline="true">
@@ -180,6 +189,7 @@ Update : 26 July 2014 - 2:28pm
 	</block>  	
   	<block type="control_if" inline="false" x="244" y="308"></block>
 	<block type="control_ifelse" inline="false" x="72" y="152"></block>
+	<!--<block type="control_if_state_change" inline="false" x="244" y="308"></block>-->
   	<block type="control_forever" x="247" y="450"></block>
   
       <block type="input_sensor" x="-9" y="170">
@@ -196,7 +206,7 @@ Update : 26 July 2014 - 2:28pm
     </category>
   
     
-    <category name="All Blocks">
+    <category id="categoryAllBlocks" name="All Blocks">
     
   	  
   	  <category name="Sensing & Action">
@@ -276,7 +286,7 @@ Update : 26 July 2014 - 2:28pm
   	  
   	  <category name="Program Control">
   	    <block type="control_if" inline="false" x="78" y="56"></block>
-  	    <block type="control_ifelse" inline="false" x="72" y="152"></block>
+  	    <block id="block_control_ifelse" type="control_ifelse" inline="false" x="72" y="152"></block>
   	    <block type="control_waituntil" inline="false" x="87" y="274"></block>
   	    <block type="control_repeat" inline="true" x="86" y="323"></block>
   	    <block type="control_forever" x="94" y="432"></block>
