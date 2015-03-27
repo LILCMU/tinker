@@ -252,7 +252,7 @@ var initSpatial = function(){
 	
 	document.addEvent('boardTypeIsChanged', function(){
 		var addOn = mainToolbox.getElement('#addOnModules');
-		var blockIfStateChange = $('block_control_if_state_change');
+		//var blockIfStateChange = $('block_control_if_state_change');
 		
 		if ($('boardOptions').get('value') == 'gogoBoard') {
 			var rpiElem = $('categoryAllBlocks').getElements('.rPiBlocks');
@@ -265,7 +265,7 @@ var initSpatial = function(){
 			rpiElem.each(function(item){
 				item.clone().inject(addOn);
 			});
-			blockIfStateChange.clone().inject($('block_control_ifelse'), 'after');
+			//blockIfStateChange.clone().inject($('block_control_ifelse'), 'after');
 		}
 		Blockly.updateToolbox(mainToolbox);
 		Blockly.Toolbox.tree_.children_[1].setExpanded(true);

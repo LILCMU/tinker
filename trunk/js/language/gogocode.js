@@ -492,7 +492,7 @@ Blockly.GogoCode['control_if_state_change'] = function() {
   var statements_statement = Blockly.GogoCode.statementToCode(this, 'statement');
   
   //var code = 'if '+value_condition.slice(1, value_condition.length-1)+' [\n'+statements_statement+']\n';
-  var code = '<span class="c120">if state change '+ value_condition +' \n[\n'+statements_statement+'\n]</span>\n';
+  var code = '<span class="c120">ifstatechange '+ value_condition +' \n[\n'+statements_statement+'\n]</span>\n';
   return code;
 };
 
