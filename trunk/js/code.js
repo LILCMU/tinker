@@ -421,12 +421,39 @@ Code.loadXML = function(event) {
     // 2 == FileReader.DONE
     if (target.readyState == 2) {
       
+      var mappingElem = "";
+      var conditionElem = "";
+      
       try {
-        var xml = Blockly.Xml.textToDom(target.result);
+        var newText = target.result;
+        var mappingText = newText.split('<mapping>')[1];
+        if (mappingText) {
+        	mappingElem = mappingText.split("</mapping>")[0];
+        	newText = newText.split('<mapping>')[0]+mappingText.split("</mapping>")[1];
+        }
+        
+        var conditionText = newText.split('<condition>')[1];
+        if (conditionText) {
+        	conditionElem = conditionText.split("</condition>")[0];
+        	newText = newText.split('<condition>')[0]+conditionText.split("</condition>")[1];
+        }
+        var xml = Blockly.Xml.textToDom(newText);
       } catch (e) {
       	alert('Error parsing XML:\n' + e);
         return;
       }
+      
+      if (mappingElem) {
+        console.log('========mapping===========');
+	      window.localStorage.setItem('mappingBlock', mappingElem);
+	      mapping.loadData();
+      }
+      if (conditionElem) {
+        console.log('========condition===========');
+	      window.localStorage.setItem('conditionBlock', conditionElem);
+	      condition.loadData();
+      }
+      
       if(xml.childElementCount == 0) return;
       Blockly.mainWorkspace.clear();
       Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, xml);
@@ -440,7 +467,21 @@ Code.loadXML = function(event) {
 
 Code.saveXML = function() {
   var xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
+  
+  var mappingData = window.localStorage.getItem('mappingBlock');
+  var conditionData = window.localStorage.getItem('conditionBlock');
+  
+  var mappingElem = new Element('mapping', {'html': mappingData});
+  var conditionElem = new Element('condition', {'html': conditionData});
+  
+  $(xml).grab(mappingElem);
+  $(xml).grab(conditionElem);
+  
   var data = Blockly.Xml.domToText(xml);
+
+  console.log(data);
+
+	//return;
 
   // Store data in blob.
   //var builder = new BlobBuilder();
