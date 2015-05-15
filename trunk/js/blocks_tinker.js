@@ -779,6 +779,41 @@ Blockly.Blocks.math_true = {
 
 /***/
 
+/***
+Blockly.Blocks['key_text'] = {
+  init: function() {
+    this.setHelpUrl('http://www.example.com/');
+    this.setColour(330);
+    this.appendValueInput("key")
+        .appendField("key");
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, "null");
+    this.setNextStatement(true, "null");
+    this.setTooltip('');
+  }
+};
+/***/
+
+Blockly.Blocks['key_text'] = {
+  init: function() {
+    this.setHelpUrl('http://www.example.com/');
+    this.setColour(330);
+//    this.appendDummyInput()
+//        .appendField("Read I2C register:")
+//        .appendField("read from ")
+//        .appendField(new Blockly.FieldTextInput("register address"), "reg_addr")
+//        .appendField(", ")
+//        .appendField(new Blockly.FieldTextInput("I2C address"), "i2c_addr");
+//    this.appendValueInput("value")
+//        .appendField("");
+    this.appendValueInput("key")
+        .appendField("key ");
+    this.setInputsInline(true);
+    this.setOutput(true);
+    this.setTooltip('');
+  }
+};
+
 Blockly.Blocks.math_number = {
   category: 'Math',
   helpUrl: 'http://www.example.com/',
@@ -873,7 +908,7 @@ Blockly.Blocks.use_sms = {
 };
 
 
-
+/***
 Blockly.Blocks.send_sms = {
   helpUrl: 'http://www.example.com/',
   init: function() {
@@ -888,6 +923,43 @@ Blockly.Blocks.send_sms = {
         .appendTitle("message :");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
+    this.setTooltip('');
+  }
+};
+/****/
+
+
+Blockly.Blocks.send_sms = {
+  helpUrl: 'http://www.example.com/',
+  init: function() {
+    this.setColour(330);
+    
+    this.appendValueInput("number")
+        .appendField("Send SMS to : ");
+    this.appendValueInput("message")
+        .appendField(", message : ");
+    this.setInputsInline(true);
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
+
+Blockly.Blocks.send_email = {
+  helpUrl: 'http://www.example.com/',
+  init: function() {
+    this.setColour(330);
+    
+    this.appendValueInput("email")
+        .appendField("Send Email to : ");
+    this.appendValueInput("title")
+        .appendField(", title : ");
+    this.appendValueInput("body")
+        .appendField(", body : ");
+    this.setInputsInline(true);
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
     this.setTooltip('');
   }
 };

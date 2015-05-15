@@ -311,12 +311,13 @@ Blockly.GogoCode['i2c_read'] = function(block) {
   return [code, Blockly.GogoCode.ORDER_NONE];
 };
 
-Blockly.GogoCode['text'] = function(block) {
-  var text_text = block.getFieldValue('TEXT');
-  // TODO: Assemble JavaScript into code variable.
-  var code = text_text;
-  return code;
-};
+
+//Blockly.GogoCode['text'] = function(block) {
+//  var text_text = block.getFieldValue('TEXT');
+//  // TODO: Assemble JavaScript into code variable.
+//  var code = '"sss'+text_text+'"';
+//  return code;
+//};
 
 
 Blockly.GogoCode.action_beep = function() {
@@ -539,8 +540,21 @@ Blockly.GogoCode.input_sensor = function() {
 Blockly.GogoCode.text = function() {
   var text = this.getFieldValue('TEXT');
   // TODO: Assemble GogoCode into code variable.
-  var code = '<span class="c290">'+text+'</span>';
+  var code = '<span class="c290">"'+text+'"</span>';
   // TODO: Change ORDER_NONE to the correct strength.
+  return [code, Blockly.GogoCode.ORDER_NONE];
+};
+
+
+//Blockly.GogoCode['key_text'] = function(block) {
+//  var value_key = Blockly.GogoCode.valueToCode(block, 'key', Blockly.GogoCode.ORDER_ATOMIC);
+//  // TODO: Assemble JavaScript into code variable.
+//  var code = '<span class="c330">key '+value_string+'</span>\n';
+//  return code;
+//};
+Blockly.GogoCode['key_text'] = function(block) {
+  var value_key = Blockly.GogoCode.valueToCode(block, 'key', Blockly.GogoCode.ORDER_ATOMIC);
+  var code = '<span class="c330">key '+value_key+'</span>';
   return [code, Blockly.GogoCode.ORDER_NONE];
 };
 
@@ -685,6 +699,7 @@ Blockly.GogoCode.use_sms = function() {
   return code;
 };
 
+/*
 Blockly.GogoCode.send_sms = function() {
   var value_name = Blockly.GogoCode.valueToCode(this, 'NAME', Blockly.GogoCode.ORDER_ATOMIC);
   var text_phoneno = this.getTitleValue('phoneno');
@@ -692,6 +707,22 @@ Blockly.GogoCode.send_sms = function() {
   var command = 'sudo gammu sendsms TEXT +66' + text_phoneno + ' -textutf8 "'+value_name+'"';
   var code = '\ncommandString = \''+command+'\'\ncommands.getoutput(commandString)\n';
   return code;
+};
+/***/
+
+Blockly.GogoCode.send_sms = function(block) {
+	var message = Blockly.GogoCode.valueToCode(block, 'message', Blockly.GogoCode.ORDER_ATOMIC);
+	var number = Blockly.GogoCode.valueToCode(block, 'number', Blockly.GogoCode.ORDER_ATOMIC);
+	var code = '<span class="c330">sendsms '+number+' '+message+'</span>\n';
+	return code;
+};
+
+Blockly.GogoCode.send_email = function(block) {
+	var email = Blockly.GogoCode.valueToCode(block, 'email', Blockly.GogoCode.ORDER_ATOMIC);
+	var title = Blockly.GogoCode.valueToCode(block, 'title', Blockly.GogoCode.ORDER_ATOMIC);
+	var body = Blockly.GogoCode.valueToCode(block, 'body', Blockly.GogoCode.ORDER_ATOMIC);
+	var code = '<span class="c330">sendmail '+email+' '+title+' '+body+'</span>\n';
+	return code;
 };
 
 Blockly.GogoCode.userfid = function() {
@@ -790,7 +821,7 @@ Blockly.GogoCode.find_face_is_on = function() {
 Blockly.GogoCode['play_sound'] = function(block) {
   var value_string = Blockly.GogoCode.valueToCode(block, 'string', Blockly.GogoCode.ORDER_ATOMIC);
   // TODO: Assemble JavaScript into code variable.
-  var code = 'playsound "'+value_string+'"\n';
+  var code = 'playsound '+value_string+'\n';
   return code;
 };
 
@@ -803,7 +834,7 @@ Blockly.GogoCode['stop_sound'] = function() {
 Blockly.GogoCode['say'] = function(block) {
   var value_string = Blockly.GogoCode.valueToCode(block, 'string', Blockly.GogoCode.ORDER_ATOMIC);
   // TODO: Assemble JavaScript into code variable.
-  var code = 'say "'+value_string+'"\n';
+  var code = 'say '+value_string+'\n';
   return code;
 };
 
@@ -812,7 +843,7 @@ Blockly.GogoCode['say'] = function(block) {
 Blockly.GogoCode['show_image'] = function(block) {
   var value_string = Blockly.GogoCode.valueToCode(block, 'string', Blockly.GogoCode.ORDER_ATOMIC);
   // TODO: Assemble JavaScript into code variable.
-  var code = 'showimage "'+value_string+'"\n';
+  var code = 'showimage '+value_string+'\n';
   return code;
 };
 
@@ -834,7 +865,7 @@ Blockly.GogoCode['screen_tapped'] = function() {
 Blockly.GogoCode['new_record'] = function(block) {
   var value_string = Blockly.GogoCode.valueToCode(block, 'string', Blockly.GogoCode.ORDER_ATOMIC);
   // TODO: Assemble JavaScript into code variable.
-  var code = 'newrecordfile "'+value_string+'" \n';
+  var code = 'newrecordfile '+value_string+' \n';
   return code;
 };
 
@@ -842,14 +873,14 @@ Blockly.GogoCode['record_as'] = function(block) {
   var value_expression = Blockly.GogoCode.valueToCode(block, 'expression', Blockly.GogoCode.ORDER_ATOMIC);
   var value_string = Blockly.GogoCode.valueToCode(block, 'string', Blockly.GogoCode.ORDER_ATOMIC);
   // TODO: Assemble JavaScript into code variable.
-  var code = 'record '+value_expression+' "'+value_string+'" \n';
+  var code = 'record '+value_expression+' '+value_string+' \n';
   return code;
 };
 
 Blockly.GogoCode['show_plot'] = function(block) {
   var value_string = Blockly.GogoCode.valueToCode(block, 'string', Blockly.GogoCode.ORDER_ATOMIC);
   // TODO: Assemble JavaScript into code variable.
-  var code = 'showlogplot "'+value_string+'" \n';
+  var code = 'showlogplot '+value_string+' \n';
   return code;
 };
 
@@ -857,7 +888,7 @@ Blockly.GogoCode['show_plot_expression'] = function(block) {
   var value_expression = Blockly.GogoCode.valueToCode(block, 'expression', Blockly.GogoCode.ORDER_ATOMIC);
   var value_string = Blockly.GogoCode.valueToCode(block, 'string', Blockly.GogoCode.ORDER_ATOMIC);
   // TODO: Assemble JavaScript into code variable.
-  var code = 'showlogplot '+value_expression+' "'+value_string+'" \n';
+  var code = 'showlogplot '+value_expression+' '+value_string+' \n';
   return code;
 };
 

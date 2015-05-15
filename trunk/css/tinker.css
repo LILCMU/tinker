@@ -8,8 +8,11 @@ html, body {
 
 div {
 	position: relative;
-}
+}/*
 
+#tab_gogomon, #tab_gogocode, #tab_cvi, #tab_cdi {
+	display: none;
+}*/
 
 /****  Popup Window  ****/
 

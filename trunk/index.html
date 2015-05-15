@@ -1,6 +1,7 @@
 
 <!--
 
+Update : 15 May 2015 - 4:30pm
 Update : 3 April 2015 - 9:00am
 Update : 27 March 2015 - 3:16pm
 Update : 3 February 2015 - 2:18pm
@@ -54,7 +55,7 @@ Update : 26 July 2014 - 2:28pm
 </head>
 <body>
 
-<div id="versionNO">v1.0.12 Update 3Apr15 0900</div>
+<div id="versionNO">v1.0.13 Update 5May15 1630</div>
 
 <div id="spatialContentTemplate" class="contentSpatial">
 	<div class="mainArea">
@@ -90,7 +91,31 @@ Update : 26 July 2014 - 2:28pm
   	
   	<category name="Text message" class="rPiBlocks">
   		<block type="use_sms"></block>
-  		<block type="send_sms"></block>
+  		<block type="send_sms">
+	  		 <value name="number">
+	  		   <block type="text">
+	  		   </block>
+	  		 </value>
+	  		 <value name="message">
+	  		   <block type="text">
+	  		   </block>
+	  		 </value> 
+  		</block>
+  		<block type="send_email">
+			 <value name="email">
+			   <block type="text">
+			   </block>
+			 </value>
+			 <value name="title">
+			   <block type="text">
+			   </block>
+			 </value>
+			 <value name="body">
+			   <block type="text">
+			   </block>
+			 </value> 
+		</block>
+		
   	</category>
   	<category name="RFID" class="rPiBlocks">
   		<block type="userfid"></block>
@@ -212,8 +237,6 @@ Update : 26 July 2014 - 2:28pm
     
   	  
   	  <category name="Sensing & Action">
-  	    <block type="text">
-  	    </block>
   	    <block type="input_switch" x="59" y="5">
   	      <title name="switch">1</title>
   	    </block>
@@ -297,7 +320,7 @@ Update : 26 July 2014 - 2:28pm
   	    <block type="action_reset_timer" x="136" y="280"></block>
   	  </category>
     
-    	  <category name="Math">
+    	  <category name="Math & String">
     	    <block type="math_number" x="13" y="10">
     	      <title name="number">0</title>
     	    </block>
@@ -312,9 +335,18 @@ Update : 26 July 2014 - 2:28pm
     	      <title name="andor">and</title>
     	    </block>
     	    <block type="math_not" inline="false" x="-42" y="257"></block>
+    	    <block type="text">
+    	    </block>
+    	    <block type="key_text">
+	    		<value name="key">
+	    		  <block type="text"></block>
+	    		</value>
+	    	</block>
     	  </category>
     	  
-    	  <category name="Variables" custom="VARIABLE"></category>
+    	  <category name="Variables" custom="VARIABLE">
+    	  	  
+    	  </category>
     	  <!--<category name="Procedures" custom="PROCEDURE"></category>-->
     	  
   	  
