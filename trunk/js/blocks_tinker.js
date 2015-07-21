@@ -806,13 +806,36 @@ Blockly.Blocks['key_text'] = {
 //        .appendField(new Blockly.FieldTextInput("I2C address"), "i2c_addr");
 //    this.appendValueInput("value")
 //        .appendField("");
-    this.appendValueInput("key")
-        .appendField("key ");
+
+// 		.appendValueInput("key")
+//        .appendField("key ");
+
+    this.appendDummyInput()
+		.appendField("Key")
+		.appendField(new Blockly.FieldTextInput("name"), "name");
+          
     this.setInputsInline(true);
     this.setOutput(true);
     this.setTooltip('');
   }
 };
+
+/**     KEY Value    **/
+
+Blockly.Blocks.key_value = {
+  helpUrl: 'http://www.example.com/',
+  init: function() {
+    this.setColour(290);
+    this.appendDummyInput().appendField("Key Name")
+        .appendField(new Blockly.FieldDropdown([["Button", "Button"], ["Slider", "Slider"], ["Face Name", "Face Name"], ["Voice Command", "Voice Command"]]), "key_name");
+    this.setOutput(true, String);
+    this.setTooltip('Reports value of specific key.');
+  }
+};
+
+
+
+
 
 Blockly.Blocks.math_number = {
   category: 'Math',
@@ -963,6 +986,7 @@ Blockly.Blocks.send_email = {
     this.setTooltip('');
   }
 };
+
 
 
 /**     RFID    **/

@@ -55,7 +55,7 @@ Update : 26 July 2014 - 2:28pm
 </head>
 <body>
 
-<div id="versionNO">v1.0.13 Update 5May15 1630</div>
+<div id="versionNO">v1.0.14 - July 20, 2015</div>
 
 <div id="spatialContentTemplate" class="contentSpatial">
 	<div class="mainArea">
@@ -89,6 +89,32 @@ Update : 26 July 2014 - 2:28pm
   
   <category id="rPiBlocks">
   	
+  	
+  	<category name="Key" class="rPiBlocks">
+  		<block type="key_value">
+			<title name="key_name">Button</title>
+		</block>
+
+		<block type="math_equal" inline="true">
+			<title name="cond">=</title>
+			<value name="left">
+				<block type="key_value">
+					<title name="key_name">Button</title>
+				</block>
+			</value>
+			<value name="right">
+					<block type="text"></block>
+			</value>
+		</block>
+
+
+
+
+
+  	</category>
+
+
+  	
   	<category name="Text message" class="rPiBlocks">
   		<block type="use_sms"></block>
   		<block type="send_sms">
@@ -101,6 +127,9 @@ Update : 26 July 2014 - 2:28pm
 	  		   </block>
 	  		 </value> 
   		</block>
+  	</category>
+
+  	<category name="Send E-mail" class="rPiBlocks">
   		<block type="send_email">
 			 <value name="email">
 			   <block type="text">
@@ -115,8 +144,9 @@ Update : 26 July 2014 - 2:28pm
 			   </block>
 			 </value> 
 		</block>
-		
   	</category>
+
+
   	<category name="RFID" class="rPiBlocks">
   		<block type="userfid"></block>
   		<block type="read_from_rfid"></block>
@@ -324,6 +354,25 @@ Update : 26 July 2014 - 2:28pm
     	    <block type="math_number" x="13" y="10">
     	      <title name="number">0</title>
     	    </block>
+    	    <block type="math_random" x="14" y="44"></block>
+    	    <block type="math_equal" inline="true" x="-21" y="92">
+    	      <title name="cond">=</title>
+    	    </block>
+    	    <block type="math_operator" inline="true" x="28" y="147">
+    	      <title name="op">+</title>
+    	    </block>
+    	    <block type="math_andor" inline="true" x="35" y="202">
+    	      <title name="andor">and</title>
+    	    </block>
+    	    <block type="math_not" inline="false" x="42" y="257"></block>
+    	  
+    	  </category>
+
+		  <!--
+    	  <category name="Math & String">
+    	    <block type="math_number" x="13" y="10">
+    	      <title name="number">0</title>
+    	    </block>
     	    <block type="math_random" x="-14" y="44"></block>
     	    <block type="math_equal" inline="true" x="-21" y="92">
     	      <title name="cond">=</title>
@@ -343,6 +392,7 @@ Update : 26 July 2014 - 2:28pm
 	    		</value>
 	    	</block>
     	  </category>
+			-->
     	  
     	  <category name="Variables" custom="VARIABLE">
     	  	  

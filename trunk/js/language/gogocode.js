@@ -312,6 +312,12 @@ Blockly.GogoCode['i2c_read'] = function(block) {
 };
 
 
+Blockly.GogoCode['key_value'] = function(block) {
+  var text_key_name = this.getFieldValue('key_name');
+  var code = '<span class="c210">key "'+ text_key_name +'"</span>';
+  return [code, Blockly.GogoCode.ORDER_NONE];
+};
+
 //Blockly.GogoCode['text'] = function(block) {
 //  var text_text = block.getFieldValue('TEXT');
 //  // TODO: Assemble JavaScript into code variable.

@@ -1091,7 +1091,7 @@ var normalWS = function(){
 	
 	// when the connection is closed, this method is called
 	ws.onclose = function (status) {
-		new Element('div', {'id': 'warningMessage', 'class': 'anime12', 'text': 'Connection lost. Reconnecting..'}).inject(document.body);
+		new Element('div', {'id': 'warningMessage', 'class': 'anime12', 'text': 'Cannot connect to the GoGo Widget. Retrying..'}).inject(document.body);
 		setTimeout(function(){
 			$('warningMessage').destroy();
 			startWebSocket();
