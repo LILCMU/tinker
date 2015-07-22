@@ -827,7 +827,7 @@ Blockly.Blocks.key_value = {
   init: function() {
     this.setColour(290);
     this.appendDummyInput().appendField("Key Name")
-        .appendField(new Blockly.FieldDropdown([["Button", "Button"], ["Slider", "Slider"], ["Face Name", "Face Name"], ["Voice Command", "Voice Command"]]), "key_name");
+        .appendField(new Blockly.FieldDropdown([["Button", "button"], ["Slider", "slider"], ["Switch", "switch"], ["Face Name", "facename"], ["Speech", "speech"]]), "key_name");
     this.setOutput(true, String);
     this.setTooltip('Reports value of specific key.');
   }
