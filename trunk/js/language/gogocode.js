@@ -313,8 +313,10 @@ Blockly.GogoCode['i2c_read'] = function(block) {
 
 
 Blockly.GogoCode['key_value'] = function(block) {
-  var text_key_name = this.getFieldValue('key_name');
-  var code = '<span class="c210">key "'+ text_key_name +'"</span>';
+  var text_key_name = this.getFieldValue('key_name').toLowerCase();
+  //var text_key_value_input = this.getFieldValue('key_value_input');
+  var text_key_value_input = Blockly.GogoCode.valueToCode(block, 'key_value_input', Blockly.GogoCode.ORDER_ATOMIC);
+  var code = '<span class="c210">key "'+ text_key_name +'" = '+text_key_value_input+ '</span>';
   return [code, Blockly.GogoCode.ORDER_NONE];
 };
 
@@ -560,7 +562,7 @@ Blockly.GogoCode.text = function() {
 //};
 Blockly.GogoCode['key_text'] = function(block) {
   var value_key = Blockly.GogoCode.valueToCode(block, 'key', Blockly.GogoCode.ORDER_ATOMIC);
-  var code = '<span class="c330">key '+value_key+'</span>';
+  var code = '<span class="c330">key '+value_key.toLowerCase()+'</span>';
   return [code, Blockly.GogoCode.ORDER_NONE];
 };
 

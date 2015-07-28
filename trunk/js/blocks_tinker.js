@@ -281,7 +281,7 @@ Blockly.Blocks.action_led = {
   helpUrl: 'http://www.example.com/',
   init: function() {
     this.setColour(290);
-    this.appendDummyInput().appendField("turn LED")
+    this.appendDummyInput().appendField("turn on-board LED")
     .appendField(new Blockly.FieldDropdown([["on", "on"], ["off", "off"]]), "onoff");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
@@ -313,8 +313,8 @@ Blockly.Blocks['action_wait'] = {
     this.appendDummyInput()
         .appendField("wait");
     this.appendValueInput("NAME", Number);
-//    this.appendDummyInput()
-//        .appendField("second");
+    this.appendDummyInput()
+        .appendField("1/10 second(s)");
     this.setInputsInline(true);
     this.setPreviousStatement(true);
     this.setNextStatement(true);
@@ -633,15 +633,35 @@ Blockly.Blocks.control_forever = {
   helpUrl: 'http://www.example.com/',
   init: function() {
     this.setColour(120);
+    this.appendDummyInput().appendField("forever");
     var input =  this.appendStatementInput( "do", null);
     input.appendField("do");
-    input = this.appendDummyInput();
-    input.appendField("forever");
+
+    //input = this.appendDummyInput();
+    //input.appendField("forever");
     this.setPreviousStatement(true, null);
     this.setTooltip('Indefinitely executes block.');
   }
 };
 
+
+Blockly.Blocks.control_do_every = {
+  category: 'Control',
+  helpUrl: 'http://www.example.com/',
+  init: function() {
+    this.setColour(120);
+    this.appendDummyInput().appendField("every");
+    this.appendValueInput( "period", Number);
+    var input = this.appendDummyInput();
+    input.appendField("1/10 second(s)");
+    input =  this.appendStatementInput( "do", null);
+    input.appendField("do");
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setTooltip('Repeats block forever at a constant peroid.');
+  }
+};
 
 Blockly.Blocks.input_switch = {
   category: 'Input, Output, Storage',
@@ -826,9 +846,14 @@ Blockly.Blocks.key_value = {
   helpUrl: 'http://www.example.com/',
   init: function() {
     this.setColour(290);
-    this.appendDummyInput().appendField("Key Name")
+    this.appendDummyInput().appendField("Key")
         .appendField(new Blockly.FieldDropdown([["Button", "button"], ["Slider", "slider"], ["Switch", "switch"], ["Face Name", "facename"], ["Speech", "speech"]]), "key_name");
-    this.setOutput(true, String);
+    this.appendValueInput("key_value_input")
+        .appendField("is equal to ");
+
+
+    this.setInputsInline(true);
+    this.setOutput(true, Boolean);
     this.setTooltip('Reports value of specific key.');
   }
 };
@@ -866,7 +891,9 @@ Blockly.Blocks.math_equal = {
     this.setColour(10);
      this.appendValueInput( "left", Number);
     var input =  this.appendValueInput( "right", Number);
-    input.appendField(new Blockly.FieldDropdown([["=", "="], ["<", "<"], [">", ">"]]), "cond");
+    //input.appendField(new Blockly.FieldDropdown([["=", "="], ["<", "<"], ["<=", "<="], [">", ">"], [">=", ">="]]), "cond");
+    input.appendField(new Blockly.FieldDropdown([["=","="],["\u2260","!="],[">",">"],["\u2265",">="],["<","<"],["\u2264","<="]]), "cond");
+
     this.setInputsInline(true);
     this.setOutput(true, Boolean);
     this.setTooltip('Reports boolean comparison of two inputs.');
