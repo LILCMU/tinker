@@ -892,7 +892,8 @@ Blockly.Blocks.math_equal = {
      this.appendValueInput( "left", Number);
     var input =  this.appendValueInput( "right", Number);
     //input.appendField(new Blockly.FieldDropdown([["=", "="], ["<", "<"], ["<=", "<="], [">", ">"], [">=", ">="]]), "cond");
-    input.appendField(new Blockly.FieldDropdown([["=","="],["\u2260","!="],[">",">"],["\u2265",">="],["<","<"],["\u2264","<="]]), "cond");
+    //input.appendField(new Blockly.FieldDropdown([["=","="],["\u2260","!="],[">",">"],["\u2265",">="],["<","<"],["\u2264","<="]]), "cond");
+    input.appendField(new Blockly.FieldDropdown([["=","="],[">",">"],["\u2265",">="],["<","<"],["\u2264","<="]]), "cond");
 
     this.setInputsInline(true);
     this.setOutput(true, Boolean);
