@@ -69,7 +69,7 @@ Update : 26 July 2014 - 2:28pm
 </head>
 <body>
 
-<div id="versionNO">v1.0.20 - July 29, 2015</div>
+<div id="versionNO">v1.0.22 - July 30, 2015</div>
 
 <div id="spatialContentTemplate" class="contentSpatial">
 	<div class="mainArea">
@@ -236,12 +236,32 @@ Update : 26 July 2014 - 2:28pm
   
   <xml id="toolbox" style="display: none">
   
-    <category name="Basic Blocks ">
+    <category name="Common Blocks ">
+
 	<block type="math_number" x="-4" y="201">
 		<title name="number">500</title>
 	</block>
-    <block type="control_true"></block>
+
+	<block type="input_sensor" x="-9" y="170">
+		<title name="sensor">1</title>
+	</block>
+
+	<block type="math_equal" id="32" inline="true">
+		<field name="cond">&gt;</field>
+		<value name="left">
+			<block type="input_sensor" id="53">
+				<field name="sensor">1</field>
+			</block>
+		</value>
+		<value name="right">
+			<block type="math_number" id="68">
+				<field name="number">500</field>
+			</block>
+		</value>
+	</block>
+
   	<block type="action_beep" x="40" y="98"></block>
+
   	<block type="action_wait">
   		<value name="NAME">
   		  <block type="math_number">
@@ -261,24 +281,187 @@ Update : 26 July 2014 - 2:28pm
   	</block>
 	<block type="motor_action_thisway" x="119" y="159">
 	  <title name="clockwise">cw</title>
-	</block>  	
-  	<block type="control_if" inline="false" x="244" y="308"></block>
-	<block type="control_ifelse" inline="false" x="72" y="152"></block>
+	</block>
+		<block type="control_if" inline="false" x="78" y="56">
+			<value name="condition">
+				<block type="math_equal" id="32" inline="true">
+					<field name="cond">&gt;</field>
+					<value name="left">
+						<block type="input_sensor" id="53">
+							<field name="sensor">1</field>
+						</block>
+					</value>
+					<value name="right">
+						<block type="math_number" id="68">
+							<field name="number">500</field>
+						</block>
+					</value>
+				</block>
+			</value>
+		</block>
+
+		<block id="block_control_ifelse" type="control_ifelse" inline="false" x="72" y="152">
+			<value name="condition">
+				<block type="math_equal" id="32" inline="true">
+					<field name="cond">&gt;</field>
+					<value name="left">
+						<block type="input_sensor" id="53">
+							<field name="sensor">1</field>
+						</block>
+					</value>
+					<value name="right">
+						<block type="math_number" id="68">
+							<field name="number">500</field>
+						</block>
+					</value>
+				</block>
+			</value>
+		</block>
 	<!--<block type="control_if_state_change" inline="false" ></block>-->
   	<block type="control_forever" x="247" y="450"></block>
   
-      <block type="input_sensor" x="-9" y="170">
-        <title name="sensor">1</title>
-      </block>
 
-      <block type="math_equal" inline="true" x="-10" y="231">
-        <title name="cond">=</title>
-      </block>
+
+
       
   
     </category>
   
-    
+	<category name=" "></category>
+
+      
+      <category name="Program Control">
+    <block type="control_forever" x="94" y="432"></block>
+    <block type="control_do_every" x="94" y="432">
+      <value name="period">
+        <block type="math_number">
+          <title name="number">10</title>
+        </block>
+      </value>
+    </block>
+
+
+    <block type="control_repeat" inline="true" x="86" y="323">
+      <value name="times">
+        <block type="math_number">
+          <title name="number">10</title>
+        </block>
+      </value>
+    </block>
+
+
+        <block type="control_if" inline="false" x="78" y="56">
+      <value name="condition">
+        <block type="math_equal" id="32" inline="true">
+          <field name="cond">&gt;</field>
+          <value name="left">
+            <block type="input_sensor" id="53">
+              <field name="sensor">1</field>
+            </block>
+          </value>
+          <value name="right">
+            <block type="math_number" id="68">
+              <field name="number">500</field>
+            </block>
+          </value>
+        </block>
+      </value>
+    </block>
+
+    <block id="block_control_ifelse" type="control_ifelse" inline="false" x="72" y="152">
+      <value name="condition">
+        <block type="math_equal" id="32" inline="true">
+          <field name="cond">&gt;</field>
+          <value name="left">
+            <block type="input_sensor" id="53">
+              <field name="sensor">1</field>
+            </block>
+          </value>
+          <value name="right">
+            <block type="math_number" id="68">
+              <field name="number">500</field>
+            </block>
+          </value>
+        </block>
+      </value>
+    </block>
+
+        <block type="control_if_state_change" inline="false" >
+      <value name="condition">
+        <block type="math_equal" id="32" inline="true">
+          <field name="cond">&gt;</field>
+          <value name="left">
+            <block type="input_sensor" id="53">
+              <field name="sensor">1</field>
+            </block>
+          </value>
+          <value name="right">
+            <block type="math_number" id="68">
+              <field name="number">500</field>
+            </block>
+          </value>
+        </block>
+      </value>
+    </block>
+
+
+
+
+        <block type="control_waituntil" inline="false" x="87" y="274">
+      <value name="NAME">
+        <block type="math_equal" id="32" inline="true">
+          <field name="cond">&gt;</field>
+          <value name="left">
+            <block type="input_sensor" id="53">
+              <field name="sensor">1</field>
+            </block>
+          </value>
+          <value name="right">
+            <block type="math_number" id="68">
+              <field name="number">500</field>
+            </block>
+          </value>
+        </block>
+      </value>
+    </block>
+
+      </category>
+
+
+        <category name="Math">
+          <block type="math_number" x="13" y="10">
+            <title name="number">0</title>
+          </block>
+          <block type="math_random" x="14" y="44"></block>
+
+          <block type="math_equal" inline="true" x="-21" y="92">
+            <title name="cond">=</title>
+          </block>
+          
+          <block type="math_in_between">
+            <value name="lower">
+            <block type="math_number" >
+              <field name="number">0</field>
+            </block>
+            </value>
+            <value name="upper">
+            <block type="math_number" >
+              <field name="number">100</field>
+            </block>
+            </value>
+
+          </block>
+          
+          <block type="math_operator" inline="true" x="28" y="147">
+            <title name="op">+</title>
+          </block>
+          <block type="math_andor" inline="true" x="35" y="202">
+            <title name="andor">and</title>
+          </block>
+          <block type="math_not" inline="false" x="42" y="257"></block>
+        
+        </category>
+
   	  <category name="Sensing">
   	    <block type="input_sensor" x="59" y="49">
   	      <title name="sensor">1</title>
@@ -303,142 +486,98 @@ Update : 26 July 2014 - 2:28pm
 		  </block>
       </category>
 
-	  <category name="Time">
-		  <block type="action_wait">
-			  <value name="NAME">
-				  <block type="math_number">
-					  <title name="number">1</title>
-				  </block>
-			  </value>
-		  </block>
-		  <block type="action_gettimer" x="136" y="231"></block>
-		  <block type="action_reset_timer" x="136" y="280"></block>
-	  </category>
+    <category name="DC Motor">
+        <block type="action_motor" x="133" y="331">
+        </block>
+
+        <block type="action_motor_is_on" x="133" y="331">
+        </block>
 
 
-	  <category name="Action">
-  	    <block type="action_beep" x="133" y="62"></block>
-  	    <block type="action_led" x="132" y="115">
-  	      <title name="onoff">on</title>
-  	    </block>
 
-	  </category>
+        <block type="motor_action_turn" x="122" y="51">
+          <title name="turn">on</title>
+        </block>
+        <!--<block type="motor_action_onfor" x="120" y="102">
+          <title name="second">1</title>
+        </block>-->
+        <block type="motor_action_onfor">
+          <value name="value">
+            <block type="math_number">
+              <title name="number">1</title>
+            </block>
+          </value>
+        </block>
+        <block type="motor_action_thisway" x="119" y="159">
+          <title name="clockwise">cw</title>
+        </block>
+        <block type="motor_action_rd" x="116" y="214"></block>
+        <block type="motor_action_power" x="119" y="263">
+          <value name="power">
+            <block type="math_number">
+              <title name="number">100</title>
+            </block>
+          </value>
+        </block>
+    </category>
 
-	  <category name="DC Motor">
-  	    <block type="action_motor" x="133" y="331">
-  	      <title name="a">a</title>
-  	      <title name="b"></title>
-  	      <title name="c"></title>
-  	      <title name="d"></title>
-  	    </block>
-  	    <block type="motor_action_turn" x="122" y="51">
-  	      <title name="turn">on</title>
-  	    </block>
-  	    <!--<block type="motor_action_onfor" x="120" y="102">
-  	      <title name="second">1</title>
-  	    </block>-->
-  	    <block type="motor_action_onfor">
-  	    	<value name="value">
-  	    	  <block type="math_number">
-  	    	    <title name="number">1</title>
-  	    	  </block>
-  	    	</value>
-  	    </block>
-  	    <block type="motor_action_thisway" x="119" y="159">
-  	      <title name="clockwise">cw</title>
-  	    </block>
-  	    <block type="motor_action_rd" x="116" y="214"></block>
-  	    <block type="motor_action_power" x="119" y="263">
-  	      <value name="power">
-  	        <block type="math_number">
-  	          <title name="number">7</title>
-  	        </block>
-  	      </value>
-  	    </block>
-	  </category>
+    <category name="Servo Motor">
 
-	  <category name="Servo Motor">
-  	    <block type="servo_seth" x="116" y="214">
-  	    	<value name="heading">
-  	    	  <block type="math_number">
-  	    	    <title name="number">10</title>
-  	    	  </block>
-  	    	</value>
-  	    </block>
-  	    <block type="servo_lt" x="116" y="214">
-  	    	<value name="heading">
-  	    	  <block type="math_number">
-  	    	    <title name="number">10</title>
-  	    	  </block>
-  	    	</value>
-  	    </block>
-  	    <block type="servo_rt" x="116" y="214">
-  	    	<value name="heading">
-  	    	  <block type="math_number">
-  	    	    <title name="number">10</title>
-  	    	  </block>
-  	    	</value>
-  	    </block>
-  	  </category>
-  	  
-  	  <category name="Program Control">
-		<block type="control_forever" x="94" y="432"></block>
-		<block type="control_do_every" x="94" y="432"></block>
-		<block type="control_repeat" inline="true" x="86" y="323"></block>
-  	    <block type="control_if" inline="false" x="78" y="56"></block>
-  	    <block id="block_control_ifelse" type="control_ifelse" inline="false" x="72" y="152"></block>
-  	    <block type="control_if_state_change" inline="false" ></block>
-  	    <block type="control_waituntil" inline="false" x="87" y="274"></block>
+      <block type="action_motor" x="133" y="331">
+        <title name="a">a</title>
+        <title name="b"></title>
+        <title name="c"></title>
+        <title name="d"></title>
+      </block>
 
-  	  </category>
+        <block type="servo_seth" x="116" y="214">
+          <value name="heading">
+            <block type="math_number">
+              <title name="number">10</title>
+            </block>
+          </value>
+        </block>
+        <block type="servo_lt" x="116" y="214">
+          <value name="heading">
+            <block type="math_number">
+              <title name="number">10</title>
+            </block>
+          </value>
+        </block>
+        <block type="servo_rt" x="116" y="214">
+          <value name="heading">
+            <block type="math_number">
+              <title name="number">10</title>
+            </block>
+          </value>
+        </block>
+      </category>
+
+    <category name="Other Actions">
+        <block type="action_beep" x="133" y="62"></block>
+        <block type="action_led" x="132" y="115">
+          <title name="onoff">on</title>
+        </block>
+
+    </category>
+
+
+
+
+
+    <category name="Time">
+      <block type="action_wait">
+        <value name="NAME">
+          <block type="math_number">
+            <title name="number">1</title>
+          </block>
+        </value>
+      </block>
+      <block type="action_gettimer" x="136" y="231"></block>
+      <block type="action_reset_timer" x="136" y="280"></block>
+    </category>
     
-    	  <category name="Math & String">
-    	    <block type="math_number" x="13" y="10">
-    	      <title name="number">0</title>
-    	    </block>
-    	    <block type="math_random" x="14" y="44"></block>
-    	    <block type="math_equal" inline="true" x="-21" y="92">
-    	      <title name="cond">=</title>
-    	    </block>
-    	    <block type="math_operator" inline="true" x="28" y="147">
-    	      <title name="op">+</title>
-    	    </block>
-    	    <block type="math_andor" inline="true" x="35" y="202">
-    	      <title name="andor">and</title>
-    	    </block>
-    	    <block type="math_not" inline="false" x="42" y="257"></block>
-    	  
-    	  </category>
-
-		  <!--
-    	  <category name="Math & String">
-    	    <block type="math_number" x="13" y="10">
-    	      <title name="number">0</title>
-    	    </block>
-    	    <block type="math_random" x="-14" y="44"></block>
-    	    <block type="math_equal" inline="true" x="-21" y="92">
-    	      <title name="cond">=</title>
-    	    </block>
-    	    <block type="math_operator" inline="true" x="-28" y="147">
-    	      <title name="op">+</title>
-    	    </block>
-    	    <block type="math_andor" inline="true" x="-35" y="202">
-    	      <title name="andor">and</title>
-    	    </block>
-    	    <block type="math_not" inline="false" x="-42" y="257"></block>
-    	    <block type="text">
-    	    </block>
-    	    <block type="key_text">
-	    		<value name="key">
-	    		  <block type="text"></block>
-	    		</value>
-	    	</block>
-    	  </category>
-			-->
-    	  
-
-    	  <!--<category name="Procedures" custom="PROCEDURE"></category>-->
-    	  
+   	  
   	  
   	  <category name="Infrared Remote Control">
   	    <block type="input__output__storage_new_ir" x="47" y="379"></block>
@@ -490,28 +629,33 @@ Update : 26 July 2014 - 2:28pm
 	  	<category name="I2C">
 	  	  	<block type="i2c_write" inline="true">
 	  	  	  <value name="value">
-	  	  	    <block type="text">
-	  	  	    </block>
+				  <block type="math_number">
+					  <title name="number">0</title>
+				  </block>
 	  	  	  </value>
 	  	  	 <value name="reg_addr">
-  	  	 	    <block type="text">
-  	  	 	    </block>
+				 <block type="math_number">
+					 <title name="number">0</title>
+				 </block>
   	  	 	  </value> 
   	  	 	 <value name="i2c_addr">
-  	 	 	    <block type="text">
-  	 	 	    </block>
+				 <block type="math_number">
+					 <title name="number">0</title>
+				 </block>
   	 	 	  </value>
 	  	  	 
 	  	  	</block>
 	  	  	
 	  	  	<block type="i2c_read">
 	  	  	  <value name="reg_addr">
-	  	  	  	    <block type="text">
-	  	  	  	    </block>
+				  <block type="math_number">
+					  <title name="number">0</title>
+				  </block>
 	  	  	  	  </value> 
 	  	  	  	 <value name="i2c_addr">
-	  	  	  	    <block type="text">
-	  	  	  	    </block>
+					 <block type="math_number">
+						 <title name="number">0</title>
+					 </block>
 	  	  	  	  </value>
 	  	  	</block>
 	  	</category>
@@ -642,7 +786,7 @@ Update : 26 July 2014 - 2:28pm
 							<block type="show_image" id="6" inline="true">
 								<value name="string">
 									<block type="text" id="7">
-										<field name="TEXT">pet_smail</field>
+										<field name="TEXT">pet_smile</field>
 									</block>
 								</value>
 							</block>

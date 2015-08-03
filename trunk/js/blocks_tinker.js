@@ -240,11 +240,11 @@ Blockly.Blocks['i2c_write'] = {
 //        .appendField(", ");
 //    this.setInputsInline(true);
     this.appendValueInput("value")
-        .appendField("Write I2C register: write ");
+        .appendField("I2C Write value ");
     this.appendValueInput("reg_addr")
-        .appendField("to register ");
+        .appendField("to register# ");
     this.appendValueInput("i2c_addr")
-        .appendField(", I2C address ");
+        .appendField(" on device address# ");
     this.setInputsInline(true);
     this.setPreviousStatement(true);
     this.setNextStatement(true);
@@ -266,9 +266,9 @@ Blockly.Blocks['i2c_read'] = {
 //    this.appendValueInput("value")
 //        .appendField("");
     this.appendValueInput("reg_addr")
-        .appendField("Read I2C register: read from register ");
+        .appendField("I2C Read from register# ");
     this.appendValueInput("i2c_addr")
-        .appendField(", I2C address ");
+        .appendField(" on device address# ");
     this.setInputsInline(true);
     this.setOutput(true);
     this.setTooltip('');
@@ -353,21 +353,11 @@ Blockly.Blocks.action_motor = {
     this.setColour(310);
     this.appendDummyInput().appendField("talk to motor")
 
-//    .appendField(new Blockly.FieldDropdown([["", 0], ["a", 1]]), "a")
-//    .appendField(",")	
-//    .appendField(new Blockly.FieldDropdown([["", 0], ["b", 2]]), "b")
-//    .appendField(",")
-//    .appendField(new Blockly.FieldDropdown([["", 0], ["c", 4]]), "c")
-//    .appendField(",")
-//    .appendField(new Blockly.FieldDropdown([["", 0], ["d", 8]]), "d");
-    
-    .appendField(new Blockly.FieldDropdown([["a", "a"], [" - ", ""]]), "a")
-    .appendField(",")
-    .appendField(new Blockly.FieldDropdown([[" - ", ""], ["b", "b"]]), "b")
-    .appendField(",")
-    .appendField(new Blockly.FieldDropdown([[" - ", ""], ["c", "c"]]), "c")
-    .appendField(",")
-    .appendField(new Blockly.FieldDropdown([[" - ", ""], ["d", "d"]]), "d");
+    .appendField(new Blockly.FieldCheckbox("TRUE"), "a").appendField("A ")
+    .appendField(new Blockly.FieldCheckbox("FALSE"), "b").appendField("B ")
+    .appendField(new Blockly.FieldCheckbox("FALSE"), "c").appendField("C ")
+    .appendField(new Blockly.FieldCheckbox("FALSE"), "d").appendField("D");
+
     //var input =  this.appendValueInput( "NAME", "motor");
     //input.appendField("to");
     this.setPreviousStatement(true, null);
@@ -375,6 +365,32 @@ Blockly.Blocks.action_motor = {
     this.setTooltip('Selects specific motor(s) for control.');
   }
 };
+
+Blockly.Blocks.action_motor_is_on = {
+  category: 'Action',
+  helpUrl: 'http://www.example.com/',
+  init: function() {
+    this.setColour(310);
+    this.appendDummyInput().appendField("motor")
+
+    .appendField(new Blockly.FieldCheckbox("TRUE"), "a").appendField("A ")
+    .appendField(new Blockly.FieldCheckbox("FALSE"), "b").appendField("B ")
+    .appendField(new Blockly.FieldCheckbox("FALSE"), "c").appendField("C ")
+    .appendField(new Blockly.FieldCheckbox("FALSE"), "d").appendField("D");
+
+
+    //var input =  this.appendValueInput( "NAME", "motor");
+    //input.appendField("to");
+    this.appendDummyInput().appendField("is(are) on?")
+    this.setOutput(true, Boolean);
+    this.setInputsInline(true);
+    this.setPreviousStatement(false, null);
+    this.setNextStatement(false, null);
+    this.setTooltip('Returns True if the selected motors are on');
+  }
+};
+
+
 
 Blockly.Blocks.motor_action_turn = {
   category: 'Motor Action',
@@ -403,8 +419,8 @@ Blockly.Blocks.motor_action_onfor = {
     this.appendDummyInput()
         .appendField("turn on for");
     this.appendValueInput("value", Number);
-//    this.appendDummyInput()
-//        .appendField("second(s)");
+    this.appendDummyInput()
+        .appendField("1/10 second(s)");
     this.setInputsInline(true);
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
@@ -474,7 +490,7 @@ Blockly.Blocks.motor_action_power = {
     //this.setOutput(true, "motor");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
-    this.setTooltip('Sets power level of selected motor(s).');
+    this.setTooltip('Sets power level of selected motor(s). Values from 0-100.');
   }
 };
 
@@ -588,7 +604,7 @@ Blockly.Blocks['control_if_state_change'] = {
   helpUrl: 'http://www.example.com/',
   init: function() {
     this.setColour(125);
-    this.appendValueInput( "condition" ).setCheck(Boolean).appendField("if state change");
+    this.appendValueInput("condition").setCheck(Boolean).appendField("if state change");
     var input =  this.appendStatementInput( "statement", null);
     input.appendField("do");
     this.setPreviousStatement(true, null);
@@ -866,7 +882,7 @@ Blockly.Blocks.math_number = {
   category: 'Math',
   helpUrl: 'http://www.example.com/',
   init: function() {
-    this.setColour(10);
+    this.setColour(165);
     this.appendDummyInput().appendField(new Blockly.FieldTextInput("0"), "number");
     this.setOutput(true, Number);
     this.setTooltip('A number.');
@@ -891,7 +907,6 @@ Blockly.Blocks.math_equal = {
     this.setColour(10);
      this.appendValueInput( "left", Number);
     var input =  this.appendValueInput( "right", Number);
-    //input.appendField(new Blockly.FieldDropdown([["=", "="], ["<", "<"], ["<=", "<="], [">", ">"], [">=", ">="]]), "cond");
     //input.appendField(new Blockly.FieldDropdown([["=","="],["\u2260","!="],[">",">"],["\u2265",">="],["<","<"],["\u2264","<="]]), "cond");
     input.appendField(new Blockly.FieldDropdown([["=","="],[">",">"],["\u2265",">="],["<","<"],["\u2264","<="]]), "cond");
 
@@ -900,6 +915,26 @@ Blockly.Blocks.math_equal = {
     this.setTooltip('Reports boolean comparison of two inputs.');
   }
 };
+
+Blockly.Blocks.math_in_between = {
+  category: 'Math',
+  helpUrl: 'http://www.example.com/',
+  init: function() {
+    this.setColour(10);
+
+   
+    this.appendValueInput( "input", Number);
+    this.appendValueInput( "lower", Number)
+    .appendField("is in between");
+    this.appendValueInput( "upper", Number)
+    .appendField(",");
+
+    this.setInputsInline(true);
+    this.setOutput(true, Boolean);
+    this.setTooltip('Reports True if input is in between the given range.');
+  }
+};
+
 
 Blockly.Blocks.math_operator = {
   category: 'Math',

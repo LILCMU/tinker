@@ -1,3 +1,20 @@
+1.0.22 - July 30, 2015 - Arnan (Roger) Sipitakiat
+- Changed - talk to motor block now uses a checkbox instead of a dropdown list
+- Added - reporter to check the motor on/off
+- Added - 'in between' math operator. Should be usful in shortening 
+          code to define sensor ranges.
+- Changed - the order of command categories
+- Added - doevery x []. This is an alternative for 'forever'. It allows
+          the code block to be executed at a given peroid.
+
+1.0.21 - July 29, 2015 - Arnan (Roger) Sipitakiat
+- Changed - I2C commands now default to number parameters, not strings
+- Changed - Some blocks now have more handy parameters attached
+
+1.0.20 - July 29, 2015 - Arnan (Roger) Sipitakiat
+- Changed - Key-Value block is now used without needing a logical block
+- Changed - The blocks categories and names have be optimized
+
 1.0.15 - July 22, 2015  - Arnan (Roger) Sipitakiat
 ====================================================
 - Fixed - Key-Value block incorrectly uses capital letters for the key name.

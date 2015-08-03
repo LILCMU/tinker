@@ -373,16 +373,51 @@ Blockly.GogoCode.action_reset_timer = function() {
 };
 
 Blockly.GogoCode.action_motor = function() {
-  var dropdown_a = this.getFieldValue('a');
-  var dropdown_b = this.getFieldValue('b');
-  var dropdown_c = this.getFieldValue('c');
-  var dropdown_d = this.getFieldValue('d');
+
+  var checkbox_a = this.getFieldValue('a');
+  var checkbox_b = this.getFieldValue('b');
+  var checkbox_c = this.getFieldValue('c');
+  var checkbox_d = this.getFieldValue('d');
   //var value_name = Blockly.GogoCode.valueToCode(this, 'NAME', Blockly.GogoCode.ORDER_ATOMIC);
   // TODO: Assemble GogoCode into code variable.
 
-  var code = '<span class="c316">'+dropdown_a+dropdown_b+dropdown_c+dropdown_d+',</span> \n';//+value_name.slice(1, value_name.length-1)+'\n';
+  var code = '<span class="c316">'+(checkbox_a=="TRUE,"? "a":"")
+                                  +(checkbox_b=="TRUE,"? "b":"")
+                                  +(checkbox_c=="TRUE,"? "c":"")
+                                  +(checkbox_d=="TRUE,"? "d":"")
+                                  +',</span> \n';//+value_name.slice(1, value_name.length-1)+'\n';
+  if (code == '<span class="c316">,</span> \n') { code = ''; } 
+
+  // var dropdown_a = this.getFieldValue('a');
+  // var dropdown_b = this.getFieldValue('b');
+  // var dropdown_c = this.getFieldValue('c');
+  // var dropdown_d = this.getFieldValue('d');
+  // //var value_name = Blockly.GogoCode.valueToCode(this, 'NAME', Blockly.GogoCode.ORDER_ATOMIC);
+  // // TODO: Assemble GogoCode into code variable.
+
+  // var code = '<span class="c316">'+ dropdown_a +dropdown_b+dropdown_c+dropdown_d+',</span> \n';//+value_name.slice(1, value_name.length-1)+'\n';
   return code;
 };
+
+Blockly.GogoCode.action_motor_is_on = function() {
+  var checkbox_a = this.getFieldValue('a');
+  var checkbox_b = this.getFieldValue('b');
+  var checkbox_c = this.getFieldValue('c');
+  var checkbox_d = this.getFieldValue('d');
+  //var value_name = Blockly.GogoCode.valueToCode(this, 'NAME', Blockly.GogoCode.ORDER_ATOMIC);
+  // TODO: Assemble GogoCode into code variable.
+
+  var code = '<span class="c316">'+(checkbox_a=="TRUE,"? "a":"")
+                                  +(checkbox_b=="TRUE,"? "b":"")
+                                  +(checkbox_c=="TRUE,"? "c":"")
+                                  +(checkbox_d=="TRUE,"? "d":"")
+                                  +'on?</span> \n';//+value_name.slice(1, value_name.length-1)+'\n';
+  if (code == '<span class="c316">on?</span> \n') { code = '<span class="c316">0</span>'; }                                  
+  return [code, Blockly.GogoCode.ORDER_NONE];
+};
+
+
+
 
 Blockly.GogoCode.motor_action_turn = function() {
   var dropdown_turn = this.getFieldValue('turn');
@@ -529,6 +564,15 @@ Blockly.GogoCode.control_forever = function() {
   return code;
 };
 
+Blockly.GogoCode.control_do_every = function() {
+  var period = Blockly.GogoCode.valueToCode(this, 'period', Blockly.GogoCode.ORDER_ATOMIC);
+  var statements_do = Blockly.GogoCode.statementToCode(this, 'do');
+  // TODO: Assemble GogoCode into code variable.
+  var code = '<span class="c120">doevery ' + period + '\n[\n'+statements_do+'\n]</span>\n';
+  return code;
+};
+
+
 Blockly.GogoCode.input_switch = function() {
   var dropdown_switch = this.getFieldValue('switch');
   // TODO: Assemble GogoCode into code variable.
@@ -662,6 +706,21 @@ Blockly.GogoCode.math_equal = function() {
   // TODO: Change ORDER_NONE to the correct strength.
   return [code, Blockly.GogoCode.ORDER_NONE];
 };
+
+Blockly.GogoCode.math_in_between = function() {
+  var value_input = Blockly.GogoCode.valueToCode(this, 'input', Blockly.GogoCode.ORDER_ATOMIC);
+  var value_lower = Blockly.GogoCode.valueToCode(this, 'lower', Blockly.GogoCode.ORDER_ATOMIC);
+  var value_upper = Blockly.GogoCode.valueToCode(this, 'upper', Blockly.GogoCode.ORDER_ATOMIC);
+
+  // TODO: Assemble GogoCode into code variable.
+  var code = '<span class="c10">('+value_input+' > '+value_lower+') and ('+value_input+ ' < ' + value_upper+')</span> ';
+  // TODO: Change ORDER_NONE to the correct strength.
+  return [code, Blockly.GogoCode.ORDER_NONE];
+};
+
+
+
+
 
 Blockly.GogoCode.math_operator = function() {
   var value_1stnum = Blockly.GogoCode.valueToCode(this, '1stNum', Blockly.GogoCode.ORDER_ATOMIC);
