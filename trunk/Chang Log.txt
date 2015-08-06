@@ -1,3 +1,8 @@
+1.0.23 - Aug 6, 2015 - Arnan (Roger) Sipitakiat
+- Fixed - Bug where procedure variable inputs have ":" in from of them 
+          in the code body
+- Added - The number block now ensures that the user only enters numbers.
+
 1.0.22 - July 30, 2015 - Arnan (Roger) Sipitakiat
 - Changed - talk to motor block now uses a checkbox instead of a dropdown list
 - Added - reporter to check the motor on/off

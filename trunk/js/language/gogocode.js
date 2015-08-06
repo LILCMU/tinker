@@ -1040,7 +1040,7 @@ Blockly.GogoCode.procedures_callnoreturn=function(a){
 	var b = Blockly.GogoCode.variableDB_.getName(a.getFieldValue("NAME"),Blockly.Procedures.NAME_TYPE);
 	var c = [];
 	for( var d = 0 ; d < a.arguments_.length ; d++) {
-		c[d] = ':'+Blockly.GogoCode.valueToCode(a,"ARG"+d,Blockly.GogoCode.ORDER_COMMA) || "null" ;
+		c[d] = Blockly.GogoCode.valueToCode(a,"ARG"+d,Blockly.GogoCode.ORDER_COMMA) || "null" ;
 	};
 	var code = b+" "+c.join(" ")+" ";
 	return code;

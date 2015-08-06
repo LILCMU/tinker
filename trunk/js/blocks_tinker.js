@@ -883,7 +883,7 @@ Blockly.Blocks.math_number = {
   helpUrl: 'http://www.example.com/',
   init: function() {
     this.setColour(165);
-    this.appendDummyInput().appendField(new Blockly.FieldTextInput("0"), "number");
+    this.appendDummyInput().appendField(new Blockly.FieldTextInput("0", Blockly.FieldTextInput.numberValidator), "number");
     this.setOutput(true, Number);
     this.setTooltip('A number.');
   }
