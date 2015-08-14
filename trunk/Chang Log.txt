@@ -1,3 +1,6 @@
+1.0.24 - Aug 14, 2015 - Arnan (Roger) Sipitakiat
+- Updated the examples.
+
 1.0.23 - Aug 6, 2015 - Arnan (Roger) Sipitakiat
 - Fixed - Bug where procedure variable inputs have ":" in from of them 
           in the code body
