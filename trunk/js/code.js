@@ -198,6 +198,7 @@ Code.init = function() {
   BlocklyApps.bindClick('runButton', Code.runJS);
   BlocklyApps.bindClick('loadButton', Code.clickLoadXML);
   BlocklyApps.bindClick('saveButton', Code.saveXML);
+  BlocklyApps.bindClick('runStopButton', Code.handleRunStopGoGoBoard);
   BlocklyApps.bindClick('writeButton', Code.writeToGogoBoard);
 
   $('loadXML').addEventListener('change', Code.loadXML, false);
@@ -348,6 +349,11 @@ Code.writeToGogoBoard = function(){
 	ws.send('logo::'+code);
 	kk('logo::'+code);
 }
+
+Code.handleRunStopGoGoBoard = function(){
+  ws.send('command::runStop');
+}
+
 
 Code.writeToGogoBoard1 = function() {
 	var sourceCode = Code.loadProcedure();
