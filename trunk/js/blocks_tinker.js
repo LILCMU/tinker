@@ -86,8 +86,9 @@ Blockly.Blocks['display_number'] = {
 //        .appendField("\"");
     this.appendDummyInput()
         .appendField("show number  ");
-    this.appendValueInput("value")
-        .setCheck("Number");
+    this.appendValueInput("value");
+//        .setCheck("Number");
+    
     this.setInputsInline(true);
     this.setPreviousStatement(true);
     this.setNextStatement(true);

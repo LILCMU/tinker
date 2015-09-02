@@ -70,7 +70,7 @@ Update : 26 July 2014 - 2:28pm
 </head>
 <body>
 
-<div id="versionNO">v1.0.25 - Aug 21, 2015</div>
+<div id="versionNO">v1.0.27 - Sep 3, 2015</div>
 
 <div id="spatialContentTemplate" class="contentSpatial">
 	<div class="mainArea">
@@ -220,16 +220,6 @@ Update : 26 July 2014 - 2:28pm
   			  <block type="text"></block>
   			</value>
   		</block>
-  		<block type="show_plot" inline="true">
-  			<value name="string">
-  			  <block type="text"></block>
-  			</value>
-  		</block>
-  		<block type="show_plot_expression" inline="true">
-  			<value name="string">
-  			  <block type="text"></block>
-  			</value>
-  		</block>
   	</category>
   	
   </category>
@@ -333,14 +323,16 @@ Update : 26 July 2014 - 2:28pm
       
       <category name="Program Control">
     <block type="control_forever" x="94" y="432"></block>
-    <block type="control_do_every" x="94" y="432">
+
+
+<!--    <block type="control_do_every" x="94" y="432">
       <value name="period">
         <block type="math_number">
           <title name="number">10</title>
         </block>
       </value>
     </block>
-
+-->
 
     <block type="control_repeat" inline="true" x="86" y="323">
       <value name="times">
