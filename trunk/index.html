@@ -70,7 +70,7 @@ Update : 26 July 2014 - 2:28pm
 </head>
 <body>
 
-<div id="versionNO">v1.0.27 - Sep 3, 2015</div>
+<div id="versionNO">v1.0.28 - Sep 3, 2015</div>
 
 <div id="spatialContentTemplate" class="contentSpatial">
 	<div class="mainArea">
@@ -210,11 +210,6 @@ Update : 26 July 2014 - 2:28pm
   	</category>
   	
   	<category name="Data recording" class="rPiBlocks">
-  		<block type="new_record" inline="true">
-  			<value name="string">
-  			  <block type="text"></block>
-  			</value>
-  		</block>
   		<block type="record_as" inline="true">
   			<value name="string">
   			  <block type="text"></block>
@@ -323,6 +318,8 @@ Update : 26 July 2014 - 2:28pm
       
       <category name="Program Control">
     <block type="control_forever" x="94" y="432"></block>
+
+	<block type="procedure_stop"></block>
 
 
 <!--    <block type="control_do_every" x="94" y="432">

@@ -8,7 +8,7 @@ Blockly.Blocks.action_beep = {
     this.appendDummyInput().appendField("beep");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
-    this.setTooltip('Causes Cricket to beep.');
+    this.setTooltip('Causes the GoGo to beep.');
   }
 };
 
@@ -286,7 +286,7 @@ Blockly.Blocks.action_led = {
     .appendField(new Blockly.FieldDropdown([["on", "on"], ["off", "off"]]), "onoff");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
-    this.setTooltip('Causes Cricket to turn LED on/off.');
+    this.setTooltip('Causes the GoGo to turn LED on/off.');
   }
 };
 
@@ -661,6 +661,17 @@ Blockly.Blocks.control_forever = {
   }
 };
 
+
+Blockly.Blocks.procedure_stop = {
+  helpUrl: 'http://www.example.com/',
+  init: function() {
+    this.setColour(120);
+    this.appendDummyInput().appendField("stop this procedure");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setTooltip('quit the current procedure.');
+  }
+};
 
 Blockly.Blocks.control_do_every = {
   category: 'Control',

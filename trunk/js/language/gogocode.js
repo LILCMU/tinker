@@ -564,6 +564,11 @@ Blockly.GogoCode.control_forever = function() {
   return code;
 };
 
+Blockly.GogoCode.procedure_stop = function() {
+  var code = '<span class="c290">stop</span>\n';
+  return code;
+};
+
 Blockly.GogoCode.control_do_every = function() {
   var period = Blockly.GogoCode.valueToCode(this, 'period', Blockly.GogoCode.ORDER_ATOMIC);
   var statements_do = Blockly.GogoCode.statementToCode(this, 'do');

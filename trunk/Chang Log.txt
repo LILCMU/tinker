@@ -1,3 +1,6 @@
+1.0.28 - Sep 3, 2015 - Arnan Sipitakiat
+- Added: the missing "stop" Logo command. This command stops the current procedure.
+
 1.0.27 - Sep 3, 2015 - Arnan Sipitakiat
 - Fixed: Division now works
 - Fixed: "Show Number" can now take an expression as an input
