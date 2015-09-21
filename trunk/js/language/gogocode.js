@@ -372,6 +372,41 @@ Blockly.GogoCode.action_reset_timer = function() {
   return code;
 };
 
+// ============== TICKS ====================
+
+Blockly.GogoCode['action_settickrate'] = function(block) {
+  var value_name = Blockly.GogoCode.valueToCode(block, 'NAME', Blockly.GogoCode.ORDER_ATOMIC);
+  //value_name = value_name.replace('<span class="c10">', '').replace('</span>', '').toInt()
+  //value_name *= 10;
+  //var code = '<span class="c290">wait ' + (isNaN(value_name) ? 0 : value_name) + '</span> \n';
+  var code = '<span class="c290">settickrate ' + value_name + '</span> \n';
+  return code;
+};
+
+Blockly.GogoCode.action_gettickcount = function() {
+  // TODO: Assemble GogoCode into code variable.
+  var code = '<span class="c120">tickcount</span>';
+  // TODO: Change ORDER_NONE to the correct strength.
+  return [code, Blockly.GogoCode.ORDER_NONE];
+};
+
+Blockly.GogoCode.action_ticked = function() {
+  // TODO: Assemble GogoCode into code variable.
+  var code = '<span class="c120">(tickcount > 0)</span>';
+  // TODO: Change ORDER_NONE to the correct strength.
+  return [code, Blockly.GogoCode.ORDER_NONE];
+};
+
+
+
+Blockly.GogoCode.action_cleartick = function() {
+  // TODO: Assemble GogoCode into code variable.
+  var code = '<span class="c120">cleartick</span>\n'
+  return code;
+};
+
+
+
 Blockly.GogoCode.action_motor = function() {
 
   var checkbox_a = this.getFieldValue('a');
@@ -573,10 +608,25 @@ Blockly.GogoCode.control_do_every = function() {
   var period = Blockly.GogoCode.valueToCode(this, 'period', Blockly.GogoCode.ORDER_ATOMIC);
   var statements_do = Blockly.GogoCode.statementToCode(this, 'do');
   // TODO: Assemble GogoCode into code variable.
-  var code = '<span class="c120">doevery ' + period + '\n[\n'+statements_do+'\n]</span>\n';
+  var code = '<span class="c120">settickrate 1\nforever [\nif tickcount = ' + period + ' ['+statements_do+'\ncleartick\n]\n]</span>\n';
   return code;
 };
 
+Blockly.GogoCode.control_when_ticked = function() {
+  var period = Blockly.GogoCode.valueToCode(this, 'period', Blockly.GogoCode.ORDER_ATOMIC);
+  var statements_do = Blockly.GogoCode.statementToCode(this, 'do');
+  // TODO: Assemble GogoCode into code variable.
+  var code = '<span class="c120">forever [\nif tickcount > 0\n['+statements_do+'\ncleartick\n]\n]</span>\n';
+  return code;
+};
+
+Blockly.GogoCode.control_if_ticked = function() {
+  var period = Blockly.GogoCode.valueToCode(this, 'period', Blockly.GogoCode.ORDER_ATOMIC);
+  var statements_do = Blockly.GogoCode.statementToCode(this, 'do');
+  // TODO: Assemble GogoCode into code variable.
+  var code = '<span class="c120">if tickcount > 0\n['+statements_do+'\ncleartick\n]\n</span>\n';
+  return code;
+};
 
 Blockly.GogoCode.input_switch = function() {
   var dropdown_switch = this.getFieldValue('switch');

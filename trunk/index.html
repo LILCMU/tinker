@@ -70,7 +70,7 @@ Update : 26 July 2014 - 2:28pm
 </head>
 <body>
 
-<div id="versionNO">v1.0.28 - Sep 3, 2015</div>
+<div id="versionNO">v1.0.29 - Sep 21, 2015</div>
 
 <div id="spatialContentTemplate" class="contentSpatial">
 	<div class="mainArea">
@@ -322,14 +322,22 @@ Update : 26 July 2014 - 2:28pm
 	<block type="procedure_stop"></block>
 
 
-<!--    <block type="control_do_every" x="94" y="432">
-      <value name="period">
+    <block type="action_settickrate">
+      <value name="NAME">
         <block type="math_number">
           <title name="number">10</title>
         </block>
       </value>
+
+      <next>
+        <block type="control_when_ticked" x="94" y="432">
+        </block>
+      </next>
     </block>
--->
+
+    <block type="control_if_ticked" x="94" y="432">
+    </block>
+
 
     <block type="control_repeat" inline="true" x="86" y="323">
       <value name="times">
@@ -340,7 +348,7 @@ Update : 26 July 2014 - 2:28pm
     </block>
 
 
-        <block type="control_if" inline="false" x="78" y="56">
+    <block type="control_if" inline="false" x="78" y="56">
       <value name="condition">
         <block type="math_equal" id="32" inline="true">
           <field name="cond">&gt;</field>
@@ -565,6 +573,25 @@ Update : 26 July 2014 - 2:28pm
       </block>
       <block type="action_gettimer" x="136" y="231"></block>
       <block type="action_reset_timer" x="136" y="280"></block>
+      
+      <block type="action_settickrate">
+        <value name="NAME">
+          <block type="math_number">
+            <title name="number">10</title>
+          </block>
+        </value>
+      </block>
+
+      <block type="action_ticked"></block>
+      <block type="action_gettickcount"></block>
+      <block type="action_cleartick"></block>
+
+
+
+
+
+
+
     </category>
     
    	  

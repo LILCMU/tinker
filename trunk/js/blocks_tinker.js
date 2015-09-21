@@ -347,6 +347,61 @@ Blockly.Blocks.action_reset_timer = {
   }
 };
 
+Blockly.Blocks['action_settickrate'] = {
+  init: function() {
+    this.setHelpUrl('http://www.example.com/');
+    this.setColour(170);
+    this.appendDummyInput()
+        .appendField("Tick every");
+    this.appendValueInput("NAME", Number);
+    this.appendDummyInput()
+        .appendField("1/10 second(s)");
+    this.setInputsInline(true);
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('Sets the time beween each Tick');
+  }
+};
+
+Blockly.Blocks.action_gettickcount = {
+  category: 'Action',
+  helpUrl: 'http://www.example.com/',
+  init: function() {
+    this.setColour(170);
+    this.appendDummyInput().appendField("Tick count");
+    this.setOutput(true, Number);
+    this.setTooltip('Reports the number Ticks has passed since the last reset');
+  }
+};
+
+Blockly.Blocks.action_ticked = {
+  category: 'Action',
+  helpUrl: 'http://www.example.com/',
+  init: function() {
+    this.setColour(170);
+    this.appendDummyInput().appendField("Ticked?");
+    this.setOutput(true, Boolean);
+    this.setTooltip('Returns true if the clock has ticked');
+  }
+};
+
+
+
+Blockly.Blocks.action_cleartick = {
+  category: 'Action',
+  helpUrl: 'http://www.example.com/',
+  init: function() {
+    this.setColour(170);
+    this.appendDummyInput().appendField("clear Tick");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setTooltip('Resets the tick counter and reset the tick clock');
+  }
+};
+
+
+
+
 Blockly.Blocks.action_motor = {
   category: 'Action',
   helpUrl: 'http://www.example.com/',
@@ -673,21 +728,51 @@ Blockly.Blocks.procedure_stop = {
   }
 };
 
-Blockly.Blocks.control_do_every = {
+// Blockly.Blocks.control_do_every = {
+//   category: 'Control',
+//   helpUrl: 'http://www.example.com/',
+//   init: function() {
+//     this.setColour(120);
+//     this.appendDummyInput().appendField("every");
+//     this.appendValueInput( "period", Number);
+//     var input = this.appendDummyInput();
+//     input.appendField("1/10 second(s)");
+//     input =  this.appendStatementInput( "do", null);
+//     input.appendField("do");
+//     this.setInputsInline(true);
+//     this.setPreviousStatement(true, null);
+//     this.setNextStatement(true, null);
+//     this.setTooltip('Repeats block forever at a constant peroid.');
+//   }
+// };
+
+Blockly.Blocks.control_when_ticked = {
   category: 'Control',
   helpUrl: 'http://www.example.com/',
   init: function() {
     this.setColour(120);
-    this.appendDummyInput().appendField("every");
-    this.appendValueInput( "period", Number);
-    var input = this.appendDummyInput();
-    input.appendField("1/10 second(s)");
-    input =  this.appendStatementInput( "do", null);
+    this.appendDummyInput().appendField("when Ticked");
+    var input = this.appendStatementInput( "do", null);
+    input.appendField("do");
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(false, null);
+    this.setTooltip('executes when the clock has ticked');
+  }
+};
+
+Blockly.Blocks.control_if_ticked = {
+  category: 'Control',
+  helpUrl: 'http://www.example.com/',
+  init: function() {
+    this.setColour(120);
+    this.appendDummyInput().appendField("if Ticked");
+    var input = this.appendStatementInput( "do", null);
     input.appendField("do");
     this.setInputsInline(true);
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
-    this.setTooltip('Repeats block forever at a constant peroid.');
+    this.setTooltip('executes if the clock has ticked');
   }
 };
 
