@@ -70,7 +70,7 @@ Update : 26 July 2014 - 2:28pm
 </head>
 <body>
 
-<div id="versionNO">v1.0.29 - Sep 21, 2015</div>
+<div id="versionNO">v1.0.31 - Feb 11, 2016</div>
 
 <div id="spatialContentTemplate" class="contentSpatial">
 	<div class="mainArea">
@@ -319,26 +319,6 @@ Update : 26 July 2014 - 2:28pm
       <category name="Program Control">
     <block type="control_forever" x="94" y="432"></block>
 
-	<block type="procedure_stop"></block>
-
-
-    <block type="action_settickrate">
-      <value name="NAME">
-        <block type="math_number">
-          <title name="number">10</title>
-        </block>
-      </value>
-
-      <next>
-        <block type="control_when_ticked" x="94" y="432">
-        </block>
-      </next>
-    </block>
-
-    <block type="control_if_ticked" x="94" y="432">
-    </block>
-
-
     <block type="control_repeat" inline="true" x="86" y="323">
       <value name="times">
         <block type="math_number">
@@ -422,6 +402,26 @@ Update : 26 July 2014 - 2:28pm
         </block>
       </value>
     </block>
+
+    <block type="procedure_stop"></block>
+
+
+    <block type="action_settickrate">
+      <value name="NAME">
+        <block type="math_number">
+          <title name="number">10</title>
+        </block>
+      </value>
+
+      <next>
+        <block type="control_when_ticked" x="94" y="432">
+        </block>
+      </next>
+    </block>
+
+    <block type="control_if_ticked" x="94" y="432">
+    </block>
+
 
       </category>
 
@@ -603,13 +603,13 @@ Update : 26 July 2014 - 2:28pm
   	  </category>
   	  
   	  <category id="addOnModules" name="Add-on Modules">
-  	  	<category name="Clock">
+  	  	<category name="Clock and Calendar Module">
 	  	  	<block type="clock_date">
 	  	  	  <title name="date">4</title>
 	  	  	</block>
 	  	</category>
 	  	  	
-	  	<category name="Display">
+	  	<category name="Display Modlue">
 	  	  	<block type="display_text">
 	  	  	  <title name="text">text</title>
 	  	  	</block>
@@ -643,7 +643,7 @@ Update : 26 July 2014 - 2:28pm
 	  	  	</block>
 	  	</category>
 	  	  	
-	  	<category name="I2C">
+	  	<category name="I2C Extension">
 	  	  	<block type="i2c_write" inline="true">
 	  	  	  <value name="value">
 				  <block type="math_number">
@@ -675,6 +675,253 @@ Update : 26 July 2014 - 2:28pm
 					 </block>
 	  	  	  	  </value>
 	  	  	</block>
+
+          <block type="procedures_defreturn" id="204" inline="false" collapsed="true" x="-1145" y="-199">
+              <mutation></mutation>
+              <field name="NAME">temperature (DHT11)</field>
+              <statement name="STACK">
+                  <block type="i2c_write" id="189" inline="true">
+                      <value name="value">
+                          <block type="math_number" id="190">
+                              <field name="number">11</field>
+                          </block>
+                      </value>
+                      <value name="reg_addr">
+                          <block type="math_number" id="191">
+                              <field name="number">1</field>
+                          </block>
+                      </value>
+                      <value name="i2c_addr">
+                          <block type="math_number" id="192">
+                              <field name="number">192</field>
+                          </block>
+                      </value>
+                      <next>
+                          <block type="action_wait" id="199" inline="true">
+                              <value name="NAME">
+                                  <block type="math_number" id="200">
+                                      <field name="number">2</field>
+                                  </block>
+                              </value>
+                          </block>
+                      </next>
+                  </block>
+              </statement>
+              <value name="RETURN">
+                  <block type="i2c_read" id="195" inline="true">
+                      <value name="reg_addr">
+                          <block type="math_number" id="196">
+                              <field name="number">9</field>
+                          </block>
+                      </value>
+                      <value name="i2c_addr">
+                          <block type="math_number" id="197">
+                              <field name="number">192</field>
+                          </block>
+                      </value>
+                  </block>
+              </value>
+          </block>
+
+          <block type="procedures_defreturn" id="204" inline="false" collapsed="true" x="-1145" y="-199">
+              <mutation></mutation>
+              <field name="NAME">Relative Humidity (DHT11)</field>
+              <statement name="STACK">
+                  <block type="i2c_write" id="189" inline="true">
+                      <value name="value">
+                          <block type="math_number" id="190">
+                              <field name="number">11</field>
+                          </block>
+                      </value>
+                      <value name="reg_addr">
+                          <block type="math_number" id="191">
+                              <field name="number">1</field>
+                          </block>
+                      </value>
+                      <value name="i2c_addr">
+                          <block type="math_number" id="192">
+                              <field name="number">192</field>
+                          </block>
+                      </value>
+                      <next>
+                          <block type="action_wait" id="199" inline="true">
+                              <value name="NAME">
+                                  <block type="math_number" id="200">
+                                      <field name="number">2</field>
+                                  </block>
+                              </value>
+                          </block>
+                      </next>
+                  </block>
+              </statement>
+              <value name="RETURN">
+                  <block type="i2c_read" id="195" inline="true">
+                      <value name="reg_addr">
+                          <block type="math_number" id="196">
+                              <field name="number">11</field>
+                          </block>
+                      </value>
+                      <value name="i2c_addr">
+                          <block type="math_number" id="197">
+                              <field name="number">192</field>
+                          </block>
+                      </value>
+                  </block>
+              </value>
+          </block>
+
+          <block type="procedures_defreturn" id="125" inline="false" collapsed="true" x="-12" y="240">
+              <mutation></mutation>
+              <field name="NAME">Ultrasonic Distance</field>
+              <statement name="STACK">
+                  <block type="i2c_write" id="82" inline="true">
+                      <value name="value">
+                          <block type="math_number" id="83">
+                              <field name="number">4</field>
+                          </block>
+                      </value>
+                      <value name="reg_addr">
+                          <block type="math_number" id="84">
+                              <field name="number">1</field>
+                          </block>
+                      </value>
+                      <value name="i2c_addr">
+                          <block type="math_number" id="85">
+                              <field name="number">192</field>
+                          </block>
+                      </value>
+                      <next>
+                          <block type="action_wait" id="86" inline="true">
+                              <value name="NAME">
+                                  <block type="math_number" id="87">
+                                      <field name="number">5</field>
+                                  </block>
+                              </value>
+                          </block>
+                      </next>
+                  </block>
+              </statement>
+              <value name="RETURN">
+                  <block type="math_operator" id="135" inline="true">
+                      <field name="op">+</field>
+                      <value name="1stNum">
+                          <block type="i2c_read" id="89" inline="true">
+                              <value name="reg_addr">
+                                  <block type="math_number" id="90">
+                                      <field name="number">13</field>
+                                  </block>
+                              </value>
+                              <value name="i2c_addr">
+                                  <block type="math_number" id="91">
+                                      <field name="number">192</field>
+                                  </block>
+                              </value>
+                          </block>
+                      </value>
+                      <value name="2ndNum">
+                          <block type="math_operator" id="93" inline="true">
+                              <field name="op">×</field>
+                              <value name="1stNum">
+                                  <block type="i2c_read" id="94" inline="true">
+                                      <value name="reg_addr">
+                                          <block type="math_number" id="95">
+                                              <field name="number">14</field>
+                                          </block>
+                                      </value>
+                                      <value name="i2c_addr">
+                                          <block type="math_number" id="96">
+                                              <field name="number">192</field>
+                                          </block>
+                                      </value>
+                                  </block>
+                              </value>
+                              <value name="2ndNum">
+                                  <block type="math_number" id="97">
+                                      <field name="number">256</field>
+                                  </block>
+                              </value>
+                          </block>
+                      </value>
+                  </block>
+              </value>
+          </block>
+
+          <block type="procedures_defreturn" id="125" inline="false" collapsed="true" x="-12" y="240">
+              <mutation></mutation>
+              <field name="NAME">Waterflow Counter</field>
+              <statement name="STACK">
+                  <block type="i2c_write" id="82" inline="true">
+                      <value name="value">
+                          <block type="math_number" id="83">
+                              <field name="number">12</field>
+                          </block>
+                      </value>
+                      <value name="reg_addr">
+                          <block type="math_number" id="84">
+                              <field name="number">1</field>
+                          </block>
+                      </value>
+                      <value name="i2c_addr">
+                          <block type="math_number" id="85">
+                              <field name="number">192</field>
+                          </block>
+                      </value>
+                      <next>
+                          <block type="action_wait" id="86" inline="true">
+                              <value name="NAME">
+                                  <block type="math_number" id="87">
+                                      <field name="number">5</field>
+                                  </block>
+                              </value>
+                          </block>
+                      </next>
+                  </block>
+              </statement>
+              <value name="RETURN">
+                  <block type="math_operator" id="135" inline="true">
+                      <field name="op">+</field>
+                      <value name="1stNum">
+                          <block type="i2c_read" id="89" inline="true">
+                              <value name="reg_addr">
+                                  <block type="math_number" id="90">
+                                      <field name="number">17</field>
+                                  </block>
+                              </value>
+                              <value name="i2c_addr">
+                                  <block type="math_number" id="91">
+                                      <field name="number">192</field>
+                                  </block>
+                              </value>
+                          </block>
+                      </value>
+                      <value name="2ndNum">
+                          <block type="math_operator" id="93" inline="true">
+                              <field name="op">×</field>
+                              <value name="1stNum">
+                                  <block type="i2c_read" id="94" inline="true">
+                                      <value name="reg_addr">
+                                          <block type="math_number" id="95">
+                                              <field name="number">18</field>
+                                          </block>
+                                      </value>
+                                      <value name="i2c_addr">
+                                          <block type="math_number" id="96">
+                                              <field name="number">192</field>
+                                          </block>
+                                      </value>
+                                  </block>
+                              </value>
+                              <value name="2ndNum">
+                                  <block type="math_number" id="97">
+                                      <field name="number">256</field>
+                                  </block>
+                              </value>
+                          </block>
+                      </value>
+                  </block>
+              </value>
+          </block>
+
 	  	</category>
   	  	
   	  </category>
@@ -687,6 +934,8 @@ Update : 26 July 2014 - 2:28pm
 
 	  <category name=" ">
 	  </category>
+
+
 
     <category name="Examples">
 	  <category name="GoGo Examples">
@@ -781,6 +1030,74 @@ Update : 26 July 2014 - 2:28pm
                 </statement>
             </block>
 		</category>
+
+    <category name="IR Remote Contol Example">
+            <block type="control_forever" id="3">
+                <statement name="do">
+                    <block type="control_if" id="40" inline="false">
+                        <value name="condition">
+                            <block type="input__output__storage_new_ir" id="46"></block>
+                        </value>
+                        <statement name="statement">
+                            <block type="variables_set" id="49" inline="false">
+                                <field name="VAR">command</field>
+                                <value name="VALUE">
+                                    <block type="input__output__storage_get_ir" id="52"></block>
+                                </value>
+                                <next>
+                                    <block type="control_if" id="77" inline="false">
+                                        <value name="condition">
+                                            <block type="math_equal" id="41" inline="true">
+                                                <field name="cond">=</field>
+                                                <value name="left">
+                                                    <block type="variables_get" id="85">
+                                                        <field name="VAR">command</field>
+                                                    </block>
+                                                </value>
+                                                <value name="right">
+                                                    <block type="math_number" id="43">
+                                                        <field name="number">1</field>
+                                                    </block>
+                                                </value>
+                                            </block>
+                                        </value>
+                                        <statement name="statement">
+                                            <block type="action_beep" id="88"></block>
+                                        </statement>
+                                        <next>
+                                            <block type="control_if" id="89" inline="false">
+                                                <value name="condition">
+                                                    <block type="math_equal" id="90" inline="true">
+                                                        <field name="cond">=</field>
+                                                        <value name="left">
+                                                            <block type="variables_get" id="91">
+                                                                <field name="VAR">command</field>
+                                                            </block>
+                                                        </value>
+                                                        <value name="right">
+                                                            <block type="math_number" id="92">
+                                                                <field name="number">2</field>
+                                                            </block>
+                                                        </value>
+                                                    </block>
+                                                </value>
+                                                <statement name="statement">
+                                                    <block type="action_led" id="96">
+                                                        <field name="onoff">on</field>
+                                                    </block>
+                                                </statement>
+                                            </block>
+                                        </next>
+                                    </block>
+                                </next>
+                            </block>
+                        </statement>
+                    </block>
+                </statement>
+            </block>
+    </category>
+
+
     </category>
 
 

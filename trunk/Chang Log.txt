@@ -1,3 +1,6 @@
+1.0.31 - Feb 11, 2016 - Marutpong Chailangka
+- Added - a feature, Switching WS to WSS when load the webpage from HTTPS
+
 1.0.29 - Sep 21, 2015 - Arnan Sipiatkiat
 - Added Tick timer commands
 

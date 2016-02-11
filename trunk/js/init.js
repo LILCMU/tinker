@@ -1042,7 +1042,8 @@ document.addEvent('spatialIsReady', function(){
 
 var normalWS = function(){
 	try {
-		var ws = new wsImpl('ws://localhost:8316/ws');
+		var port = (window.location.protocol == "https:" ? "8317" : "8316");
+		var ws = new wsImpl((window.location.protocol == "https:" ? "wss" : "ws")+'://localhost:'+port+'/ws');
 	} catch (error) {
 		return;
 	}
