@@ -70,7 +70,7 @@ Update : 26 July 2014 - 2:28pm
 </head>
 <body>
 
-<div id="versionNO">v1.0.31 - Feb 11, 2016</div>
+<div id="versionNO">v1.0.32 - March 23, 2016</div>
 
 <div id="spatialContentTemplate" class="contentSpatial">
 	<div class="mainArea">
@@ -921,6 +921,125 @@ Update : 26 July 2014 - 2:28pm
                   </block>
               </value>
           </block>
+
+	    <block type="procedures_defreturn" id="683" inline="false" collapsed="true" x="721" y="13">
+	        <mutation></mutation>
+	        <field name="NAME">DS18B20 Count</field>
+	        <statement name="STACK">
+	            <block type="i2c_write" id="684" inline="true">
+	                <value name="value">
+	                    <block type="math_number" id="685">
+	                        <field name="number">14</field>
+	                    </block>
+	                </value>
+	                <value name="reg_addr">
+	                    <block type="math_number" id="686">
+	                        <field name="number">1</field>
+	                    </block>
+	                </value>
+	                <value name="i2c_addr">
+	                    <block type="math_number" id="687">
+	                        <field name="number">192</field>
+	                    </block>
+	                </value>
+	                <next>
+	                    <block type="action_wait" id="688" inline="true">
+	                        <value name="NAME">
+	                            <block type="math_number" id="689">
+	                                <field name="number">10</field>
+	                            </block>
+	                        </value>
+	                    </block>
+	                </next>
+	            </block>
+	        </statement>
+	        <value name="RETURN">
+	            <block type="i2c_read" id="690" inline="true">
+	                <value name="reg_addr">
+	                    <block type="math_number" id="691">
+	                        <field name="number">21</field>
+	                    </block>
+	                </value>
+	                <value name="i2c_addr">
+	                    <block type="math_number" id="692">
+	                        <field name="number">192</field>
+	                    </block>
+	                </value>
+	            </block>
+	        </value>
+	    </block>
+
+
+	 	  <block type="procedures_defreturn" id="694" inline="false" collapsed="true" x="709" y="173">
+		        <mutation>
+		            <arg name="Sensor Index"></arg>
+		        </mutation>
+		        <field name="NAME">temperature (DS18B20)</field>
+		        <statement name="STACK">
+		            <block type="i2c_write" id="695" inline="true">
+		                <value name="value">
+		                    <block type="math_number" id="696">
+		                        <field name="number">14</field>
+		                    </block>
+		                </value>
+		                <value name="reg_addr">
+		                    <block type="math_number" id="697">
+		                        <field name="number">1</field>
+		                    </block>
+		                </value>
+		                <value name="i2c_addr">
+		                    <block type="math_number" id="698">
+		                        <field name="number">192</field>
+		                    </block>
+		                </value>
+		                <next>
+		                    <block type="action_wait" id="699" inline="true">
+		                        <value name="NAME">
+		                            <block type="math_number" id="700">
+		                                <field name="number">10</field>
+		                            </block>
+		                        </value>
+		                    </block>
+		                </next>
+		            </block>
+		        </statement>
+		        <value name="RETURN">
+		            <block type="i2c_read" id="701" inline="true">
+		                <value name="reg_addr">
+		                    <block type="math_operator" id="702" inline="true">
+		                        <field name="op">+</field>
+		                        <value name="1stNum">
+		                            <block type="math_number" id="703">
+		                                <field name="number">22</field>
+		                            </block>
+		                        </value>
+		                        <value name="2ndNum">
+		                            <block type="math_operator" id="704" inline="true">
+		                                <field name="op">×</field>
+		                                <value name="1stNum">
+		                                    <block type="variables_get" id="705">
+		                                        <field name="VAR">Sensor Index</field>
+		                                    </block>
+		                                </value>
+		                                <value name="2ndNum">
+		                                    <block type="math_number" id="706">
+		                                        <field name="number">2</field>
+		                                    </block>
+		                                </value>
+		                            </block>
+		                        </value>
+		                    </block>
+		                </value>
+		                <value name="i2c_addr">
+		                    <block type="math_number" id="707">
+		                        <field name="number">192</field>
+		                    </block>
+		                </value>
+		            </block>
+		        </value>
+		    </block>  
+
+
 
 	  	</category>
   	  	
