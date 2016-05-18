@@ -1,5 +1,6 @@
 var wsImpl = window.WebSocket || window.MozWebSocket;
 var mainToolbox;
+var connectedFailCount = 0;
 
 document.addEvent('domready', function(){
 	//initPi();
@@ -1086,6 +1087,7 @@ var normalWS = function(){
 	
 	// when the connection is established, this method is called
 	ws.onopen = function () {
+		connectedFailCount = 0;
 		//this.send(6)
 		//inc.innerHTML += '.. connection open<br/>';
 	};
@@ -1098,6 +1100,13 @@ var normalWS = function(){
 			startWebSocket();
 		}, 1000);
 	}
+	
+	ws.onerror = function (event) {
+		if (window.location.protocol == "https:" && ++connectedFailCount == 3){
+			console.log("Redirecting to http");
+			window.location = "http://" + window.location.hostname + window.location.pathname;
+		}
+  	};
 	
 	ws.sendFn = ws.send;
 	

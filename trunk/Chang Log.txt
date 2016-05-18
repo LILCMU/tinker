@@ -1,5 +1,8 @@
+1.0.33 - May 18, 2016 - Marutpong Chailangka
+- Added - If connecting to WSS is not supported, it will redirect to normal http
+
 1.0.32 - Mar 23, 2016 - Arnan Sipiatkiat
- - Added support for the DS18D20 temperature sensors
+- Added support for the DS18D20 temperature sensors
 
 1.0.31 - Feb 11, 2016 - Marutpong Chailangka
 - Added - a feature, Switching WS to WSS when load the webpage from HTTPS
