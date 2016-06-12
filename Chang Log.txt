@@ -1,4 +1,4 @@
-1.0.34 - May 18, 2016 - Marutpong Chailangka
+1.0.34 - Jun 10, 2016 - Marutpong Chailangka
 - Hidden the Conversion Lab and Condition Lab for better performance.
 
 1.0.33 - May 18, 2016 - Marutpong Chailangka
