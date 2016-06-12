@@ -1,3 +1,6 @@
+1.0.34 - May 18, 2016 - Marutpong Chailangka
+- Hidden the Conversion Lab and Condition Lab for better performance.
+
 1.0.33 - May 18, 2016 - Marutpong Chailangka
 - Added - If connecting to WSS is not supported, it will redirect to normal http
 

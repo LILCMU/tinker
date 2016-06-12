@@ -43,7 +43,7 @@ var Code = {};
  * List of tab names.
  * @private
  */
-Code.TABS_ = ['blocks', 'gogomon', 'gogocode', 'cdi', 'cvi'];
+Code.TABS_ = ['blocks', 'gogomon', 'gogocode'];
 
 Code.selected = 'blocks';
 
@@ -271,29 +271,29 @@ Code.loadProcedure = function() {
 		}
 	});
 	
-	var mapping = $('mappingMainArea');
-	var blockArr = mapping.getElements('.mappingBlock');
+	// var mapping = $('mappingMainArea');
+	// var blockArr = mapping.getElements('.mappingBlock');
 	var xmlArr = [];
-	blockArr.each(function(item){
-		if (tinkerBlocks.indexOf(item.title) != -1) {
-			mapping.spatial.setPoints(item.points);
-			xmlArr.push(mapping.spatial.YtoXBlockly().split('[TITLE]').join(item.title).split('[VAR1]').join(item.var1));
-			//mapping.getXML(xmlArr[xmlArr.length - 1]);
-		}
-	});
-	mapping.spatial.setPoints(mapping.currentBlock.points);
+	// blockArr.each(function(item){
+	// 	if (tinkerBlocks.indexOf(item.title) != -1) {
+	// 		mapping.spatial.setPoints(item.points);
+	// 		xmlArr.push(mapping.spatial.YtoXBlockly().split('[TITLE]').join(item.title).split('[VAR1]').join(item.var1));
+	// 		//mapping.getXML(xmlArr[xmlArr.length - 1]);
+	// 	}
+	// });
+	// mapping.spatial.setPoints(mapping.currentBlock.points);
 	
-	var condition = $('conditionMainArea');
-	var blockArr = condition.getElements('.condBlock');
+	// var condition = $('conditionMainArea');
+	// var blockArr = condition.getElements('.condBlock');
 	//var xmlArr = [];
-	blockArr.each(function(item){
-		if (tinkerBlocks.indexOf(item.title) != -1) {
-			condition.spatial.setArea(item.area);
-			xmlArr.push(condition.spatial.convertToBlockly().split('[TITLE]').join(item.title).split('[VAR1]').join(item.var1).split('[VAR2]').join(item.var2));
-			//mapping.getXML(xmlArr[xmlArr.length - 1]);
-		}
-	});
-	condition.spatial.setArea(condition.currentBlock.area);
+	// blockArr.each(function(item){
+	// 	if (tinkerBlocks.indexOf(item.title) != -1) {
+	// 		condition.spatial.setArea(item.area);
+	// 		xmlArr.push(condition.spatial.convertToBlockly().split('[TITLE]').join(item.title).split('[VAR1]').join(item.var1).split('[VAR2]').join(item.var2));
+	// 		//mapping.getXML(xmlArr[xmlArr.length - 1]);
+	// 	}
+	// });
+	// condition.spatial.setArea(condition.currentBlock.area);
 	
 	//return 0;
 	var xmlText = xmlArr.join(' ');
@@ -449,16 +449,16 @@ Code.loadXML = function(event) {
         return;
       }
       
-      if (mappingElem) {
-        console.log('========mapping===========');
-	      window.localStorage.setItem('mappingBlock', mappingElem);
-	      mapping.loadData();
-      }
-      if (conditionElem) {
-        console.log('========condition===========');
-	      window.localStorage.setItem('conditionBlock', conditionElem);
-	      condition.loadData();
-      }
+      // if (mappingElem) {
+      //   console.log('========mapping===========');
+	     //  window.localStorage.setItem('mappingBlock', mappingElem);
+	     //  mapping.loadData();
+      // }
+      // if (conditionElem) {
+      //   console.log('========condition===========');
+	     //  window.localStorage.setItem('conditionBlock', conditionElem);
+	     //  condition.loadData();
+      // }
       
       if(xml.childElementCount == 0) return;
       Blockly.mainWorkspace.clear();
@@ -474,14 +474,14 @@ Code.loadXML = function(event) {
 Code.saveXML = function() {
   var xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
   
-  var mappingData = window.localStorage.getItem('mappingBlock');
-  var conditionData = window.localStorage.getItem('conditionBlock');
+  // var mappingData = window.localStorage.getItem('mappingBlock');
+  // var conditionData = window.localStorage.getItem('conditionBlock');
   
-  var mappingElem = new Element('mapping', {'html': mappingData});
-  var conditionElem = new Element('condition', {'html': conditionData});
+  // var mappingElem = new Element('mapping', {'html': mappingData});
+  // var conditionElem = new Element('condition', {'html': conditionData});
   
-  $(xml).grab(mappingElem);
-  $(xml).grab(conditionElem);
+  // $(xml).grab(mappingElem);
+  // $(xml).grab(conditionElem);
   
   var data = Blockly.Xml.domToText(xml);
 
