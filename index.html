@@ -70,7 +70,7 @@ Update : 26 July 2014 - 2:28pm
 </head>
 <body>
 
-<div id="versionNO">v1.0.34 - Jun 10, 2016</div>
+<div id="versionNO">v1.0.35 - Jul 4, 2016</div>
 
 <div id="spatialContentTemplate" class="contentSpatial">
 	<div class="mainArea">
@@ -105,7 +105,7 @@ Update : 26 July 2014 - 2:28pm
   <category id="rPiBlocks">
   	
   	
-  	<category name="Key" class="rPiBlocks">
+  	<category name="GoGo <-> Raspberry Pi Communication" class="rPiBlocks">
   		<block type="key_value">
 			<title name="key_name">Button</title>
 			<value name="key_value_input">
@@ -129,6 +129,30 @@ Update : 26 July 2014 - 2:28pm
 		</block>
 
 
+		<block type="send_string_message">
+			<value name="message">
+				<block type="text">
+				</block>
+			</value>
+			<value name="topic">
+				<block type="text">
+				</block>
+			</value>		
+
+		</block>
+
+	    <block type="send_number_message">
+	      <value name="message">
+	              <block type="math_number" >
+	                <field name="number">0</field>
+	              </block>
+	      </value>
+	      <value name="topic">
+	        <block type="text">
+	        </block>
+	      </value>    
+
+	    </block>
 
 	</category>
 
@@ -1707,12 +1731,12 @@ Update : 26 July 2014 - 2:28pm
   			<field name="VAR">g</field>
   		</block>
   	</category>-->
-  	<category name="Condition Blocks" class="toolGraphBlock">
-  		<!--<block type="test_do_sth"></block>-->
+<!--   	<category name="Condition Blocks" class="toolGraphBlock">
+  		
   	</category>
   	<category name="Conversion Blocks" class="toolMappingBlock">
   	</category>
-    
+     -->
   </xml>
 
 <div id="gogoMonitor" >

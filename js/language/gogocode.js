@@ -815,6 +815,20 @@ Blockly.GogoCode.math_not = function() {
 /****    RASPBERRY PI    ****/
 
 
+Blockly.GogoCode.send_string_message = function(block) {
+  var message = Blockly.GogoCode.valueToCode(block, 'message', Blockly.GogoCode.ORDER_ATOMIC);
+  var topic = Blockly.GogoCode.valueToCode(block, 'topic', Blockly.GogoCode.ORDER_ATOMIC);
+  var code = '<span class="c330">sendmessage '+topic+'  '+message+'</span>\n';
+  return code;
+};
+
+Blockly.GogoCode.send_number_message = function(block) {
+  var message = Blockly.GogoCode.valueToCode(block, 'message', Blockly.GogoCode.ORDER_ATOMIC);
+  var topic = Blockly.GogoCode.valueToCode(block, 'topic', Blockly.GogoCode.ORDER_ATOMIC);
+  var code = '<span class="c330">sendmessage '+topic+' '+message+'</span>\n';
+  return code;
+};
+
 
 Blockly.GogoCode.use_sms = function() {
   // TODO: Assemble Python into code variable.

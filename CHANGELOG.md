@@ -1,3 +1,9 @@
+##### 1.0.35 - Jul 4, 2016 - Arnan Sipitakiat
+- Added send message commands. This allows the gogo to send topic/message value pairs to the Raspberry Pi
+  send integer to topic
+  send string to topic
+- Hid the Conversion and Condition links in the left menu
+
 ##### 1.0.34 - Jun 10, 2016 - Marutpong Chailangka
 - Hidden the Conversion Lab and Condition Lab for better performance.
 
