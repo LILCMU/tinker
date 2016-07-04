@@ -971,6 +971,37 @@ Blockly.Blocks.key_value = {
   }
 };
 
+Blockly.Blocks.send_string_message = {
+  helpUrl: 'http://www.example.com/',
+  init: function() {
+    this.setColour(330);
+
+    this.appendValueInput("message")
+        .appendField("Submit text ");
+    this.appendValueInput("topic")
+        .appendField("to topic ");
+    this.setInputsInline(true);
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
+Blockly.Blocks.send_number_message = {
+  helpUrl: 'http://www.example.com/',
+  init: function() {
+    this.setColour(330);
+    
+    this.appendValueInput("message", Number)
+        .appendField("Submit number ");
+    this.appendValueInput("topic")
+        .appendField("to topic");
+    this.setInputsInline(true);
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
 
 
 
