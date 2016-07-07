@@ -70,7 +70,7 @@ Update : 26 July 2014 - 2:28pm
 </head>
 <body>
 
-<div id="versionNO">v1.0.35 - Jul 4, 2016</div>
+<div id="versionNO">v1.0.36 - Jul 7, 2016</div>
 
 <div id="spatialContentTemplate" class="contentSpatial">
 	<div class="mainArea">
@@ -469,6 +469,26 @@ Update : 26 July 2014 - 2:28pm
             <value name="upper">
             <block type="math_number" >
               <field name="number">100</field>
+            </block>
+            </value>
+
+          </block>
+
+          <block type="variable_increase_by">
+
+            <value name="increment">
+            <block type="math_number" >
+              <field name="number">1</field>
+            </block>
+            </value>
+
+          </block>
+
+          <block type="variable_decrease_by">
+
+            <value name="increment">
+            <block type="math_number" >
+              <field name="number">1</field>
             </block>
             </value>
 
@@ -1072,7 +1092,10 @@ Update : 26 July 2014 - 2:28pm
 	  <category name=" ">
 	  </category>
 
-	  <category name="Variables" custom="VARIABLE"></category>
+	  <category name="Variables" custom="VARIABLE">
+ 
+	  </category>
+
   	  <category name="Procedures" custom="PROCEDURE"></category>
 
 	  <category name=" ">

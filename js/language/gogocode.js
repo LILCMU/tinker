@@ -1048,6 +1048,27 @@ Blockly.GogoCode.variables_set = function() {
   return '<span class="c330">set ' + varName + ' ' + argument0 + '</span>\n';
 };
 
+Blockly.GogoCode.variable_increase_by = function() {
+  // // Increase by.
+  // var argument0 = Blockly.GogoCode.valueToCode(this, 'VALUE',
+  //     Blockly.GogoCode.ORDER_ASSIGNMENT) || '0';
+  var incremental = Blockly.GogoCode.valueToCode(this, 'increment', Blockly.GogoCode.ORDER_ATOMIC);
+  //if (argument0 != '0') argument0 = argument0.slice(1, argument0.length-1);
+  var varName = Blockly.GogoCode.variableDB_.getName(
+      this.getFieldValue('VAR'), Blockly.Variables.NAME_TYPE);
+  return '<span class="c330">set ' + varName + ' ' + varName + ' + ' + incremental + '</span>\n';
+};
+
+Blockly.GogoCode.variable_decrease_by = function() {
+  // // Increase by.
+  // var argument0 = Blockly.GogoCode.valueToCode(this, 'VALUE',
+  //     Blockly.GogoCode.ORDER_ASSIGNMENT) || '0';
+  var incremental = Blockly.GogoCode.valueToCode(this, 'increment', Blockly.GogoCode.ORDER_ATOMIC);
+  //if (argument0 != '0') argument0 = argument0.slice(1, argument0.length-1);
+  var varName = Blockly.GogoCode.variableDB_.getName(
+      this.getFieldValue('VAR'), Blockly.Variables.NAME_TYPE);
+  return '<span class="c330">set ' + varName + ' ' + varName + ' - ' + incremental + '</span>\n';
+};
 
 /****    PROCEDURE    ****/
 
