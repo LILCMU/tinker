@@ -1,3 +1,6 @@
+##### 1.0.36 - Jul 7, 2016 - Arnan Sipitakiat
+- Added: Variable "increase by" and "decrease by" commands. It is an alias to "set variable variable + increment"
+
 ##### 1.0.35 - Jul 4, 2016 - Arnan Sipitakiat
 - Added send message commands. This allows the gogo to send topic/message value pairs to the Raspberry Pi
   send integer to topic

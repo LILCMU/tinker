@@ -1063,6 +1063,84 @@ Blockly.Blocks.math_in_between = {
   }
 };
 
+Blockly.Blocks.variable_increase_by = {
+
+
+  category: 'Math',
+  helpUrl: 'http://www.example.com/',
+  init: function() {
+    this.setColour(10);    
+    this.appendDummyInput().appendField("increase").appendField(Blockly.LANG_VARIABLES_GET_TITLE)
+    .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'VAR');
+    //.appendField(this.getFieldValue('VAR'));
+    
+    this.appendValueInput( "increment", Number)
+    .appendField("by ");
+
+ 
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setInputsInline(true);
+    this.setOutput(false);
+    this.setTooltip('Increase a variable value by number.');
+  },
+  getVars: function() {
+    return [this.getFieldValue('VAR')];
+  },
+  renameVar: function(oldName, newName) {
+    if (Blockly.Names.equals(oldName, this.getFieldValue('VAR'))) {
+      this.setTitleValue(newName, 'VAR');
+    }
+  }
+};
+  
+Blockly.Blocks.variable_decrease_by = {
+
+
+  category: 'Math',
+  helpUrl: 'http://www.example.com/',
+  init: function() {
+    this.setColour(10);    
+    this.appendDummyInput().appendField("decrease").appendField(Blockly.LANG_VARIABLES_GET_TITLE)
+    .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'VAR');
+    //.appendField(this.getFieldValue('VAR'));
+    
+    this.appendValueInput( "increment", Number)
+    .appendField("by ");
+
+ 
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setInputsInline(true);
+    this.setOutput(false);
+    this.setTooltip('Decrease a variable value by number.');
+  },
+  getVars: function() {
+    return [this.getFieldValue('VAR')];
+  },
+  renameVar: function(oldName, newName) {
+    if (Blockly.Names.equals(oldName, this.getFieldValue('VAR'))) {
+      this.setTitleValue(newName, 'VAR');
+    }
+  }
+};
+
+
+
+
+
+   
+  //   this.appendValueInput( "variable", Number)
+  //   .appendField("Increase ");
+  //   this.appendValueInput( "increment", Number)
+  //   .appendField("by ");
+
+
+  //   this.setPreviousStatement(true, null);
+  //   this.setNextStatement(true, null);
+
+
+
 
 Blockly.Blocks.math_operator = {
   category: 'Math',
