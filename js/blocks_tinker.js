@@ -971,9 +971,87 @@ Blockly.Blocks.key_value = {
   }
 };
 
+Blockly.Blocks.key_value_unrestricted = {
+  helpUrl: 'http://www.example.com/',
+  init: function() {
+    this.setColour(290);
+
+    this.appendValueInput("key_name")
+        .appendField("Key");
+    this.appendValueInput("key_value_input")
+        .appendField("is equal to ");
 
 
+    this.setInputsInline(true);
+    this.setOutput(true, Boolean);
+    this.setTooltip('Reports value of specific key.');
+  }
+};
 
+
+Blockly.Blocks.send_string_message = {
+  helpUrl: 'http://www.example.com/',
+  init: function() {
+    this.setColour(330);
+
+    this.appendValueInput("message")
+        .appendField("Submit text ");
+    this.appendValueInput("topic")
+        .appendField("to topic ");
+    this.setInputsInline(true);
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
+Blockly.Blocks.send_number_message = {
+  helpUrl: 'http://www.example.com/',
+  init: function() {
+    this.setColour(330);
+    
+    this.appendValueInput("message", Number)
+        .appendField("Submit number ");
+    this.appendValueInput("topic")
+        .appendField("to topic");
+    this.setInputsInline(true);
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
+Blockly.Blocks.ifttt_trigger = {
+  helpUrl: 'http://www.example.com/',
+  init: function() {
+    this.setColour(330);
+    
+    this.appendValueInput("topic")
+        .appendField("Send IFTTT event ");
+    this.appendValueInput("message", Number)
+        .appendField(" with number value");
+    this.setInputsInline(true);
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
+Blockly.Blocks.ifttt_trigger_text = {
+  helpUrl: 'http://www.example.com/',
+  init: function() {
+    this.setColour(330);
+    
+    this.appendValueInput("topic")
+        .appendField("Send IFTTT event ");
+    this.appendValueInput("message")
+        .appendField(" with text value");
+    this.setInputsInline(true);
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
 
 Blockly.Blocks.math_number = {
   category: 'Math',
@@ -1031,6 +1109,84 @@ Blockly.Blocks.math_in_between = {
     this.setTooltip('Reports True if input is in between the given range.');
   }
 };
+
+Blockly.Blocks.variable_increase_by = {
+
+
+  category: 'Math',
+  helpUrl: 'http://www.example.com/',
+  init: function() {
+    this.setColour(10);    
+    this.appendDummyInput().appendField("increase").appendField(Blockly.LANG_VARIABLES_GET_TITLE)
+    .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'VAR');
+    //.appendField(this.getFieldValue('VAR'));
+    
+    this.appendValueInput( "increment", Number)
+    .appendField("by ");
+
+ 
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setInputsInline(true);
+    this.setOutput(false);
+    this.setTooltip('Increase a variable value by number.');
+  },
+  getVars: function() {
+    return [this.getFieldValue('VAR')];
+  },
+  renameVar: function(oldName, newName) {
+    if (Blockly.Names.equals(oldName, this.getFieldValue('VAR'))) {
+      this.setTitleValue(newName, 'VAR');
+    }
+  }
+};
+  
+Blockly.Blocks.variable_decrease_by = {
+
+
+  category: 'Math',
+  helpUrl: 'http://www.example.com/',
+  init: function() {
+    this.setColour(10);    
+    this.appendDummyInput().appendField("decrease").appendField(Blockly.LANG_VARIABLES_GET_TITLE)
+    .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'VAR');
+    //.appendField(this.getFieldValue('VAR'));
+    
+    this.appendValueInput( "increment", Number)
+    .appendField("by ");
+
+ 
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setInputsInline(true);
+    this.setOutput(false);
+    this.setTooltip('Decrease a variable value by number.');
+  },
+  getVars: function() {
+    return [this.getFieldValue('VAR')];
+  },
+  renameVar: function(oldName, newName) {
+    if (Blockly.Names.equals(oldName, this.getFieldValue('VAR'))) {
+      this.setTitleValue(newName, 'VAR');
+    }
+  }
+};
+
+
+
+
+
+   
+  //   this.appendValueInput( "variable", Number)
+  //   .appendField("Increase ");
+  //   this.appendValueInput( "increment", Number)
+  //   .appendField("by ");
+
+
+  //   this.setPreviousStatement(true, null);
+  //   this.setNextStatement(true, null);
+
+
 
 
 Blockly.Blocks.math_operator = {

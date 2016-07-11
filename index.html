@@ -70,7 +70,7 @@ Update : 26 July 2014 - 2:28pm
 </head>
 <body>
 
-<div id="versionNO">v1.0.34 - Jun 10, 2016</div>
+<div id="versionNO">v1.0.37 - Jul 11, 2016</div>
 
 <div id="spatialContentTemplate" class="contentSpatial">
 	<div class="mainArea">
@@ -105,7 +105,7 @@ Update : 26 July 2014 - 2:28pm
   <category id="rPiBlocks">
   	
   	
-  	<category name="Key" class="rPiBlocks">
+  	<category name="GoGo <-> Raspberry Pi Communication" class="rPiBlocks">
   		<block type="key_value">
 			<title name="key_name">Button</title>
 			<value name="key_value_input">
@@ -114,6 +114,7 @@ Update : 26 July 2014 - 2:28pm
 			</value>
 		</block>
 
+    
 
 		<block type="control_if" id="13" inline="false">
 			<value name="condition">
@@ -129,13 +130,80 @@ Update : 26 July 2014 - 2:28pm
 		</block>
 
 
+    <block type="key_value_unrestricted">
+      <value name="key_name">
+        <block type="text">
+        </block>
+      </value>
+
+      <value name="key_value_input">
+        <block type="text">
+        </block>
+      </value>
+    </block>
+
+
+
+		<block type="send_string_message">
+			<value name="message">
+				<block type="text">
+				</block>
+			</value>
+			<value name="topic">
+				<block type="text">
+				</block>
+			</value>		
+
+		</block>
+
+	    <block type="send_number_message">
+	      <value name="message">
+	              <block type="math_number" >
+	                <field name="number">0</field>
+	              </block>
+	      </value>
+	      <value name="topic">
+	        <block type="text">
+	        </block>
+	      </value>    
+
+	    </block>
 
 	</category>
+
+    <category name="Cloud Services" class="rPiBlocks">
+      <block type="ifttt_trigger">
+        <value name="message">
+                <block type="math_number" >
+                  <field name="number">0</field>
+                </block>
+        </value>
+        <value name="topic">
+          <block type="text">
+          </block>
+        </value>    
+
+      </block>
+
+      <block type="ifttt_trigger_text">
+        <value name="message">
+                <block type="text" >
+                </block>
+        </value>
+        <value name="topic">
+          <block type="text">
+          </block>
+        </value>    
+
+      </block>
+
+    
+    </category>
 
 
   	
   	<category name="Text message" class="rPiBlocks">
-  		<block type="use_sms"></block>
+  		<!-- <block type="use_sms"></block> -->
   		<block type="send_sms">
 	  		 <value name="number">
 	  		   <block type="text">
@@ -247,6 +315,14 @@ Update : 26 July 2014 - 2:28pm
 	</block>
 
   	<block type="action_beep" x="40" y="98"></block>
+
+    <block type="display_number">
+      <value name="value">
+        <block type="math_number">
+          <title name="number">1</title>
+        </block>
+      </value>
+    </block>
 
   	<block type="action_wait">
   		<value name="NAME">
@@ -445,6 +521,26 @@ Update : 26 July 2014 - 2:28pm
             <value name="upper">
             <block type="math_number" >
               <field name="number">100</field>
+            </block>
+            </value>
+
+          </block>
+
+          <block type="variable_increase_by">
+
+            <value name="increment">
+            <block type="math_number" >
+              <field name="number">1</field>
+            </block>
+            </value>
+
+          </block>
+
+          <block type="variable_decrease_by">
+
+            <value name="increment">
+            <block type="math_number" >
+              <field name="number">1</field>
             </block>
             </value>
 
@@ -1048,7 +1144,10 @@ Update : 26 July 2014 - 2:28pm
 	  <category name=" ">
 	  </category>
 
-	  <category name="Variables" custom="VARIABLE"></category>
+	  <category name="Variables" custom="VARIABLE">
+ 
+	  </category>
+
   	  <category name="Procedures" custom="PROCEDURE"></category>
 
 	  <category name=" ">
@@ -1707,12 +1806,12 @@ Update : 26 July 2014 - 2:28pm
   			<field name="VAR">g</field>
   		</block>
   	</category>-->
-  	<category name="Condition Blocks" class="toolGraphBlock">
-  		<!--<block type="test_do_sth"></block>-->
+<!--   	<category name="Condition Blocks" class="toolGraphBlock">
+  		
   	</category>
   	<category name="Conversion Blocks" class="toolMappingBlock">
   	</category>
-    
+     -->
   </xml>
 
 <div id="gogoMonitor" >
