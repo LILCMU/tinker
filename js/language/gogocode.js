@@ -320,6 +320,17 @@ Blockly.GogoCode['key_value'] = function(block) {
   return [code, Blockly.GogoCode.ORDER_NONE];
 };
 
+Blockly.GogoCode['key_value_unrestricted'] = function(block) {
+  var text_key_name = Blockly.GogoCode.valueToCode(block, 'key_name', Blockly.GogoCode.ORDER_ATOMIC); 
+  //this.getFieldValue('key_name').toLowerCase();
+  //var text_key_value_input = this.getFieldValue('key_value_input');
+  var text_key_value_input = Blockly.GogoCode.valueToCode(block, 'key_value_input', Blockly.GogoCode.ORDER_ATOMIC);
+  var code = '<span class="c210">key '+ text_key_name +' = '+text_key_value_input+ '</span>';
+  return [code, Blockly.GogoCode.ORDER_NONE];
+};
+
+
+
 //Blockly.GogoCode['text'] = function(block) {
 //  var text_text = block.getFieldValue('TEXT');
 //  // TODO: Assemble JavaScript into code variable.
@@ -826,6 +837,30 @@ Blockly.GogoCode.send_number_message = function(block) {
   var message = Blockly.GogoCode.valueToCode(block, 'message', Blockly.GogoCode.ORDER_ATOMIC);
   var topic = Blockly.GogoCode.valueToCode(block, 'topic', Blockly.GogoCode.ORDER_ATOMIC);
   var code = '<span class="c330">sendmessage '+topic+' '+message+'</span>\n';
+  return code;
+};
+
+Blockly.GogoCode.ifttt_trigger = function(block) {
+  var message = Blockly.GogoCode.valueToCode(block, 'message', Blockly.GogoCode.ORDER_ATOMIC);
+  var topic = Blockly.GogoCode.valueToCode(block, 'topic', Blockly.GogoCode.ORDER_ATOMIC);
+
+  message = message.replace(/\"/g,'');
+  topic = topic.replace(/\"/g,'');
+
+
+  var code = '<span class="c330">sendmessage "@ifttt" "'+topic +','+message+'"</span>\n';
+  return code;
+};
+
+Blockly.GogoCode.ifttt_trigger_text = function(block) {
+  var message = Blockly.GogoCode.valueToCode(block, 'message', Blockly.GogoCode.ORDER_ATOMIC);
+  var topic = Blockly.GogoCode.valueToCode(block, 'topic', Blockly.GogoCode.ORDER_ATOMIC);
+
+  message = message.replace(/\"/g,'');
+  topic = topic.replace(/\"/g,'');
+
+
+  var code = '<span class="c330">sendmessage "@ifttt" "'+topic +','+message+'"</span>\n';
   return code;
 };
 

@@ -70,7 +70,7 @@ Update : 26 July 2014 - 2:28pm
 </head>
 <body>
 
-<div id="versionNO">v1.0.36 - Jul 7, 2016</div>
+<div id="versionNO">v1.0.37 - Jul 11, 2016</div>
 
 <div id="spatialContentTemplate" class="contentSpatial">
 	<div class="mainArea">
@@ -114,6 +114,7 @@ Update : 26 July 2014 - 2:28pm
 			</value>
 		</block>
 
+    
 
 		<block type="control_if" id="13" inline="false">
 			<value name="condition">
@@ -127,6 +128,20 @@ Update : 26 July 2014 - 2:28pm
 				</block>
 			</value>
 		</block>
+
+
+    <block type="key_value_unrestricted">
+      <value name="key_name">
+        <block type="text">
+        </block>
+      </value>
+
+      <value name="key_value_input">
+        <block type="text">
+        </block>
+      </value>
+    </block>
+
 
 
 		<block type="send_string_message">
@@ -156,10 +171,39 @@ Update : 26 July 2014 - 2:28pm
 
 	</category>
 
+    <category name="Cloud Services" class="rPiBlocks">
+      <block type="ifttt_trigger">
+        <value name="message">
+                <block type="math_number" >
+                  <field name="number">0</field>
+                </block>
+        </value>
+        <value name="topic">
+          <block type="text">
+          </block>
+        </value>    
+
+      </block>
+
+      <block type="ifttt_trigger_text">
+        <value name="message">
+                <block type="text" >
+                </block>
+        </value>
+        <value name="topic">
+          <block type="text">
+          </block>
+        </value>    
+
+      </block>
+
+    
+    </category>
+
 
   	
   	<category name="Text message" class="rPiBlocks">
-  		<block type="use_sms"></block>
+  		<!-- <block type="use_sms"></block> -->
   		<block type="send_sms">
 	  		 <value name="number">
 	  		   <block type="text">
@@ -271,6 +315,14 @@ Update : 26 July 2014 - 2:28pm
 	</block>
 
   	<block type="action_beep" x="40" y="98"></block>
+
+    <block type="display_number">
+      <value name="value">
+        <block type="math_number">
+          <title name="number">1</title>
+        </block>
+      </value>
+    </block>
 
   	<block type="action_wait">
   		<value name="NAME">

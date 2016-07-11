@@ -971,6 +971,24 @@ Blockly.Blocks.key_value = {
   }
 };
 
+Blockly.Blocks.key_value_unrestricted = {
+  helpUrl: 'http://www.example.com/',
+  init: function() {
+    this.setColour(290);
+
+    this.appendValueInput("key_name")
+        .appendField("Key");
+    this.appendValueInput("key_value_input")
+        .appendField("is equal to ");
+
+
+    this.setInputsInline(true);
+    this.setOutput(true, Boolean);
+    this.setTooltip('Reports value of specific key.');
+  }
+};
+
+
 Blockly.Blocks.send_string_message = {
   helpUrl: 'http://www.example.com/',
   init: function() {
@@ -1003,8 +1021,37 @@ Blockly.Blocks.send_number_message = {
   }
 };
 
+Blockly.Blocks.ifttt_trigger = {
+  helpUrl: 'http://www.example.com/',
+  init: function() {
+    this.setColour(330);
+    
+    this.appendValueInput("topic")
+        .appendField("Send IFTTT event ");
+    this.appendValueInput("message", Number)
+        .appendField(" with number value");
+    this.setInputsInline(true);
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
 
-
+Blockly.Blocks.ifttt_trigger_text = {
+  helpUrl: 'http://www.example.com/',
+  init: function() {
+    this.setColour(330);
+    
+    this.appendValueInput("topic")
+        .appendField("Send IFTTT event ");
+    this.appendValueInput("message")
+        .appendField(" with text value");
+    this.setInputsInline(true);
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
 
 Blockly.Blocks.math_number = {
   category: 'Math',

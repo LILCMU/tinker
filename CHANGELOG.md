@@ -1,3 +1,10 @@
+##### 1.0.37 - Jul 11, 2016 - Arnan Sipitakiat
+- Added: IFTTT command blocks
+- Removed: USE SMS block
+- Added: Unrestricted key-value reporter block
+- Added: Display number is now in the common blocks section
+
+
 ##### 1.0.36 - Jul 7, 2016 - Arnan Sipitakiat
 - Added: Variable "increase by" and "decrease by" commands. It is an alias to "set variable variable + increment"
 
