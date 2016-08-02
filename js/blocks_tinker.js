@@ -981,7 +981,6 @@ Blockly.Blocks.key_value_unrestricted = {
     this.appendValueInput("key_value_input")
         .appendField("is equal to ");
 
-
     this.setInputsInline(true);
     this.setOutput(true, Boolean);
     this.setTooltip('Reports value of specific key.');
@@ -1028,8 +1027,8 @@ Blockly.Blocks.ifttt_trigger = {
     
     this.appendValueInput("topic")
         .appendField("Send IFTTT event ");
-    this.appendValueInput("message", Number)
-        .appendField(" with number value");
+    this.appendValueInput("message")
+        .appendField(" with text / value");
     this.setInputsInline(true);
     this.setPreviousStatement(true);
     this.setNextStatement(true);
@@ -1037,21 +1036,37 @@ Blockly.Blocks.ifttt_trigger = {
   }
 };
 
-Blockly.Blocks.ifttt_trigger_text = {
-  helpUrl: 'http://www.example.com/',
+
+/* --------------------- Cloud Services : Telegram --------------------- */
+
+Blockly.Blocks.telegram_message = {
+  helpUrl: '',
   init: function() {
     this.setColour(330);
-    
-    this.appendValueInput("topic")
-        .appendField("Send IFTTT event ");
+    this.appendDummyInput().appendField("Send Telegram ")
+        .appendField(new Blockly.FieldDropdown([["Message", "message"], ["Image", "image"]]), "message_type");
     this.appendValueInput("message")
-        .appendField(" with text value");
+        .appendField(" value");
     this.setInputsInline(true);
     this.setPreviousStatement(true);
     this.setNextStatement(true);
     this.setTooltip('');
   }
 };
+
+Blockly.Blocks.if_telegram_message = {
+  helpUrl: '',
+  init: function() {
+    this.setColour(290);
+    this.appendValueInput("key_value_input")
+        .appendField("Telegram message is equal to");
+    this.setInputsInline(true);
+    this.setOutput(true, Boolean);
+    this.setTooltip('Reports value of specific key.');
+  }
+};
+
+/* --------------------- End Cloud Services : Telegram --------------------- */
 
 Blockly.Blocks.math_number = {
   category: 'Math',
