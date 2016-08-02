@@ -253,9 +253,8 @@ var initSpatial = function(){
 	document.addEvent('boardTypeIsChanged', function(){
 		var addOn = mainToolbox.getElement('#addOnModules');
 		//var blockIfStateChange = $('block_control_if_state_change');
-		
 		if ($('boardOptions').get('value') == 'gogoBoard') {
-			var rpiElem = $('categoryAllBlocks').getElements('.rPiBlocks');
+			var rpiElem = $('addOnModules').getElements('.rPiBlocks');
 			rpiElem.each(function(item){
 				item.dispose();
 			});

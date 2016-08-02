@@ -329,6 +329,12 @@ Blockly.GogoCode['key_value_unrestricted'] = function(block) {
   return [code, Blockly.GogoCode.ORDER_NONE];
 };
 
+Blockly.GogoCode['if_telegram_message'] = function(block) {
+  var text_key_value_input = Blockly.GogoCode.valueToCode(block, 'key_value_input', Blockly.GogoCode.ORDER_ATOMIC);
+  var code = '<span class="c210">key "telegram" = '+text_key_value_input+ '</span>';
+  return [code, Blockly.GogoCode.ORDER_NONE];
+};
+
 
 
 //Blockly.GogoCode['text'] = function(block) {
@@ -844,25 +850,25 @@ Blockly.GogoCode.ifttt_trigger = function(block) {
   var message = Blockly.GogoCode.valueToCode(block, 'message', Blockly.GogoCode.ORDER_ATOMIC);
   var topic = Blockly.GogoCode.valueToCode(block, 'topic', Blockly.GogoCode.ORDER_ATOMIC);
 
-  message = message.replace(/\"/g,'');
   topic = topic.replace(/\"/g,'');
-
-
-  var code = '<span class="c330">sendmessage "@ifttt" "'+topic +','+message+'"</span>\n';
+  var code = '<span class="c330">sendmessage "@ifttt,'+topic +'" '+message+'</span>\n';
   return code;
 };
 
-Blockly.GogoCode.ifttt_trigger_text = function(block) {
+
+/* --------------------- Cloud Services : Telegram --------------------- */
+
+Blockly.GogoCode.telegram_message = function(block) {
   var message = Blockly.GogoCode.valueToCode(block, 'message', Blockly.GogoCode.ORDER_ATOMIC);
-  var topic = Blockly.GogoCode.valueToCode(block, 'topic', Blockly.GogoCode.ORDER_ATOMIC);
+  var message_type = this.getFieldValue('message_type').toLowerCase();
+  // message = message.replace(/\"/g,'');
+  // message_type = message_type.replace(/\"/g,'');
 
-  message = message.replace(/\"/g,'');
-  topic = topic.replace(/\"/g,'');
-
-
-  var code = '<span class="c330">sendmessage "@ifttt" "'+topic +','+message+'"</span>\n';
+  var code = '<span class="c330">sendmessage "@telegram,'+message_type+'," '+message+'</span>\n';
   return code;
 };
+
+/* --------------------- End Cloud Services : Telegram --------------------- */
 
 
 Blockly.GogoCode.use_sms = function() {
