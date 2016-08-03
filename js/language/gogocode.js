@@ -864,7 +864,7 @@ Blockly.GogoCode.telegram_message = function(block) {
   // message = message.replace(/\"/g,'');
   // message_type = message_type.replace(/\"/g,'');
 
-  var code = '<span class="c330">sendmessage "@telegram,'+message_type+'," '+message+'</span>\n';
+  var code = '<span class="c330">sendmessage "@telegram,'+message_type+'" '+message+'</span>\n';
   return code;
 };
 
