@@ -95,14 +95,32 @@ BlocklyStorage.makeRequest_ = function(url, name, content) {
     // AJAX call is in-flight.
     BlocklyStorage.httpRequest_.abort();
   }
-  BlocklyStorage.httpRequest_ = new XMLHttpRequest();
-  BlocklyStorage.httpRequest_.name = name;
-  BlocklyStorage.httpRequest_.onreadystatechange =
-      BlocklyStorage.handleRequest_;
-  BlocklyStorage.httpRequest_.open('POST', url);
-  BlocklyStorage.httpRequest_.setRequestHeader('Content-Type',
-      'application/x-www-form-urlencoded');
-  BlocklyStorage.httpRequest_.send(name + '=' + encodeURIComponent(content));
+  if ('Fingerprint2' in window){
+    new Fingerprint2().get(function(result, components){
+      BlocklyStorage.httpRequest_ = new XMLHttpRequest();
+      BlocklyStorage.httpRequest_.name = name;
+      BlocklyStorage.httpRequest_.onreadystatechange =
+          BlocklyStorage.handleRequest_;
+      BlocklyStorage.httpRequest_.open('POST', url);
+      BlocklyStorage.httpRequest_.setRequestHeader('Content-Type',
+          'application/x-www-form-urlencoded');
+      BlocklyStorage.httpRequest_.send("finger="+result+'&'+name + '=' + encodeURIComponent(content));
+    });
+  } else {
+
+    BlocklyStorage.httpRequest_ = new XMLHttpRequest();
+      BlocklyStorage.httpRequest_.name = name;
+      BlocklyStorage.httpRequest_.onreadystatechange =
+          BlocklyStorage.handleRequest_;
+      BlocklyStorage.httpRequest_.open('POST', url);
+      BlocklyStorage.httpRequest_.setRequestHeader('Content-Type',
+          'application/x-www-form-urlencoded');
+      BlocklyStorage.httpRequest_.send(name + '=' + encodeURIComponent(content));
+
+  }
+
+  
+  
 };
 
 /**
