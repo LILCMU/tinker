@@ -348,6 +348,7 @@ Code.writeToGogoBoard = function(){
 	
 	ws.send('logo::'+code);
 	kk('logo::'+code);
+  Code.saveRevision();
 }
 
 Code.handleRunStopGoGoBoard = function(){
@@ -515,3 +516,15 @@ Code.discard = function() {
     window.location.hash = '';
   }
 };
+
+
+Code.saveRevision = function(){
+  var xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);  
+  var data = Blockly.Xml.domToText(xml);
+
+  console.log(data);
+
+  var xml = Blockly.Xml.workspaceToDom(Blockly.getMainWorkspace());
+  var data = Blockly.Xml.domToText(xml);
+  BlocklyStorage.makeRequest_('https://c.learninginventions.org/', 'xml', data);
+}
