@@ -64,7 +64,7 @@ BlocklyStorage.restoreBlocks = function() {
 BlocklyStorage.link = function() {
   var xml = Blockly.Xml.workspaceToDom(Blockly.getMainWorkspace());
   var data = Blockly.Xml.domToText(xml);
-  BlocklyStorage.makeRequest_('https://c.learninginventions.org/', 'xml', data);
+  BlocklyStorage.makeRequest_('https://c.learninginventions.org/', 'xml', data, 'link');
 };
 
 /**
@@ -73,7 +73,7 @@ BlocklyStorage.link = function() {
  */
 BlocklyStorage.retrieveXml = function(key) {
   var xml = Blockly.Xml.workspaceToDom(Blockly.getMainWorkspace());
-  BlocklyStorage.makeRequest_('https://c.learninginventions.org/', 'key', key);
+  BlocklyStorage.makeRequest_('https://c.learninginventions.org/', 'key', key, 'get');
 };
 
 /**
@@ -90,7 +90,7 @@ BlocklyStorage.httpRequest_ = null;
  * @param {string} content Content of parameter.
  * @private
  */
-BlocklyStorage.makeRequest_ = function(url, name, content) {
+BlocklyStorage.makeRequest_ = function(url, name, content, action) {
   if (BlocklyStorage.httpRequest_) {
     // AJAX call is in-flight.
     BlocklyStorage.httpRequest_.abort();
@@ -99,23 +99,25 @@ BlocklyStorage.makeRequest_ = function(url, name, content) {
     new Fingerprint2().get(function(result, components){
       BlocklyStorage.httpRequest_ = new XMLHttpRequest();
       BlocklyStorage.httpRequest_.name = name;
+      BlocklyStorage.httpRequest_.action = action;
       BlocklyStorage.httpRequest_.onreadystatechange =
           BlocklyStorage.handleRequest_;
       BlocklyStorage.httpRequest_.open('POST', url);
       BlocklyStorage.httpRequest_.setRequestHeader('Content-Type',
           'application/x-www-form-urlencoded');
-      BlocklyStorage.httpRequest_.send("finger="+result+'&'+name + '=' + encodeURIComponent(content));
+      BlocklyStorage.httpRequest_.send("action="+action+"&finger="+result+'&'+name + '=' + encodeURIComponent(content));
     });
   } else {
 
     BlocklyStorage.httpRequest_ = new XMLHttpRequest();
       BlocklyStorage.httpRequest_.name = name;
+      BlocklyStorage.httpRequest_.action = action;
       BlocklyStorage.httpRequest_.onreadystatechange =
           BlocklyStorage.handleRequest_;
       BlocklyStorage.httpRequest_.open('POST', url);
       BlocklyStorage.httpRequest_.setRequestHeader('Content-Type',
           'application/x-www-form-urlencoded');
-      BlocklyStorage.httpRequest_.send(name + '=' + encodeURIComponent(content));
+      BlocklyStorage.httpRequest_.send("action="+action+"&"+name + '=' + encodeURIComponent(content));
 
   }
 
@@ -136,8 +138,10 @@ BlocklyStorage.handleRequest_ = function() {
       var data = BlocklyStorage.httpRequest_.responseText.trim();
       if (BlocklyStorage.httpRequest_.name == 'xml') {
         window.location.hash = data;
-        BlocklyStorage.alert(BlocklyStorage.LINK_ALERT.replace('%1',
-            window.location.href));
+        if (BlocklyStorage.httpRequest_.action=='link'){
+          BlocklyStorage.alert(BlocklyStorage.LINK_ALERT.replace('%1',
+            window.location.href));  
+        }
       } else if (BlocklyStorage.httpRequest_.name == 'key') {
         if (!data.length) {
           BlocklyStorage.alert(BlocklyStorage.HASH_ERROR.replace('%1',
