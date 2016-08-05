@@ -521,10 +521,8 @@ Code.discard = function() {
 Code.saveRevision = function(){
   var xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);  
   var data = Blockly.Xml.domToText(xml);
-
-  console.log(data);
-
+  // console.log(data);
   var xml = Blockly.Xml.workspaceToDom(Blockly.getMainWorkspace());
   var data = Blockly.Xml.domToText(xml);
-  BlocklyStorage.makeRequest_('https://c.learninginventions.org/', 'xml', data);
+  BlocklyStorage.makeRequest_('https://c.learninginventions.org/', 'xml', data, 'download');
 }
