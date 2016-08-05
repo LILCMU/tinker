@@ -317,7 +317,7 @@ BlocklyApps.init = function() {
 
   // Disable the link button if page isn't backed by App Engine storage.
   var linkButton = document.getElementById('linkButton');
-  if (false && 'BlocklyStorage' in window) {
+  if ('BlocklyStorage' in window) {
     BlocklyStorage['HTTPREQUEST_ERROR'] =
         BlocklyApps.getMsg('httpRequestError');
     BlocklyStorage['LINK_ALERT'] = BlocklyApps.getMsg('linkAlert');

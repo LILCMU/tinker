@@ -187,6 +187,9 @@ BlocklyStorage.loadXml_ = function(xml) {
   // Clear the workspace to avoid merge.
   Blockly.getMainWorkspace().clear();
   Blockly.Xml.domToWorkspace(Blockly.getMainWorkspace(), xml);
+  isOnlineStorage = true;
+  kk('-- Loaded online storage.')
+
 };
 
 /**
