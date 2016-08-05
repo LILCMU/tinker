@@ -551,14 +551,10 @@ function autosaveBlock(){
 }
 
 function autoloadBlock(){
-	if (isOnlineStorage){
-		return;	
-	}
-	console.log('-- Loading saved code.')
+	//return;
 	var xml = Blockly.Xml.textToDom('<xml><block type="procedure_procedure" x="250" y="50"><title name="pname">main</title></block></xml>');
 	xml.editable = false;
 	xml.deletable = false;
-	Blockly.mainWorkspace.clear();
 	Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, xml);
 	
 	//return;
