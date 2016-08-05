@@ -1,6 +1,7 @@
 var wsImpl = window.WebSocket || window.MozWebSocket;
 var mainToolbox;
 var connectedFailCount = 0;
+var isOnlineStorage = false;
 
 document.addEvent('domready', function(){
 	//initPi();
@@ -277,6 +278,7 @@ var initSpatial = function(){
 	window.mapping = mapping;
 	
 	mapping.addBlockToToolbox = function(block){
+		return;
 		var mappingToolbox = mainToolbox.getElement('.toolMappingBlock');
 		var blockID = 'block-'+now();
 		var newBlock = new Element('block', {'id': blockID, 'html': '<mutation name="'+block.title+'"><arg name="'+block.var1+'"></arg></mutation>'});
@@ -477,6 +479,7 @@ var initSpatial = function(){
 	condition.getElement('.procedure p').set('text', 'Graph Blocks');
 	
 	condition.addBlockToToolbox = function(block){
+		return;
 		var graphToolbox = mainToolbox.getElement('.toolGraphBlock');
 		var blockID = 'block-'+now();
 		//var newBlock = new Element('block', {'id': blockID, 'html': '<mutation name="'+block.title+'"></mutation>'});
@@ -566,6 +569,7 @@ var initSpatial = function(){
 	
 	
 	condition.loadData = function(){
+		return;
 		condition.storage = window.localStorage.getItem('conditionBlock');
 		
 		if (condition.storage) {
@@ -803,24 +807,25 @@ var initSpatial = function(){
 	}
 	
 	
-	document.addEvent('readSensor', function(rs){
-		if (mapping.spatial) {
-			if ($('tab_cvi').hasClass('tabon')) {
+	// document.addEvent('readSensor', function(rs){
+	// 	if (mapping.spatial) {
+	// 		if ($('tab_cvi').hasClass('tabon')) {
 				
-				mapping.spatial.updateSensor(rs);
-			} else {
-				mapping.spatial.hideDashLine();
-			}
-		} 
-		if (condition.spatial) {
-			if ($('tab_cdi').hasClass('tabon')) {
+	// 			mapping.spatial.updateSensor(rs);
+	// 		} else {
+	// 			mapping.spatial.hideDashLine();
+	// 		}
+	// 	} 
+	// 	if (condition.spatial) {
+	// 		if ($('tab_cdi').hasClass('tabon')) {
 				
-				condition.spatial.updateSensor(rs);
-			} else {
-				condition.spatial.sensorScale.setScale(-1, -1);
-			}
-		} 
-	});
+	// 			condition.spatial.updateSensor(rs);
+	// 		} else {
+	// 			condition.spatial.sensorScale.setScale(-1, -1);
+	// 		}
+	// 	} 
+	// });
+	
 	setTimeout(function(){
 	//window.addEvent('BlocklyIsReady', function(){
 		var mainArea = mapping.getElement('.wrapper');
