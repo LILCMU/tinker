@@ -336,9 +336,11 @@ Code.writeToGogoBoard = function(){
 		code = $('content_gogocode').get('html');
 	}
 	
+  code = code.split(' <= ').join('&lte;');
 	code = code.split(' < ').join('&lt;');
 	code = code.split(' > ').join('&gt;');
 	code = code.replace(/(<([^>]+)>)/ig,"").clean();
+  code = code.split('&lte;').join(' <= ');
 	code = code.split('&lt;').join(' < ');
 	code = code.split('&gt;').join(' > ');
 	
@@ -391,10 +393,12 @@ Code.writeToGogoBoard1 = function() {
 	
 	var code = Blockly.GogoCode.workspaceToCode();
 	code = filterCode(code);
+  code = code.split(' <= ').join('&lte;');
 	code = code.split(' < ').join('&lt;');
 	code = code.split(' > ').join('&gt;');
 	code = code.replace(/(<([^>]+)>)/ig,"").clean();
 	
+  code = code.split('&lte;').join(' <= ');
 	code = code.split('&lt;').join(' < ');
 	code = code.split('&gt;').join(' > ');
 	
