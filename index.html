@@ -71,7 +71,7 @@ Update : 26 July 2014 - 2:28pm
 </head>
 <body>
 
-<div id="versionNO">v1.0.39 - Aug 6, 2016</div>
+<div id="versionNO">v1.0.40 - Aug 21, 2016</div>
 
 <div id="spatialContentTemplate" class="contentSpatial">
 	<div class="mainArea">
@@ -1003,6 +1003,81 @@ Update : 26 July 2014 - 2:28pm
               <value name="i2c_addr">
                 <block type="math_number" id="707">
                   <field name="number">192</field>
+                </block>
+              </value>
+            </block>
+          </value>
+        </block>
+        <block type="procedures_defreturn" id="60" inline="false" collapsed="true" x="649" y="267">
+          <mutation></mutation>
+          <field name="NAME">Dust Level</field>
+          <statement name="STACK">
+            <block type="i2c_write" id="61" inline="true">
+              <value name="value">
+                <block type="math_number" id="62">
+                  <field name="number">15</field>
+                </block>
+              </value>
+              <value name="reg_addr">
+                <block type="math_number" id="63">
+                  <field name="number">1</field>
+                </block>
+              </value>
+              <value name="i2c_addr">
+                <block type="math_number" id="64">
+                  <field name="number">192</field>
+                </block>
+              </value>
+              <next>
+                <block type="action_wait" id="65" inline="true">
+                  <value name="NAME">
+                    <block type="math_number" id="66">
+                      <field name="number">10</field>
+                    </block>
+                  </value>
+                </block>
+              </next>
+            </block>
+          </statement>
+          <value name="RETURN">
+            <block type="math_operator" id="67" inline="true">
+              <field name="op">+</field>
+              <value name="1stNum">
+                <block type="i2c_read" id="68" inline="true">
+                  <value name="reg_addr">
+                    <block type="math_number" id="69">
+                      <field name="number">7</field>
+                    </block>
+                  </value>
+                  <value name="i2c_addr">
+                    <block type="math_number" id="70">
+                      <field name="number">192</field>
+                    </block>
+                  </value>
+                </block>
+              </value>
+              <value name="2ndNum">
+                <block type="math_operator" id="71" inline="true">
+                  <field name="op">×</field>
+                  <value name="1stNum">
+                    <block type="i2c_read" id="72" inline="true">
+                      <value name="reg_addr">
+                        <block type="math_number" id="73">
+                          <field name="number">8</field>
+                        </block>
+                      </value>
+                      <value name="i2c_addr">
+                        <block type="math_number" id="74">
+                          <field name="number">192</field>
+                        </block>
+                      </value>
+                    </block>
+                  </value>
+                  <value name="2ndNum">
+                    <block type="math_number" id="75">
+                      <field name="number">256</field>
+                    </block>
+                  </value>
                 </block>
               </value>
             </block>

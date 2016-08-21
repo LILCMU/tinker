@@ -336,9 +336,11 @@ Code.writeToGogoBoard = function(){
 		code = $('content_gogocode').get('html');
 	}
 	
+  code = code.split(' <= ').join('&lte;');
 	code = code.split(' < ').join('&lt;');
 	code = code.split(' > ').join('&gt;');
 	code = code.replace(/(<([^>]+)>)/ig,"").clean();
+  code = code.split('&lte;').join(' <= ');
 	code = code.split('&lt;').join(' < ');
 	code = code.split('&gt;').join(' > ');
 	
@@ -391,14 +393,18 @@ Code.writeToGogoBoard1 = function() {
 	
 	var code = Blockly.GogoCode.workspaceToCode();
 	code = filterCode(code);
+  code = code.split(' <= ').join('&lte;');
 	code = code.split(' < ').join('&lt;');
 	code = code.split(' > ').join('&gt;');
 	code = code.replace(/(<([^>]+)>)/ig,"").clean();
 	
+  code = code.split('&lte;').join(' <= ');
 	code = code.split('&lt;').join(' < ');
 	code = code.split('&gt;').join(' > ');
 	
 	code = code.split('newline').join('\n');
+
+  console.log(code);
 	
 	//alert(String.fromCharCode.apply(String, byteCode.clean().split(' ')));
 	if(true || confirm('Do you want to download these byte codes to Gogo Board?\n\n'+byteCode)){
