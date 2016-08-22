@@ -36,20 +36,20 @@ Update : 26 July 2014 - 2:28pm
   <link rel="stylesheet" type="text/css" href="css/style.css">
   <link rel="stylesheet" type="text/css" href="css/animate.css">
   <link rel="stylesheet" type="text/css" href="css/tinker.css">
-  
+
   <script type="text/javascript" src="js/mootools-core-1.3.2.js"></script>
   <script type="text/javascript" src="js/mootools-more-1.3.2.1.js"></script>
   <script type="text/javascript" src="js/Blob.js"></script>
   <script type="text/javascript" src="js/FileSaver.js"></script>
   <script type="text/javascript" src="js/setup.js"></script>
-  
+
   <script type="text/javascript" src="js/soyutils.js"></script>
   <script type="text/javascript" src="js/common.js"></script>
   <script type="text/javascript" src="js/code.js"></script>
   <script type="text/javascript" src="js/fingerprint2.js"></script>
-  
+
   <script type="text/javascript" src="js/storage.js"></script>
-  
+
   <script type="text/javascript" src="js/spatial.js"></script>
   <script type="text/javascript" src="js/tinker.js"></script>
   <!--<script type="text/javascript" src="js/ByteCode.js"></script>-->
@@ -71,7 +71,7 @@ Update : 26 July 2014 - 2:28pm
 </head>
 <body>
 
-<div id="versionNO">v1.0.40 - Aug 21, 2016</div>
+<div id="versionNO">v1.0.41 - Aug 22, 2016</div>
 
 <div id="spatialContentTemplate" class="contentSpatial">
 	<div class="mainArea">
@@ -97,12 +97,12 @@ Update : 26 July 2014 - 2:28pm
         {lang: BlocklyApps.LANG,
          langSrc: BlocklyApps.languagePack()}));
   </script>
-  
+
   <xml style="display: none">
   <block id="block_control_if_state_change" type="control_if_state_change" inline="false" class="rPiBlocks"></block>
   </xml>
-    
-  
+
+
   <category id="rPiBlocks">
     <category name="GoGo <-> Raspberry Pi Communication" class="rPiBlocks">
       <block type="key_value">
@@ -263,8 +263,8 @@ Update : 26 July 2014 - 2:28pm
       </block>
     </category>
   </category>
-  
-  
+
+
   <xml id="toolbox" style="display: none">
     <category name="Common Blocks ">
       <block type="math_number" x="-4" y="201">
@@ -596,6 +596,111 @@ Update : 26 July 2014 - 2:28pm
         <block type="clock_date">
           <title name="date">4</title>
         </block>
+
+        <block type="procedures_defreturn" id="69" inline="false" collapsed="true" x="63" y="368">
+      		<mutation>
+      			<arg name="start hour"></arg>
+      			<arg name="start minute"></arg>
+      			<arg name="end hour"></arg>
+      			<arg name="end minute"></arg>
+      		</mutation>
+      		<field name="NAME">time between</field>
+      		<statement name="STACK">
+      			<block type="variables_set" id="70" inline="false">
+      				<field name="VAR">get hour</field>
+      				<value name="VALUE">
+      					<block type="clock_date" id="71">
+      						<field name="date">2</field>
+      					</block>
+      				</value>
+      				<next>
+      					<block type="variables_set" id="72" inline="false">
+      						<field name="VAR">get min</field>
+      						<value name="VALUE">
+      							<block type="clock_date" id="73">
+      								<field name="date">1</field>
+      							</block>
+      						</value>
+      					</block>
+      				</next>
+      			</block>
+      		</statement>
+      		<value name="RETURN">
+      			<block type="math_andor" id="74" inline="true">
+      				<field name="andor">and</field>
+      				<value name="left">
+      					<block type="math_andor" id="75" inline="true">
+      						<field name="andor">and</field>
+      						<value name="left">
+      							<block type="math_equal" id="76" inline="true">
+      								<field name="cond">&gt;=</field>
+      								<value name="left">
+      									<block type="variables_get" id="77">
+      										<field name="VAR">get hour</field>
+      									</block>
+      								</value>
+      								<value name="right">
+      									<block type="variables_get" id="78">
+      										<field name="VAR">start hour</field>
+      									</block>
+      								</value>
+      							</block>
+      						</value>
+      						<value name="right">
+      							<block type="math_equal" id="79" inline="true">
+      								<field name="cond">&gt;=</field>
+      								<value name="left">
+      									<block type="variables_get" id="80">
+      										<field name="VAR">get min</field>
+      									</block>
+      								</value>
+      								<value name="right">
+      									<block type="variables_get" id="81">
+      										<field name="VAR">start minute</field>
+      									</block>
+      								</value>
+      							</block>
+      						</value>
+      					</block>
+      				</value>
+      				<value name="right">
+      					<block type="math_andor" id="82" inline="true">
+      						<field name="andor">and</field>
+      						<value name="left">
+      							<block type="math_equal" id="83" inline="true">
+      								<field name="cond">&lt;=</field>
+      								<value name="left">
+      									<block type="variables_get" id="84">
+      										<field name="VAR">get hour</field>
+      									</block>
+      								</value>
+      								<value name="right">
+      									<block type="variables_get" id="85">
+      										<field name="VAR">end hour</field>
+      									</block>
+      								</value>
+      							</block>
+      						</value>
+      						<value name="right">
+      							<block type="math_equal" id="86" inline="true">
+      								<field name="cond">&gt;=</field>
+      								<value name="left">
+      									<block type="variables_get" id="87">
+      										<field name="VAR">get hour</field>
+      									</block>
+      								</value>
+      								<value name="right">
+      									<block type="variables_get" id="88">
+      										<field name="VAR">end minute</field>
+      									</block>
+      								</value>
+      							</block>
+      						</value>
+      					</block>
+      				</value>
+      			</block>
+      		</value>
+      	</block>
       </category>
       <category name="Display Modlue">
         <block type="display_text">
@@ -1085,7 +1190,7 @@ Update : 26 July 2014 - 2:28pm
         </block>
       </category>
 
-      
+
     </category>
     <category name=" "></category>
     <category name="Variables" custom="VARIABLE"></category>
@@ -1869,7 +1974,7 @@ Update : 26 July 2014 - 2:28pm
 			<h3>Choose Input</h3>
 			<div class="wrapper">
 				<div class="left">
-					<input id="radioPopupSensor" type="radio" name="input" value="sensor" checked /> Sensor, 
+					<input id="radioPopupSensor" type="radio" name="input" value="sensor" checked /> Sensor,
 					<input id="radioPopupSwitch" type="radio" name="input" value="switch"  />Switch
 					<p id="inputPopupLeft">
 						<input type="radio" name="sensor" value="1" checked /> 1 &nbsp;&nbsp;&nbsp;&nbsp;
@@ -1896,7 +2001,7 @@ Update : 26 July 2014 - 2:28pm
 					<input id="inputPopupCancel" class="mouseEvent" type="button" name="" value="Cancel" />
 				</div>
 			</div>
-			
+
 		</div>
 	</div>
 </div>
