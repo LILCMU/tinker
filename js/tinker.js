@@ -1,11 +1,11 @@
 
 var byteCodeObj = {
-	'(main': '', 
+	'(main': '',
 	'(': '',
-	')': '', 
+	')': '',
 	'<%num>': 1,
 	'<%num16>': 2,
-	'<%list>': 3, 
+	'<%list>': 3,
 	'<%eol>': 4,
 	'<%eolr>': 5,
 	'<%input>': 6,
@@ -14,7 +14,7 @@ var byteCodeObj = {
 	'<repeat>': 9,
 	'<if>': 10,
 	'<ifelse>': 11,
-	'<beep>': 12, 
+	'<beep>': 12,
 	'<waituntil>': 14,
 	'<forever>': 15,
 	'<wait>': 16,
@@ -79,7 +79,7 @@ var byteCodeObj = {
 
 String.prototype.replaceObj = function(obj) {
   var replaceString = this;
-  var regex; 
+  var regex;
   for (n in obj) {
     replaceString = replaceString.split(n).join(obj[n]);
   }
@@ -131,7 +131,7 @@ function onWorkspaceChange(){
 
 function alertCode(){
 	var code = filterCode(Blockly.Generator.workspaceToCode('JavaScript'));
-	
+
 	alert(code);
 }
 
@@ -164,7 +164,7 @@ function genGlobalVar0(code){
 		varArr.include(item2.split('[vc]')[0]);
 	});
 	code = codeArr[1].split('end)')[0];//+' 0';
-	
+
 	varArr.each(function(item, index){
 		code = code.split('[vo]'+item+'[vc]').join(index);
 	});
@@ -180,11 +180,11 @@ function genGlobalVar(code){
 	variables.each(function(item2){
 		varArr.include(item2.split('[vc]')[0]);
 	});
-	
+
 	varArr.each(function(item, index){
 		code = code.split('[vo]'+item+'[vc]').join(index);
 	});
-	
+
 	var proc = [];
 	codeArr = code.split('[p]');
 	codeArr.shift();
@@ -192,18 +192,18 @@ function genGlobalVar(code){
 		var str = item.split('[/p]')[0];
 		proc.push(''+str+'');
 	});
-	
+
 	code = proc.join(' ');
-	
+
 	codeArr = code.split('(main');
 	var codeArr2 = codeArr[1].split('end)');
-	
+
 	code = codeArr2[0]+' 0 '+codeArr[0]+codeArr2[1];
-	
+
 	code = code.clean();
-	
+
 	codeArr = code.split(' ');
-	
+
 	/***
 	var variables = codeArr[0].split('[vo]');
 	var varArr = [];
@@ -212,12 +212,12 @@ function genGlobalVar(code){
 		varArr.include(item2.split('[vc]')[0]);
 	});
 	code = codeArr[1].split('end)')[0]+' 0';
-	
+
 	varArr.each(function(item, index){
 		code = code.split('[vo]'+item+'[vc]').join(index);
 	});
 	/***/
-	
+
 	return code;
 }
 
@@ -225,15 +225,15 @@ function filterCode(code) {
 	var codeArr;
 	codeArr = code.split('[p]');
 	codeArr.shift();
-	
+
 	var proc = [];
-	
+
 	codeArr.each(function(item){
 		var str = item.split('[/p]')[0];
-		
+
 		var strTmp = str.split('@@');
 		str = strTmp[0] + (strTmp[2] ? strTmp[2] : '');
-		
+
 		var varArr0 = strTmp[1] ? strTmp[1].split(',') : [] ;
 		var varArr = [];
 		var variables = str.split('[:]');
@@ -241,11 +241,11 @@ function filterCode(code) {
 		variables.each(function(item2){
 			varArr.include(item2.split('[;]')[0].split(':')[0]);
 		});
-		
+
 		varArr0.each(function(item4){
 			varArr.erase(item4);
 		});
-		
+
 		var newVar = '';
 		varArr.each(function(item3){
 			newVar += '  <span class="c330">set '+item3+' 0</span>\n';
@@ -253,10 +253,10 @@ function filterCode(code) {
 		var str2 = str.replace('[SS]', newVar).replace(/\[:\]/g, '').replace(/\[;\]/g, '');
 		proc.push(str2);
 	});
-	
+
 	code = proc.pop()+'@@';
 	code += proc.join('@@');
-	
+
 	codeArr = code.split('\n');
 	codeArr.clean();
 	codeArr = codeArr.filter(function(item, index){
@@ -265,22 +265,22 @@ function filterCode(code) {
 	return codeArr.join('\n').replace(/@@/g, '\n\n');
 }
 
-	
+
 
 
 var initTinker = function() {
 
-	
+
 	Blockly.Tooltip.MARGINS = 20;
 	Blockly.Tooltip.OFFSET_Y = -25;
 	Blockly.Tooltip.OFFSET_X = 10;
 	Blockly.Tooltip.HOVER_MS = 350;
-	
+
 	//Blockly.mainWorkspace.getCanvas().addEventListener('blocklyWorkspaceChange', onWorkspaceChange, false);
-	
+
 	$('gogoStatus').dispose().inject($('title'), 'after');
 	$('gogoStatusArea').dispose();
-	
+
 	$$('#motorA, #motorB, #motorC, #motorD').addEvent('click', function(){
 		this.toggleClass('selected');
 		//var id = this.get('id');
@@ -289,7 +289,7 @@ var initTinker = function() {
 		//ws.send(3);
 		//ws.send(String.fromCharCode(0x80, motor, 0));
 		ws.send('command::talkToMotor::'+motor);
-		
+
 		switch(this.get('id')) {
 			case 'motorA':
 				break;
@@ -297,7 +297,7 @@ var initTinker = function() {
 		//ws.send(String.fromCharCode(0x80, 0x04, 0));
 		//console.log('String: ['+String.fromCharCode(0x80, 0x04, 0)+']');
 	});
-	
+
 	$('sensorOptionBTN').addClass('selected displayNone');
 	$('sensorOptionBTN').addEvent('click', function(){
 		this.toggleClass('selected');
@@ -312,7 +312,7 @@ var initTinker = function() {
 			//ws.send(6);
 		}
 	});
-	
+
 	$$('#setMotorPower select')[0].addEvent('change', function(){
 		var power = this.get('value');
 		ws.send('command::setPower::'+power);
@@ -351,32 +351,32 @@ var initTinker = function() {
 				break;
 		}
 	});
-	
-	
+
+
 	setTimeout(function(){
 		document.fireEvent('initReady');
 		Blockly.bindEvent_(Blockly.mainWorkspace.getCanvas(), 'blocklyWorkspaceChange', null, onWorkspaceChange);
 	}, 100);
 	autoloadBlock();
 
-	
+
 	return 0;
 	//startWebSocket();
-	
-	
+
+
 	$('gogoBTN').addEvent('click', function(){
 		gogoMonitor.removeClass('displayNone');
 	});
-	
-	
+
+
 	$('byteBTN').addEvent('click', function(){
 		var code = Blockly.Generator.workspaceToCode('PseudoCode').clean();
 		//alert(code);
 		var byteCode = code.replaceObj(byteCodeObj);
 		//alert(byteCode);
-		
-		
-		
+
+
+
 		return;
 		//alert(String.fromCharCode.apply(String, byteCode.clean().split(' ')));
 		if(true || confirm('Do you want to download these byte codes to Gogo Board?\n\n'+byteCode)){
@@ -384,7 +384,7 @@ var initTinker = function() {
 			ws.send("burn::"+String.fromCharCode.apply(String, byteCode.clean().split(' ')));
 		}
 	});
-	
+
 	$('pseudoBTN').addEvent('click', function(){
 		//var code = filterCode(Blockly.Generator.workspaceToCode('PseudoCode'));
 		var code = Blockly.Generator.workspaceToCode('PseudoCode').clean();
@@ -392,25 +392,25 @@ var initTinker = function() {
 		//alert('hello');
 		alert(code);
 	});
-	
+
 	Blockly.inject(document.body, {path: './', toolbox: document.getElementById('toolbox')});
-	
+
 //	var rootBlock = new Blockly.Block(Blockly.mainWorkspace,'procedure_procedure');
 //	rootBlock.initSvg();
 //	rootBlock.render();
 //	rootBlock.editable = false;
-	
-	
-	
-	
-	
+
+
+
+
+
 	$('showCodeArea').setStyle('max-height',($(document.body).getSize().y - 180)+'px');
-	
+
 	$('menuBTN').addEvent('click', function(event){
 		if(!$('menuContainer').hasClass('hide')) hideTextArea();
 		$('menuContainer').toggleClass('hide');
 	});
-	
+
 	$('xmlCode').addEvent('click', function(){
 		if ($('showCodeArea').hasClass('show') && $('showCodeArea').hasClass('xmlCode') ) {
 			hideTextArea();
@@ -425,7 +425,7 @@ var initTinker = function() {
 			showTextArea();
 		}
 	});
-	
+
 	/***
 	$('alertCode').addEvent('click', function(){
 		if ($('showCodeArea').hasClass('show') && !$('showCodeArea').hasClass('xmlCode') ) {
@@ -447,27 +447,27 @@ var initTinker = function() {
 		onWorkspaceChange();
 		showTextArea();
 	});
-	
+
 	$('gogoCodeHeader').addEvent('mousedown', function(event){
 		$('showCodeArea').mouseXStart = event.page.x;
 		$('showCodeArea').mouseYStart = event.page.y;
 		$('showCodeArea').pos = $('showCodeArea').getPosition();
 		$('showCodeArea').mouseIsDown = true;
 	});
-	
+
 	$('gogoCodeCloseBTN').addEvent('click', function(){
 		hideTextArea();
 	});
-	
+
 	$('saveCode').addEvent('click', function(){
 		//save();
 		autosaveBlock();
 	});
-	
+
 	$('loadCode').addEvent('click', function(){
 		$('load').click();
 	});
-	
+
 	$('newCode').addEvent('click', function(){
 		//$('load').click();
 		Blockly.mainWorkspace.clear();
@@ -475,12 +475,12 @@ var initTinker = function() {
 		xml.editable = false;
 		Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, xml);
 	});
-	
+
 	$('load').addEventListener('change', load, false);
-	
+
 	var tooltipText = $$('.blocklyTooltipText')[0];
-	
-	
+
+
 	//new Element( 'div', {'id': 'gogoMonitorHeader'}).inject($('gogoMonitor'), 'top');
 	$('gogoMonitorHeader').addEvent('mousedown', function(event){
 		$('gogoMonitor').mouseXStart = event.page.x;
@@ -488,8 +488,8 @@ var initTinker = function() {
 		$('gogoMonitor').pos = $('gogoMonitor').getPosition();
 		$('gogoMonitor').mouseIsDown = true;
 	});
-	
-	
+
+
 	/***
 	$('beep').addEvent('click', function(){
 		ws.send(3);
@@ -504,11 +504,11 @@ var initTinker = function() {
 		ws.send(String.fromCharCode(0xc1,0));
 	});
 	/***/
-	
-	
-	
-	
-	
+
+
+
+
+
 	document.body.addEvent('mousemove', function(event){
 		if ($('gogoMonitor').mouseIsDown) {
 			document.body.addClass('selectNone');
@@ -532,11 +532,11 @@ var initTinker = function() {
 	}).addEvent('keydown', function(event){
 		console.log('key: '+event.key);
 	});
-	
+
 	$('gogoMonitorCloseBTN').addEvent('click', function(){
 		$('gogoMonitor').addClass('displayNone');
 	})
-	
+
 }
 //document.fireEvent('');
 
@@ -545,14 +545,14 @@ document.addEvent('spatialIsReady', initTinker);
 function autosaveBlock(){
 	var xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
 	var data = Blockly.Xml.domToText(xml);
-	
+
 	// Store data in blob.
 	window.localStorage.setItem('autoSaveBlock', data);
 }
 
 function autoloadBlock(){
 	if (isOnlineStorage){
-		return;	
+		return;
 	}
 	console.log('-- Loading saved code.')
 	var xml = Blockly.Xml.textToDom('<xml><block type="procedure_procedure" x="250" y="50"><title name="pname">main</title></block></xml>');
@@ -560,9 +560,9 @@ function autoloadBlock(){
 	xml.deletable = false;
 	Blockly.mainWorkspace.clear();
 	Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, xml);
-	
+
 	//return;
-	
+
 	var loadedBlock = window.localStorage.getItem('autoSaveBlock');
 	//alert(loadedBlock.split('procedure_procedure')[1]);
 	if (!loadedBlock) return;
@@ -572,7 +572,7 @@ function autoloadBlock(){
 	try {
 	  var xml = Blockly.Xml.textToDom(loadedBlock);
 	} catch (e) {
-		
+
 	  return;
 	}
 	if(xml.childElementCount == 0) return;
@@ -592,4 +592,24 @@ function bin2hex (s) {
   }
 
   return o;
+}
+
+function sendHttpGogo(params, value) {
+	var url = 'http://localhost:8316/api';
+	var key = 'logo';
+	if (value) { key = params }
+	else {
+		params = params.split('::');
+		if (params.length != 2) return;
+		key 	= params[0];
+		value = params[1];
+	}
+
+	BlocklyStorage.httpRequest_ = new XMLHttpRequest();
+	BlocklyStorage.httpRequest_.name = 'api';
+	BlocklyStorage.httpRequest_.onreadystatechange = null;//			BlocklyStorage.handleRequest_;
+	BlocklyStorage.httpRequest_.open('POST', url);
+	BlocklyStorage.httpRequest_.setRequestHeader('Content-Type',
+			'application/x-www-form-urlencoded');
+	BlocklyStorage.httpRequest_.send(key+"="+encodeURIComponent(value));
 }
