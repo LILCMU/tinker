@@ -147,7 +147,7 @@ Code.renderContent = function() {
 Code.init = function() {
   Blockly.pathToBlockly = window.location.pathname.split('index')[0];
 
-	
+
   BlocklyApps.init();
 //alert(Blockly.pathToBlockly);
 
@@ -208,7 +208,7 @@ Code.init = function() {
     BlocklyApps.bindClick('tab_' + name,
         function(name_) {return function() {Code.tabClick(name_);};}(name));
   }
-  
+
   new Element('option', {'text': 'GoGo Board', 'value': 'gogoBoard', 'selected': true}).inject($('boardOptions'));
   new Element('option', {'text': 'Raspberry Pi', 'value': 'rPi'}).inject($('boardOptions'));
   $('boardOptions').addEvent('change', function(){
@@ -232,7 +232,7 @@ if (window.location.pathname.match(/readonly.html$/)) {
 }
 
 Code.trashBlocks = function() {
-	Code.discard(); 
+	Code.discard();
 	Code.renderContent();
 	var xml = Blockly.Xml.textToDom('<xml><block type="procedure_procedure" x="250" y="50"><title name="pname">main</title></block></xml>');
 	xml.editable = false;
@@ -270,7 +270,7 @@ Code.loadProcedure = function() {
 			tinkerBlocks.include(item.getElement('mutation').get('name'));
 		}
 	});
-	
+
 	// var mapping = $('mappingMainArea');
 	// var blockArr = mapping.getElements('.mappingBlock');
 	var xmlArr = [];
@@ -282,7 +282,7 @@ Code.loadProcedure = function() {
 	// 	}
 	// });
 	// mapping.spatial.setPoints(mapping.currentBlock.points);
-	
+
 	// var condition = $('conditionMainArea');
 	// var blockArr = condition.getElements('.condBlock');
 	//var xmlArr = [];
@@ -294,13 +294,13 @@ Code.loadProcedure = function() {
 	// 	}
 	// });
 	// condition.spatial.setArea(condition.currentBlock.area);
-	
+
 	//return 0;
 	var xmlText = xmlArr.join(' ');
-	
-	
+
+
 	var data = Blockly.Xml.domToText(xml).split('</xml>')[0];
-	
+
 	Blockly.mainWorkspace.clear();
 	xml = Blockly.Xml.textToDom(data+xmlText+'</xml>');
 	Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, xml);
@@ -320,13 +320,13 @@ Code.gogoCodePage = function() {
 
 Code.genGogoCode = function(){
 	var sourceCode = Code.loadProcedure();
-	
+
 	var code = Blockly.GogoCode.workspaceToCode();
 	code = filterCode(code);
 	code = code.split(';').join('');
-	
+
 	Code.restoreProcedure(sourceCode);
-	
+
 	return code;
 }
 
@@ -335,7 +335,7 @@ Code.writeToGogoBoard = function(){
 	if ($('tab_gogocode').hasClass('tabon')) {
 		code = $('content_gogocode').get('html');
 	}
-	
+
   code = code.split(' <= ').join('&lte;');
 	code = code.split(' < ').join('&lt;');
 	code = code.split(' > ').join('&gt;');
@@ -343,11 +343,11 @@ Code.writeToGogoBoard = function(){
   code = code.split('&lte;').join(' <= ');
 	code = code.split('&lt;').join(' < ');
 	code = code.split('&gt;').join(' > ');
-	
+
 	code = code.split('newline').join('\n');
-	
+
 	code = code.split('and true').join('');
-	
+
 	ws.send('logo::'+code);
 	kk('logo::'+code);
   Code.saveRevision();
@@ -364,12 +364,12 @@ Code.writeToGogoBoard1 = function() {
 	//alert(code);
 	code = genGlobalVar(code);
 	//alert(code);
-	
-	
+
+
 	var byteCode = code.replaceObj(byteCodeObj).clean();
-	
+
 	var codeArr = byteCode.split(' ');
-	
+
 	var byteCount = 0;
 	var varArr = [];
 	var varObj = {};
@@ -385,25 +385,27 @@ Code.writeToGogoBoard1 = function() {
 			byteCount++;
 		}
 	});
-	
+
 	varArr.each(function(item){
 		byteCode = byteCode.split('#'+item+' ').join(varObj[item]+' ');
 		byteCode = byteCode.split('$'+item+' ').join(' ').clean();
 	});
-	
+
 	var code = Blockly.GogoCode.workspaceToCode();
 	code = filterCode(code);
   code = code.split(' <= ').join('&lte;');
 	code = code.split(' < ').join('&lt;');
 	code = code.split(' > ').join('&gt;');
 	code = code.replace(/(<([^>]+)>)/ig,"").clean();
-	
+
   code = code.split('&lte;').join(' <= ');
 	code = code.split('&lt;').join(' < ');
 	code = code.split('&gt;').join(' > ');
-	
+
 	code = code.split('newline').join('\n');
-	
+
+  console.log(code);
+
 	//alert(String.fromCharCode.apply(String, byteCode.clean().split(' ')));
 	if(true || confirm('Do you want to download these byte codes to Gogo Board?\n\n'+byteCode)){
 		//ws.send("burn::");
@@ -431,10 +433,10 @@ Code.loadXML = function(event) {
     var target = event.target;
     // 2 == FileReader.DONE
     if (target.readyState == 2) {
-      
+
       var mappingElem = "";
       var conditionElem = "";
-      
+
       try {
         var newText = target.result;
         var mappingText = newText.split('<mapping>')[1];
@@ -442,7 +444,7 @@ Code.loadXML = function(event) {
         	mappingElem = mappingText.split("</mapping>")[0];
         	newText = newText.split('<mapping>')[0]+mappingText.split("</mapping>")[1];
         }
-        
+
         var conditionText = newText.split('<condition>')[1];
         if (conditionText) {
         	conditionElem = conditionText.split("</condition>")[0];
@@ -453,7 +455,7 @@ Code.loadXML = function(event) {
       	alert('Error parsing XML:\n' + e);
         return;
       }
-      
+
       // if (mappingElem) {
       //   console.log('========mapping===========');
 	     //  window.localStorage.setItem('mappingBlock', mappingElem);
@@ -464,7 +466,7 @@ Code.loadXML = function(event) {
 	     //  window.localStorage.setItem('conditionBlock', conditionElem);
 	     //  condition.loadData();
       // }
-      
+
       if(xml.childElementCount == 0) return;
       Blockly.mainWorkspace.clear();
       Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, xml);
@@ -478,16 +480,16 @@ Code.loadXML = function(event) {
 
 Code.saveXML = function() {
   var xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
-  
+
   // var mappingData = window.localStorage.getItem('mappingBlock');
   // var conditionData = window.localStorage.getItem('conditionBlock');
-  
+
   // var mappingElem = new Element('mapping', {'html': mappingData});
   // var conditionElem = new Element('condition', {'html': conditionData});
-  
+
   // $(xml).grab(mappingElem);
   // $(xml).grab(conditionElem);
-  
+
   var data = Blockly.Xml.domToText(xml);
 
   console.log(data);
@@ -524,7 +526,7 @@ Code.discard = function() {
 
 Code.saveRevision = function(){
   return;
-  var xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);  
+  var xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
   var data = Blockly.Xml.domToText(xml);
   // console.log(data);
   var xml = Blockly.Xml.workspaceToDom(Blockly.getMainWorkspace());

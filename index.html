@@ -71,7 +71,7 @@ Update : 26 July 2014 - 2:28pm
 </head>
 <body>
 
-<div id="versionNO">v1.0.41 - Aug 22, 2016</div>
+<div id="versionNO">v1.0.42 - Oct 12, 2016</div>
 
 <div id="spatialContentTemplate" class="contentSpatial">
 	<div class="mainArea">
@@ -597,110 +597,110 @@ Update : 26 July 2014 - 2:28pm
           <title name="date">4</title>
         </block>
 
-        <block type="procedures_defreturn" id="69" inline="false" collapsed="true" x="63" y="368">
-      		<mutation>
-      			<arg name="start hour"></arg>
-      			<arg name="start minute"></arg>
-      			<arg name="end hour"></arg>
-      			<arg name="end minute"></arg>
-      		</mutation>
-      		<field name="NAME">time between</field>
-      		<statement name="STACK">
-      			<block type="variables_set" id="70" inline="false">
-      				<field name="VAR">get hour</field>
-      				<value name="VALUE">
-      					<block type="clock_date" id="71">
-      						<field name="date">2</field>
-      					</block>
-      				</value>
-      				<next>
-      					<block type="variables_set" id="72" inline="false">
-      						<field name="VAR">get min</field>
-      						<value name="VALUE">
-      							<block type="clock_date" id="73">
-      								<field name="date">1</field>
-      							</block>
-      						</value>
-      					</block>
-      				</next>
-      			</block>
-      		</statement>
-      		<value name="RETURN">
-      			<block type="math_andor" id="74" inline="true">
-      				<field name="andor">and</field>
-      				<value name="left">
-      					<block type="math_andor" id="75" inline="true">
-      						<field name="andor">and</field>
-      						<value name="left">
-      							<block type="math_equal" id="76" inline="true">
-      								<field name="cond">&gt;=</field>
-      								<value name="left">
-      									<block type="variables_get" id="77">
-      										<field name="VAR">get hour</field>
-      									</block>
-      								</value>
-      								<value name="right">
-      									<block type="variables_get" id="78">
-      										<field name="VAR">start hour</field>
-      									</block>
-      								</value>
-      							</block>
-      						</value>
-      						<value name="right">
-      							<block type="math_equal" id="79" inline="true">
-      								<field name="cond">&gt;=</field>
-      								<value name="left">
-      									<block type="variables_get" id="80">
-      										<field name="VAR">get min</field>
-      									</block>
-      								</value>
-      								<value name="right">
-      									<block type="variables_get" id="81">
-      										<field name="VAR">start minute</field>
-      									</block>
-      								</value>
-      							</block>
-      						</value>
-      					</block>
-      				</value>
-      				<value name="right">
-      					<block type="math_andor" id="82" inline="true">
-      						<field name="andor">and</field>
-      						<value name="left">
-      							<block type="math_equal" id="83" inline="true">
-      								<field name="cond">&lt;=</field>
-      								<value name="left">
-      									<block type="variables_get" id="84">
-      										<field name="VAR">get hour</field>
-      									</block>
-      								</value>
-      								<value name="right">
-      									<block type="variables_get" id="85">
-      										<field name="VAR">end hour</field>
-      									</block>
-      								</value>
-      							</block>
-      						</value>
-      						<value name="right">
-      							<block type="math_equal" id="86" inline="true">
-      								<field name="cond">&gt;=</field>
-      								<value name="left">
-      									<block type="variables_get" id="87">
-      										<field name="VAR">get hour</field>
-      									</block>
-      								</value>
-      								<value name="right">
-      									<block type="variables_get" id="88">
-      										<field name="VAR">end minute</field>
-      									</block>
-      								</value>
-      							</block>
-      						</value>
-      					</block>
-      				</value>
-      			</block>
-      		</value>
-      	</block>
+        <block type="procedures_defreturn" id="24" inline="true" collapsed="true" x="317" y="278">
+          <mutation>
+            <arg name="start hour"></arg>
+            <arg name="start minute"></arg>
+            <arg name="end hour"></arg>
+            <arg name="end minute"></arg>
+          </mutation>
+          <field name="NAME">time between</field>
+          <statement name="STACK">
+            <block type="variables_set" id="25" inline="false">
+              <field name="VAR">get hour</field>
+              <value name="VALUE">
+                <block type="clock_date" id="26">
+                  <field name="date">2</field>
+                </block>
+              </value>
+              <next>
+                <block type="variables_set" id="27" inline="false">
+                  <field name="VAR">get min</field>
+                  <value name="VALUE">
+                    <block type="clock_date" id="28">
+                      <field name="date">1</field>
+                    </block>
+                  </value>
+                </block>
+              </next>
+            </block>
+          </statement>
+          <value name="RETURN">
+            <block type="math_andor" id="29" inline="true">
+              <field name="andor">and</field>
+              <value name="left">
+                <block type="math_andor" id="30" inline="true">
+                  <field name="andor">and</field>
+                  <value name="left">
+                    <block type="math_equal" id="31" inline="true">
+                      <field name="cond">&gt;=</field>
+                      <value name="left">
+                        <block type="variables_get" id="32">
+                          <field name="VAR">get hour</field>
+                        </block>
+                      </value>
+                      <value name="right">
+                        <block type="variables_get" id="33">
+                          <field name="VAR">start hour</field>
+                        </block>
+                      </value>
+                    </block>
+                  </value>
+                  <value name="right">
+                    <block type="math_equal" id="34" inline="true">
+                      <field name="cond">&gt;=</field>
+                      <value name="left">
+                        <block type="variables_get" id="35">
+                          <field name="VAR">get min</field>
+                        </block>
+                      </value>
+                      <value name="right">
+                        <block type="variables_get" id="36">
+                          <field name="VAR">start minute</field>
+                        </block>
+                      </value>
+                    </block>
+                  </value>
+                </block>
+              </value>
+              <value name="right">
+                <block type="math_andor" id="37" inline="true">
+                  <field name="andor">and</field>
+                  <value name="left">
+                    <block type="math_equal" id="38" inline="true">
+                      <field name="cond">&lt;=</field>
+                      <value name="left">
+                        <block type="variables_get" id="39">
+                          <field name="VAR">get hour</field>
+                        </block>
+                      </value>
+                      <value name="right">
+                        <block type="variables_get" id="40">
+                          <field name="VAR">end hour</field>
+                        </block>
+                      </value>
+                    </block>
+                  </value>
+                  <value name="right">
+                    <block type="math_equal" id="41" inline="true">
+                      <field name="cond">&lt;=</field>
+                      <value name="left">
+                        <block type="variables_get" id="42">
+                          <field name="VAR">get min</field>
+                        </block>
+                      </value>
+                      <value name="right">
+                        <block type="variables_get" id="43">
+                          <field name="VAR">end minute</field>
+                        </block>
+                      </value>
+                    </block>
+                  </value>
+                </block>
+              </value>
+            </block>
+          </value>
+        </block>
       </category>
       <category name="Display Modlue">
         <block type="display_text">
