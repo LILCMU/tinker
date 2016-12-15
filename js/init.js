@@ -2,6 +2,11 @@ var wsImpl = window.WebSocket || window.MozWebSocket;
 var mainToolbox;
 var connectedFailCount = 0;
 var isOnlineStorage = false;
+var wsPort = {
+	current : null,
+  init 		: 8316,
+  start 	: 8310
+}
 
 document.addEvent('domready', function(){
 	//initPi();
@@ -16,7 +21,7 @@ window.addEvent('BlocklyIsReady', function(){
 
 	setupContentGogocode();
 
-	setupTest();
+	// setupTest();
 });
 
 var setupContentGogocode = function(){
@@ -647,8 +652,8 @@ var initSpatial = function(){
 		//condition.json[condition.currentData].name
 		var json = condition.json[condition.currentData];
 
-		kk('select block');
-		kk(json);
+		// kk('select block');
+		// kk(json);
 
 		//currentSpatial.setTypeNew(axis, value, type, min, max);
 		currentSpatial.setTypeNew('X', json.ssX.name, json.ssX.type, json.ssX.min, json.ssX.max);
@@ -1042,8 +1047,18 @@ document.addEvent('spatialIsReady', function(){
 });
 
 var normalWS = function(){
+	if (connectedFailCount >= 2) {
+			if (!wsPort.current) {
+				wsPort.current = wsPort.init;
+			} else if (wsPort.current >= wsPort.init) {
+				wsPort.current = wsPort.start;
+			} else {
+				wsPort.current++;
+			}
+	}
+
 	try {
-		var port = (window.location.protocol == "https:" ? "8317" : "8316");
+		var port = (window.location.protocol == "https:" ? "8317" : (wsPort.current || wsPort.init) );
 		var ws = new wsImpl((window.location.protocol == "https:" ? "wss" : "ws")+'://localhost:'+port+'/ws');
 	} catch (error) {
 		return;
@@ -1053,6 +1068,7 @@ var normalWS = function(){
 		//console.log(evt.data);
 		var resp = evt.data.split('::');
 		if(resp[0] == 'burst') {
+			$('gogoStatus').removeClass('connect');
 			$('gogoStatus').addClass('on');
 			if($('sensorOptionBTN').hasClass('selected')) {
 				var rs = resp[1].split('-');
@@ -1066,16 +1082,19 @@ var normalWS = function(){
 			}
 		} else if (resp[0] == 'status') {
 			if (resp[1]=='success') {
+				$('gogoStatus').removeClass('connect');
 				$('gogoStatus').addClass('on');
 			} else if (resp[1]=='disconnect') {
 				if ($('sensorOptionBTN').hasClass('selected')) {
 					$('sensorOptionBTN').fireEvent('click');
 				}
 				$('gogoStatus').removeClass('on');
+				$('gogoStatus').removeClass('connect');
 				ws.send(7);
 			}
 		} else if (resp[0] == 'nodata') {
 			$('gogoStatus').removeClass('on');
+			$('gogoStatus').addClass('connect');
 			for (var i = 0; i < 8; i++) {
 				//if(!(Math.abs(rs[i] - rs1[i]) > 950 && Math.abs(rs[i] - rs2[i]) > 950)) {
 					$('sensor'+(i+1)).getFirst('.gate').setStyle('height', (100)+'%');
@@ -1088,6 +1107,7 @@ var normalWS = function(){
 	// when the connection is established, this method is called
 	ws.onopen = function () {
 		connectedFailCount = 0;
+		$('gogoStatus').addClass('connect');
 		//this.send(6)
 		//inc.innerHTML += '.. connection open<br/>';
 	};
@@ -1102,10 +1122,14 @@ var normalWS = function(){
 	}
 
 	ws.onerror = function (event) {
-		if (window.location.protocol == "https:" && ++connectedFailCount == 3){
+		connectedFailCount++;
+		if (window.location.protocol == "https:" && connectedFailCount >= 2){
 			console.log("Redirecting to http");
 			window.location = "http://" + window.location.hostname + window.location.pathname;
+		} else if (connectedFailCount >= 2) {
+			console.log("Connection error : try to reconencting");
 		}
+
   	};
 
 	ws.sendFn = ws.send;

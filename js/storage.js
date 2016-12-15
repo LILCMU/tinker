@@ -64,7 +64,7 @@ BlocklyStorage.restoreBlocks = function() {
 BlocklyStorage.link = function() {
   var xml = Blockly.Xml.workspaceToDom(Blockly.getMainWorkspace());
   var data = Blockly.Xml.domToText(xml);
-  BlocklyStorage.makeRequest_('https://c.learninginventions.org/', 'xml', data, 'link');
+  BlocklyStorage.makeRequest_('https://gogoapi.learninginventions.org/storage/', 'xml', data, 'link');
 };
 
 /**
@@ -73,7 +73,7 @@ BlocklyStorage.link = function() {
  */
 BlocklyStorage.retrieveXml = function(key) {
   var xml = Blockly.Xml.workspaceToDom(Blockly.getMainWorkspace());
-  BlocklyStorage.makeRequest_('https://c.learninginventions.org/', 'key', key, 'get');
+  BlocklyStorage.makeRequest_('https://gogoapi.learninginventions.org/storage/', 'key', key, 'get');
 };
 
 /**

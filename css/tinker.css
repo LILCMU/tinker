@@ -83,7 +83,7 @@ div {
 }
 
 #inputPopupRight input {
-	width: 60px; 
+	width: 60px;
 	border: 1px solid #ddd;
 	font-size: 1em;
 }
@@ -98,7 +98,7 @@ div {
 	font-size: 1.95em;
 }
 
-#inputPopupLeft.disabled, 
+#inputPopupLeft.disabled,
 #inputPopupRight.disabled {
 	opacity: 0.34;
 }
@@ -301,12 +301,12 @@ div {
 	-o-user-select: none;
 	user-select: none;
 	/*background-color: #74ABD2;*/
-	
+
 }
 
 #menuContainer {
 	position: relative;
-	
+
 	height: 40px;
 	background-color: #74ABD2;
 	border-bottom: 2px solid #326F9A;
@@ -352,11 +352,11 @@ div {
 }
 
 .clearfix{ clear:both; visibility: hidden;line-height: 0; height: 0;}
-.clearfix:after { 
-   content: "."; 
-   visibility: hidden; 
-   display: block; 
-   height: 0; 
+.clearfix:after {
+   content: ".";
+   visibility: hidden;
+   display: block;
+   height: 0;
    clear: both;
 }
 
@@ -438,9 +438,15 @@ div {
 	content: "◎";
 	color: #6f716f;
 }
+
 #gogoStatus.on::after {
 	content: "◉";
 	color: #29c129;
+}
+
+#gogoStatus.connect::after {
+	content: "◉";
+	color: #FFEB3B;
 }
 
 #motorBreak {
