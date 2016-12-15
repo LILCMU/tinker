@@ -1,3 +1,9 @@
+##### 1.0.43 - Dec 15, 2016 - Marutpong Chailangka
+- Added GogoBoard Status color, changed to yellow when WS connected.
+- Added trying to connect other WS port when the connection is error.
+- Updated URL of share feature
+- Fixed issues
+
 ##### 1.0.42 - Oct 12, 2016 - Marutpong Chailangka
 - Added sending command and compile to Widget via HTTP instead of WS when WS is not connected
 

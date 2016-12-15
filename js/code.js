@@ -531,5 +531,5 @@ Code.saveRevision = function(){
   // console.log(data);
   var xml = Blockly.Xml.workspaceToDom(Blockly.getMainWorkspace());
   var data = Blockly.Xml.domToText(xml);
-  BlocklyStorage.makeRequest_('https://c.learninginventions.org/', 'xml', data, 'download');
+  BlocklyStorage.makeRequest_('https://gogoapi.learninginventions.org/storage/', 'xml', data, 'download');
 }

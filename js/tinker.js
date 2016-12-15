@@ -595,7 +595,7 @@ function bin2hex (s) {
 }
 
 function sendHttpGogo(params, value) {
-	var url = 'http://localhost:8316/api';
+	var url = 'http://localhost:'+ (wsPort.current || wsPort.init) +'/api';
 	var key = 'logo';
 	if (value) { key = params }
 	else {
