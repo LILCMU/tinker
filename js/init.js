@@ -5,8 +5,9 @@ var isOnlineStorage = false;
 var wsPort = {
 	current : null,
   init 		: 8316,
-  start 	: 8310
+  start 	: 8314
 }
+var lastWSHandle = new Date();
 
 document.addEvent('domready', function(){
 	//initPi();
@@ -20,6 +21,8 @@ window.addEvent('BlocklyIsReady', function(){
 	initSpatial();
 
 	setupContentGogocode();
+
+	startCheckWSNotResponse();
 
 	// setupTest();
 });
@@ -1047,7 +1050,9 @@ document.addEvent('spatialIsReady', function(){
 });
 
 var normalWS = function(){
-	if (connectedFailCount >= 2) {
+	if (connectedFailCount == 0 && wsPort.current && wsPort.current < wsPort.init ) {
+		wsPort.current = wsPort.init;
+	} else if (connectedFailCount >= 2 || !wsPort.current) {
 			if (!wsPort.current) {
 				wsPort.current = wsPort.init;
 			} else if (wsPort.current >= wsPort.init) {
@@ -1060,7 +1065,9 @@ var normalWS = function(){
 	try {
 		var port = (window.location.protocol == "https:" ? "8317" : (wsPort.current || wsPort.init) );
 		var ws = new wsImpl((window.location.protocol == "https:" ? "wss" : "ws")+'://localhost:'+port+'/ws');
+		lastWSHandle = new Date();
 	} catch (error) {
+		connectedFailCount++;
 		return;
 	}
 
@@ -1102,6 +1109,7 @@ var normalWS = function(){
 				//}
 			}
 		}
+		lastWSHandle = new Date();
 	};
 
 	// when the connection is established, this method is called
@@ -1114,6 +1122,8 @@ var normalWS = function(){
 
 	// when the connection is closed, this method is called
 	ws.onclose = function (status) {
+		$('gogoStatus').removeClass('on');
+		$('gogoStatus').removeClass('connect');
 		new Element('div', {'id': 'warningMessage', 'class': 'anime12', 'text': 'Cannot connect to the GoGo Widget. Retrying..'}).inject(document.body);
 		setTimeout(function(){
 			$('warningMessage').destroy();
@@ -1122,6 +1132,8 @@ var normalWS = function(){
 	}
 
 	ws.onerror = function (event) {
+		$('gogoStatus').removeClass('on');
+		$('gogoStatus').removeClass('connect');
 		connectedFailCount++;
 		if (window.location.protocol == "https:" && connectedFailCount >= 2){
 			console.log("Redirecting to http");
@@ -1149,6 +1161,14 @@ var normalWS = function(){
 	//alert(ws.send);
 
 	return ws;
+}
+
+var startCheckWSNotResponse = function() {
+	setInterval(function () {
+		if (new Date() - window.lastWSHandle > 8000){
+			window.ws.close();
+		}
+	}, 8000);
 }
 
 var startWebSocket = function(){

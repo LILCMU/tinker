@@ -1,5 +1,9 @@
+##### 1.0.44 - Dec 16, 2016 - Marutpong Chailangka
+- Added changing status color back to white when WS is disconnected.
+- Added a function of checking the ws connection.
+
 ##### 1.0.43 - Dec 15, 2016 - Marutpong Chailangka
-- Added GogoBoard Status color, changed to yellow when WS connected.
+- Added GogoBoard status color, changed to yellow when WS connected.
 - Added trying to connect other WS port when the connection is error.
 - Updated URL of share feature
 - Fixed issues
