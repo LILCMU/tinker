@@ -525,7 +525,7 @@ Code.discard = function() {
 
 
 Code.saveRevision = function(){
-  return;
+  // return;
   var xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
   var data = Blockly.Xml.domToText(xml);
   // console.log(data);
