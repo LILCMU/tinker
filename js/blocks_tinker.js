@@ -700,6 +700,29 @@ Blockly.Blocks.control_repeat = {
   }
 };
 
+Blockly.Blocks.control_forever_wait = {
+  category: 'Control',
+  helpUrl: 'http://www.example.com/',
+  init: function() {
+    this.setColour(120);
+    this.appendDummyInput().appendField("forever");
+    var input =  this.appendStatementInput( "do", null);
+    input.appendField("do");
+
+    this.appendDummyInput()
+        .appendField("each time wait");
+    this.appendValueInput("NAME", Number);
+    this.appendDummyInput()
+        .appendField("1/10 second(s)");
+    this.setInputsInline(true);
+
+    //input = this.appendDummyInput();
+    //input.appendField("forever");
+    this.setPreviousStatement(true, null);
+    this.setTooltip('Indefinitely executes block.');
+  }
+};
+
 Blockly.Blocks.control_forever = {
   category: 'Control',
   helpUrl: 'http://www.example.com/',

@@ -1,3 +1,7 @@
+##### 1.0.45 - July 20, 2017 - Arnan Sipitakiat
+- Added a new forever-with-wait block.
+
+
 ##### 1.0.44 - Dec 16, 2016 - Marutpong Chailangka
 - Added changing status color back to white when WS is disconnected.
 - Added a function of checking the ws connection.

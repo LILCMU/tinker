@@ -616,6 +616,19 @@ Blockly.GogoCode.control_forever = function() {
   return code;
 };
 
+Blockly.GogoCode.control_forever_wait = function(block) {
+  var statements_do = Blockly.GogoCode.statementToCode(this, 'do');
+  // TODO: Assemble GogoCode into code variable.
+  var value_name = Blockly.GogoCode.valueToCode(block, 'NAME', Blockly.GogoCode.ORDER_ATOMIC);
+  //value_name = value_name.replace('<span class="c10">', '').replace('</span>', '').toInt()
+  //value_name *= 10;
+  //var code = '<span class="c290">wait ' + (isNaN(value_name) ? 0 : value_name) + '</span> \n';
+  var code = '<span class="c120">forever \n[\n'+statements_do+'  <span class="c290">wait ' + value_name + '</span>\n]</span>\n';
+  //var code = '<span class="c120">forever \n[\n'+statements_do+'\n]</span>\n';
+
+  return code;
+};
+
 Blockly.GogoCode.procedure_stop = function() {
   var code = '<span class="c290">stop</span>\n';
   return code;
