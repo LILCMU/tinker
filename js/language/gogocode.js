@@ -320,6 +320,14 @@ Blockly.GogoCode['key_value'] = function(block) {
   return [code, Blockly.GogoCode.ORDER_NONE];
 };
 
+Blockly.GogoCode['get_int_value_of_key'] = function(block) {
+  var text_key_name = Blockly.GogoCode.valueToCode(block, 'key_name', Blockly.GogoCode.ORDER_ATOMIC); 
+  //this.getFieldValue('key_name').toLowerCase();
+  //var text_key_value_input = this.getFieldValue('key_value_input');
+  var code = '<span class="c210">intkey '+ text_key_name +'</span>';
+  return [code, Blockly.GogoCode.ORDER_NONE];
+};
+
 Blockly.GogoCode['key_value_unrestricted'] = function(block) {
   var text_key_name = Blockly.GogoCode.valueToCode(block, 'key_name', Blockly.GogoCode.ORDER_ATOMIC); 
   //this.getFieldValue('key_name').toLowerCase();

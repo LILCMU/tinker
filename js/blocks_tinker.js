@@ -994,6 +994,26 @@ Blockly.Blocks.key_value = {
   }
 };
 
+
+Blockly.Blocks.get_int_value_of_key = {
+  helpUrl: 'http://www.example.com/',
+  init: function() {
+    this.setColour(290);
+    this.appendValueInput("key_name")
+    .appendField("Number value of key");
+
+    //    .appendField(new Blockly.FieldDropdown([["Button", "button"], ["Slider", "slider"], ["Switch", "switch"], ["Face Name", "facename"], ["Speech", "speech"]]), "key_name");
+    // this.appendValueInput("key_value_input")
+    //     .appendField("is equal to ");
+
+
+    this.setInputsInline(true);
+    this.setOutput(true, Number);
+    this.setTooltip('Reports the number value of a specific key.');
+  }
+};
+
+
 Blockly.Blocks.key_value_unrestricted = {
   helpUrl: 'http://www.example.com/',
   init: function() {
