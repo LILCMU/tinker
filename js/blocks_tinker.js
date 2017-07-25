@@ -422,6 +422,8 @@ Blockly.Blocks.action_motor = {
   }
 };
 
+
+
 Blockly.Blocks.action_motor_is_on = {
   category: 'Action',
   helpUrl: 'http://www.example.com/',
@@ -446,6 +448,29 @@ Blockly.Blocks.action_motor_is_on = {
   }
 };
 
+Blockly.Blocks.action_motor_is_cw = {
+  category: 'Action',
+  helpUrl: 'http://www.example.com/',
+  init: function() {
+    this.setColour(310);
+    this.appendDummyInput().appendField("motor")
+
+    .appendField(new Blockly.FieldCheckbox("TRUE"), "a").appendField("A ")
+    .appendField(new Blockly.FieldCheckbox("FALSE"), "b").appendField("B ")
+    .appendField(new Blockly.FieldCheckbox("FALSE"), "c").appendField("C ")
+    .appendField(new Blockly.FieldCheckbox("FALSE"), "d").appendField("D");
+
+
+    //var input =  this.appendValueInput( "NAME", "motor");
+    //input.appendField("to");
+    this.appendDummyInput().appendField("direction is(are) CW?")
+    this.setOutput(true, Boolean);
+    this.setInputsInline(true);
+    this.setPreviousStatement(false, null);
+    this.setNextStatement(false, null);
+    this.setTooltip('Returns True if the selected motors direction are clock-wise');
+  }
+};
 
 
 Blockly.Blocks.motor_action_turn = {
@@ -1545,6 +1570,9 @@ Blockly.Blocks.camera_is_on = {
     this.setTooltip('');
   }
 };
+
+
+
 
 Blockly.Blocks.find_face_is_on = {
   helpUrl: 'http://www.example.com/',

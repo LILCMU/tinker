@@ -477,6 +477,23 @@ Blockly.GogoCode.action_motor_is_on = function() {
 };
 
 
+Blockly.GogoCode.action_motor_is_ccw = function() {
+  var checkbox_a = this.getFieldValue('a');
+  var checkbox_b = this.getFieldValue('b');
+  var checkbox_c = this.getFieldValue('c');
+  var checkbox_d = this.getFieldValue('d');
+  //var value_name = Blockly.GogoCode.valueToCode(this, 'NAME', Blockly.GogoCode.ORDER_ATOMIC);
+  // TODO: Assemble GogoCode into code variable.
+
+  var code = '<span class="c316">'+(checkbox_a=="TRUE,"? "a":"")
+                                  +(checkbox_b=="TRUE,"? "b":"")
+                                  +(checkbox_c=="TRUE,"? "c":"")
+                                  +(checkbox_d=="TRUE,"? "d":"")
+                                  +'thisway?</span> \n';//+value_name.slice(1, value_name.length-1)+'\n';
+  if (code == '<span class="c316">on?</span> \n') { code = '<span class="c316">0</span>'; }                                  
+  return [code, Blockly.GogoCode.ORDER_NONE];
+};
+
 
 
 Blockly.GogoCode.motor_action_turn = function() {
