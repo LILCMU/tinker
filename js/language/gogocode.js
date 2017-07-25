@@ -477,7 +477,7 @@ Blockly.GogoCode.action_motor_is_on = function() {
 };
 
 
-Blockly.GogoCode.action_motor_is_ccw = function() {
+Blockly.GogoCode.action_motor_is_cw = function() {
   var checkbox_a = this.getFieldValue('a');
   var checkbox_b = this.getFieldValue('b');
   var checkbox_c = this.getFieldValue('c');
