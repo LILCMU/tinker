@@ -43,7 +43,7 @@ var Code = {};
  * List of tab names.
  * @private
  */
-Code.TABS_ = ['blocks', 'gogomon', 'gogocode'];
+Code.TABS_ = ['blocks', 'gogocode'];
 
 Code.selected = 'blocks';
 
@@ -209,13 +209,13 @@ Code.init = function() {
         function(name_) {return function() {Code.tabClick(name_);};}(name));
   }
 
-  new Element('option', {'text': 'GoGo Board', 'value': 'gogoBoard', 'selected': true}).inject($('boardOptions'));
-  new Element('option', {'text': 'Raspberry Pi', 'value': 'rPi'}).inject($('boardOptions'));
-  $('boardOptions').addEvent('change', function(){
-  	//alert(this.get('value'));
-  	document.fireEvent('boardTypeIsChanged');
-  	Blockly.Toolbox.tree_.children_[1].setExpanded(true);
-  });
+  // new Element('option', {'text': 'GoGo Board', 'value': 'gogoBoard', 'selected': true}).inject($('boardOptions'));
+  // new Element('option', {'text': 'Raspberry Pi', 'value': 'rPi'}).inject($('boardOptions'));
+  // $('boardOptions').addEvent('change', function(){
+  // 	//alert(this.get('value'));
+  // 	document.fireEvent('boardTypeIsChanged');
+  // 	Blockly.Toolbox.tree_.children_[1].setExpanded(true);
+  // });
 
   // Lazy-load the syntax-highlighting.
   window.setTimeout(BlocklyApps.importPrettify, 1);

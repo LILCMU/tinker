@@ -1,31 +1,6 @@
-
-<!--
-Update : 21 August 2015 - 5:51am
-Update : 15 May 2015 - 4:30pm
-Update : 3 April 2015 - 9:00am
-Update : 27 March 2015 - 3:16pm
-Update : 3 February 2015 - 2:18pm
-Update : 17 December 2014 - 12:52am
-Update : 8 December 2014 - 11:35pm
-Update : 18 November 2014 - 6:50pm
-Update : 28 October 2014 - 10:45am
-Update : 24 October 2014 - 12:15am
-Update : 21 October 2014 - 7:30am
-Update : 12 September 2014 - 11:28pm
-Update : 10 September 2014 - 5:03am
-Update : 6 September 2014 - 5:57pm
-Update : 2 September 2014 - 2:56am
-Update : 29 August 2014 - 5:12am
-Update : 19 August 2014 - 11:43pm
-Update : 18 August 2014 - 6:38am
-Update : 4 August 2014 - 4:36m
-Update : 26 July 2014 - 2:28pm
-
-
--->
-
 <!DOCTYPE html>
 <html>
+
 <head>
   <meta charset="utf-8">
   <meta name="google" value="notranslate">
@@ -57,219 +32,50 @@ Update : 26 July 2014 - 2:28pm
 
 
 
-	<script src="./dist/keyboard.js"></script>
+  <script src="./dist/keyboard.js"></script>
 
-	<script type="text/javascript">
-
-		keyboardJS.bind('=', function(e) {
-			console.log('= is pressed');
-		});
-
-	</script>
+  <script type="text/javascript">
+    keyboardJS.bind('=', function(e) {
+      console.log('= is pressed');
+    });
+  </script>
 
 
 </head>
+
 <body>
 
-<div id="versionNO">v1.0.45 - July 20, 2017</div>
+  <div id="versionNO">v1.0.46 - August 10, 2017</div>
 
-<div id="spatialContentTemplate" class="contentSpatial">
-	<div class="mainArea">
-		<p>Conversion Lab: </p>
-		<h3></h3>
-		<div class="wrapper spatialWrapper"></div>
-	</div>
-		<div class="control">
-			<a class="deleteBlock">Delete Block</a>
-			<a class="submit">Create Block</a>
-		</div>
-	<div class="procedure">
-		<p>Generated Blocks</p>
-	</div>
-	<div class="exBlock">
-		<p>Generated Procedure</p>
-		<iframe class="iframe" style="width: 600px; height: 250px;"></iframe>
-	</div>
-</div>
+  <div id="spatialContentTemplate" class="contentSpatial">
+    <div class="mainArea">
+      <p>Conversion Lab: </p>
+      <h3></h3>
+      <div class="wrapper spatialWrapper"></div>
+    </div>
+    <div class="control">
+      <a class="deleteBlock">Delete Block</a>
+      <a class="submit">Create Block</a>
+    </div>
+    <div class="procedure">
+      <p>Generated Blocks</p>
+    </div>
+    <div class="exBlock">
+      <p>Generated Procedure</p>
+      <iframe class="iframe" style="width: 600px; height: 250px;"></iframe>
+    </div>
+  </div>
 
   <script type="text/javascript">
-    document.write(codepage.start({}, null,
-        {lang: BlocklyApps.LANG,
-         langSrc: BlocklyApps.languagePack()}));
+    document.write(codepage.start({}, null, {
+      lang: BlocklyApps.LANG,
+      langSrc: BlocklyApps.languagePack()
+    }));
   </script>
 
   <xml style="display: none">
-  <block id="block_control_if_state_change" type="control_if_state_change" inline="false" class="rPiBlocks"></block>
+    <block id="block_control_if_state_change" type="control_if_state_change" inline="false" class="rPiBlocks"></block>
   </xml>
-
-
-  <category id="rPiBlocks">
-    <category name="GoGo <-> Raspberry Pi Communication" class="rPiBlocks">
-      <block type="key_value">
-        <title name="key_name">Button</title>
-        <value name="key_value_input">
-          <block type="text"></block>
-        </value>
-      </block>
-      <block type="control_if" id="13" inline="false">
-        <value name="condition">
-          <block type="key_value" id="14" inline="true">
-            <field name="key_name">Button</field>
-            <value name="key_value_input">
-              <block type="text" id="15">
-                <field name="TEXT"></field>
-              </block>
-            </value>
-          </block>
-        </value>
-      </block>
-      <block type="key_value_unrestricted">
-        <value name="key_name">
-          <block type="text"></block>
-        </value>
-        <value name="key_value_input">
-          <block type="text"></block>
-        </value>
-      </block>
-
-      <block type="get_int_value_of_key">
-        <value name="key_name">
-          <block type="text"></block>
-        </value>        
-      </block>
-
-      <block type="send_string_message">
-        <value name="message">
-          <block type="text"></block>
-        </value>
-        <value name="topic">
-          <block type="text"></block>
-        </value>
-      </block>
-      <block type="send_number_message">
-        <value name="message">
-          <block type="math_number" >
-            <field name="number">0</field>
-          </block>
-        </value>
-        <value name="topic">
-          <block type="text"></block>
-        </value>
-      </block>
-    </category>
-    <category name="Cloud Services" class="rPiBlocks">
-      <block type="ifttt_trigger">
-        <value name="message">
-          <block type="math_number" >
-            <field name="number">0</field>
-          </block>
-        </value>
-        <value name="topic">
-          <block type="text"></block>
-        </value>
-      </block>
-      <block type="ifttt_trigger">
-        <value name="message">
-          <block type="text" ></block>
-        </value>
-        <value name="topic">
-          <block type="text"></block>
-        </value>
-      </block>
-      <block type="telegram_message">
-        <text class="blocklyText">okok</text>
-        <value name="message">
-          <block type="math_number" >
-            <field name="number">0</field>
-          </block>
-        </value>
-      </block>
-      <block type="telegram_message">
-        <title name="message_type">Message</title>
-        <value name="message">
-          <block type="text" ></block>
-        </value>
-      </block>
-      <block type="if_telegram_message">
-        <value name="key_value_input">
-          <block type="text"></block>
-        </value>
-      </block>
-    </category>
-    <category name="Text message" class="rPiBlocks">
-      <!-- <block type="use_sms"></block> -->
-      <block type="send_sms">
-        <value name="number">
-          <block type="text"></block>
-        </value>
-        <value name="message">
-          <block type="text"></block>
-        </value>
-      </block>
-    </category>
-    <category name="Send E-mail" class="rPiBlocks">
-      <block type="send_email">
-        <value name="email">
-          <block type="text"></block>
-        </value>
-        <value name="title">
-          <block type="text"></block>
-        </value>
-        <value name="body">
-          <block type="text"></block>
-        </value>
-      </block>
-    </category>
-    <category name="RFID" class="rPiBlocks">
-      <block type="userfid"></block>
-      <block type="read_from_rfid"></block>
-      <block type="write_to_rfid"></block>
-    </category>
-    <category name="Finger Scan" class="rPiBlocks">
-      <block type="use_finer_scan"></block>
-      <block type="identify_finger"></block>
-      <block type="enroll_finger"></block>
-    </category>
-    <category name="Camera" class="rPiBlocks">
-      <block type="use_camera"></block>
-      <block type="close_camera"></block>
-      <block type="start_find_face"></block>
-      <block type="stop_find_face"></block>
-      <block type="found_face"></block>
-      <block type="take_snapshot"></block>
-      <block type="camera_is_on"></block>
-      <block type="find_face_is_on"></block>
-    </category>
-    <category name="Sound" class="rPiBlocks">
-      <block type="play_sound" inline="true">
-        <value name="string">
-          <block type="text"></block>
-        </value>
-      </block>
-      <block type="stop_sound"></block>
-      <block type="say" inline="true">
-        <value name="string">
-          <block type="text"></block>
-        </value>
-      </block>
-    </category>
-    <category name="Image" class="rPiBlocks">
-      <block type="show_image" inline="true">
-        <value name="string">
-          <block type="text"></block>
-        </value>
-      </block>
-      <block type="hide_image"></block>
-      <block type="screen_tapped"></block>
-    </category>
-    <category name="Data recording" class="rPiBlocks">
-      <block type="record_as" inline="true">
-        <value name="string">
-          <block type="text"></block>
-        </value>
-      </block>
-    </category>
-  </category>
 
 
   <xml id="toolbox" style="display: none">
@@ -359,14 +165,14 @@ Update : 26 July 2014 - 2:28pm
     </category>
     <category name=" "></category>
     <category name="Program Control">
-    <block type="control_forever_wait" x="94" y="432">
-          <value name="NAME">
-            <block type="math_number" id="11">
-              <field name="number">1</field>
-            </block>
-          </value>
+      <block type="control_forever_wait" x="94" y="432">
+        <value name="NAME">
+          <block type="math_number" id="11">
+            <field name="number">1</field>
+          </block>
+        </value>
 
-    </block>
+      </block>
       <block type="control_forever" x="94" y="432"></block>
       <block type="control_repeat" inline="true" x="86" y="323">
         <value name="times">
@@ -409,7 +215,7 @@ Update : 26 July 2014 - 2:28pm
           </block>
         </value>
       </block>
-      <block type="control_if_state_change" inline="false" >
+      <block type="control_if_state_change" inline="false">
         <value name="condition">
           <block type="math_equal" id="32" inline="true">
             <field name="cond">&gt;</field>
@@ -466,26 +272,26 @@ Update : 26 July 2014 - 2:28pm
       </block>
       <block type="math_in_between">
         <value name="lower">
-          <block type="math_number" >
+          <block type="math_number">
             <field name="number">0</field>
           </block>
         </value>
         <value name="upper">
-          <block type="math_number" >
+          <block type="math_number">
             <field name="number">100</field>
           </block>
         </value>
       </block>
       <block type="variable_increase_by">
         <value name="increment">
-          <block type="math_number" >
+          <block type="math_number">
             <field name="number">1</field>
           </block>
         </value>
       </block>
       <block type="variable_decrease_by">
         <value name="increment">
-          <block type="math_number" >
+          <block type="math_number">
             <field name="number">1</field>
           </block>
         </value>
@@ -1205,7 +1011,173 @@ Update : 26 July 2014 - 2:28pm
           </value>
         </block>
       </category>
+    </category>
+    <category id="rPiBlocks" name="Raspberry Pi Commands">
+      <category name="Camera" class="rPiBlocks">
+        <block type="use_camera"></block>
+        <block type="close_camera"></block>
+        <block type="start_find_face"></block>
+        <block type="stop_find_face"></block>
+        <block type="found_face"></block>
+        <block type="take_snapshot"></block>
+        <block type="camera_is_on"></block>
+        <block type="find_face_is_on"></block>
+      </category>
+      <category name="Cloud Services" class="rPiBlocks">
+        <block type="ifttt_trigger">
+          <value name="message">
+            <block type="math_number">
+              <field name="number">0</field>
+            </block>
+          </value>
+          <value name="topic">
+            <block type="text"></block>
+          </value>
+        </block>
+        <block type="ifttt_trigger">
+          <value name="message">
+            <block type="text"></block>
+          </value>
+          <value name="topic">
+            <block type="text"></block>
+          </value>
+        </block>
+        <block type="telegram_message">
+          <text class="blocklyText">okok</text>
+          <value name="message">
+            <block type="math_number">
+              <field name="number">0</field>
+            </block>
+          </value>
+        </block>
+        <block type="telegram_message">
+          <title name="message_type">Message</title>
+          <value name="message">
+            <block type="text"></block>
+          </value>
+        </block>
+        <block type="if_telegram_message">
+          <value name="key_value_input">
+            <block type="text"></block>
+          </value>
+        </block>
+      </category>
+      <category name="Data recording" class="rPiBlocks">
+        <block type="record_as" inline="true">
+          <value name="string">
+            <block type="text"></block>
+          </value>
+        </block>
+      </category>
+      <category name="E-mail" class="rPiBlocks">
+        <block type="send_email">
+          <value name="email">
+            <block type="text"></block>
+          </value>
+          <value name="title">
+            <block type="text"></block>
+          </value>
+          <value name="body">
+            <block type="text"></block>
+          </value>
+        </block>
+      </category>
+      <category name="Finger Scan" class="rPiBlocks">
+        <block type="use_finer_scan"></block>
+        <block type="identify_finger"></block>
+        <block type="enroll_finger"></block>
+      </category>
+      <category name="GoGo <-> Raspberry Pi Communication" class="rPiBlocks">
+        <block type="key_value">
+          <title name="key_name">Button</title>
+          <value name="key_value_input">
+            <block type="text"></block>
+          </value>
+        </block>
+        <block type="control_if" id="13" inline="false">
+          <value name="condition">
+            <block type="key_value" id="14" inline="true">
+              <field name="key_name">Button</field>
+              <value name="key_value_input">
+                <block type="text" id="15">
+                  <field name="TEXT"></field>
+                </block>
+              </value>
+            </block>
+          </value>
+        </block>
+        <block type="key_value_unrestricted">
+          <value name="key_name">
+            <block type="text"></block>
+          </value>
+          <value name="key_value_input">
+            <block type="text"></block>
+          </value>
+        </block>
 
+        <block type="get_int_value_of_key">
+          <value name="key_name">
+            <block type="text"></block>
+          </value>
+        </block>
+
+        <block type="send_string_message">
+          <value name="message">
+            <block type="text"></block>
+          </value>
+          <value name="topic">
+            <block type="text"></block>
+          </value>
+        </block>
+        <block type="send_number_message">
+          <value name="message">
+            <block type="math_number">
+              <field name="number">0</field>
+            </block>
+          </value>
+          <value name="topic">
+            <block type="text"></block>
+          </value>
+        </block>
+      </category>
+      <category name="Image" class="rPiBlocks">
+        <block type="show_image" inline="true">
+          <value name="string">
+            <block type="text"></block>
+          </value>
+        </block>
+        <block type="hide_image"></block>
+        <block type="screen_tapped"></block>
+      </category>
+      <category name="RFID" class="rPiBlocks">
+        <block type="userfid"></block>
+        <block type="read_from_rfid"></block>
+        <block type="write_to_rfid"></block>
+      </category>
+      <category name="Sound" class="rPiBlocks">
+        <block type="play_sound" inline="true">
+          <value name="string">
+            <block type="text"></block>
+          </value>
+        </block>
+        <block type="stop_sound"></block>
+        <block type="say" inline="true">
+          <value name="string">
+            <block type="text"></block>
+          </value>
+        </block>
+      </category>
+      <category name="Text message" class="rPiBlocks">
+        <!-- <block type="use_sms"></block> -->
+        <block type="send_sms">
+          <value name="number">
+            <block type="text"></block>
+          </value>
+          <value name="message">
+            <block type="text"></block>
+          </value>
+        </block>
+      </category>
 
     </category>
     <category name=" "></category>
@@ -1835,28 +1807,28 @@ Update : 26 July 2014 - 2:28pm
        -->
   </xml>
 
-<div id="gogoMonitor" >
-	<!--<div id="gogoMonitorHeader">Gogo Monitor</div>-->
-	<!--<div id="gogoMonitorCloseBTN">×</div>-->
-	<div id="gogoStatusArea">
-		<p>
-			Connecting Status: <span id="gogoStatus" class=""></span>
-		</p>
-		<div class="clearfix"></div>
-	</div>
-	<div id="motorArea" class="border">
-		<div id="selectMotor" style="float: left;">
-			<p>Select Motor</p>
-			<div id="motorA" class="commandBTN">A</div>
-			<div id="motorB" class="commandBTN">B</div>
-			<div id="motorC" class="commandBTN">C</div>
-			<div id="motorD" class="commandBTN">D</div>
-			<div class="clearfix"></div>
-		</div>
-		<div id="motorPower" style="float: left;">
-			<p>Power</p>
-			<div id="setMotorPower" style="float: left;">
-				<select>
+  <div id="gogoMonitor">
+    <!--<div id="gogoMonitorHeader">Gogo Monitor</div>-->
+    <!--<div id="gogoMonitorCloseBTN">×</div>-->
+    <div id="gogoStatusArea">
+      <p>
+        Connecting Status: <span id="gogoStatus" class=""></span>
+      </p>
+      <div class="clearfix"></div>
+    </div>
+    <div id="motorArea" class="border">
+      <div id="selectMotor" style="float: left;">
+        <p>Select Motor</p>
+        <div id="motorA" class="commandBTN">A</div>
+        <div id="motorB" class="commandBTN">B</div>
+        <div id="motorC" class="commandBTN">C</div>
+        <div id="motorD" class="commandBTN">D</div>
+        <div class="clearfix"></div>
+      </div>
+      <div id="motorPower" style="float: left;">
+        <p>Power</p>
+        <div id="setMotorPower" style="float: left;">
+          <select>
 				  <option value="7">7</option>
 				  <option value="6">6</option>
 				  <option value="5">5</option>
@@ -1865,107 +1837,123 @@ Update : 26 July 2014 - 2:28pm
 				  <option value="2">2</option>
 				  <option value="1">1</option>
 				</select>
-			</div>
-			<div class="clearfix"></div>
-		</div>
-		<div class="clearfix"></div>
-		<div id="motorControls">
-			<p>Motor Controls</p>
-			<div id="motorOn" class="commandBTN">On</div>
-			<div id="motorOff" class="commandBTN">Off</div>
-			<div id="motorBreak" class="commandBTN">Break</div>
-			<div id="motorCoast" class="commandBTN">Coast</div>
-			<div class="clearfix"></div>
-		</div>
-		<div id="motorDirection">
-			<p>Motor Direction</p>
-			<div id="motorThisway" class="commandBTN">This way</div>
-			<div id="motorRD" class="commandBTN">Reverse direction</div>
-			<div id="motorThatway" class="commandBTN">That way</div>
-			<div class="clearfix"></div>
-		</div>
-	</div>
-	<div id="output" class="border">
-		<p>Misc Controls</p>
-		<div id="beep" class="commandBTN">beep</div>
-		<div id="ledOn" class="commandBTN">LED on</div>
-		<div id="ledOff" class="commandBTN">LED off</div>
-		<div class="clearfix"></div>
-	</div>
-	<div id="sensor" class="border">
-		<p>Sensors Value</p>
-		<div id="sensorOption">
-			<div id="sensorOptionBTN" class="commandBTN">OFF</div>
-			<div class="clearfix"></div>
-		</div>
-		<div id="barGraph">
-			<div class="sensor" id="sensor1">
-				<div class="sensorValue"></div>
-				<div class="gate anime2">
-					<div class="inner"><div class="sensorValue"></div></div>
-				</div>
-			</div>
-			<div class="sensor" id="sensor2">
-				<div class="sensorValue"></div>
-				<div class="gate anime2">
-					<div class="inner"><div class="sensorValue"></div></div>
-				</div>
-			</div>
-			<div class="sensor" id="sensor3">
-				<div class="sensorValue"></div>
-				<div class="gate anime2">
-					<div class="inner"><div class="sensorValue"></div></div>
-				</div>
-			</div>
-			<div class="sensor" id="sensor4">
-				<div class="sensorValue"></div>
-				<div class="gate anime2">
-					<div class="inner"><div class="sensorValue"></div></div>
-				</div>
-			</div>
-			<div class="sensor" id="sensor5">
-				<div class="sensorValue"></div>
-				<div class="gate anime2">
-					<div class="inner"><div class="sensorValue"></div></div>
-				</div>
-			</div>
-			<div class="sensor" id="sensor6">
-				<div class="sensorValue"></div>
-				<div class="gate anime2">
-					<div class="inner"><div class="sensorValue"></div></div>
-				</div>
-			</div>
-			<div class="sensor" id="sensor7">
-				<div class="sensorValue"></div>
-				<div class="gate anime2">
-					<div class="inner"><div class="sensorValue"></div></div>
-				</div>
-			</div>
-			<div class="sensor" id="sensor8">
-				<div class="sensorValue"></div>
-				<div class="gate anime2">
-					<div class="inner"><div class="sensorValue"></div></div>
-				</div>
-			</div>
-			<div class="clearfix"></div>
-			<div id="sensorLabel">
-				<div class="label">1</div>
-				<div class="label">2</div>
-				<div class="label">3</div>
-				<div class="label">4</div>
-				<div class="label">5</div>
-				<div class="label">6</div>
-				<div class="label">7</div>
-				<div class="label">8</div>
-				<div class="clearfix"></div>
-			</div>
-		</div>
-	</div>
-</div>
+        </div>
+        <div class="clearfix"></div>
+      </div>
+      <div class="clearfix"></div>
+      <div id="motorControls">
+        <p>Motor Controls</p>
+        <div id="motorOn" class="commandBTN">On</div>
+        <div id="motorOff" class="commandBTN">Off</div>
+        <div id="motorBreak" class="commandBTN">Break</div>
+        <div id="motorCoast" class="commandBTN">Coast</div>
+        <div class="clearfix"></div>
+      </div>
+      <div id="motorDirection">
+        <p>Motor Direction</p>
+        <div id="motorThisway" class="commandBTN">This way</div>
+        <div id="motorRD" class="commandBTN">Reverse direction</div>
+        <div id="motorThatway" class="commandBTN">That way</div>
+        <div class="clearfix"></div>
+      </div>
+    </div>
+    <div id="output" class="border">
+      <p>Misc Controls</p>
+      <div id="beep" class="commandBTN">beep</div>
+      <div id="ledOn" class="commandBTN">LED on</div>
+      <div id="ledOff" class="commandBTN">LED off</div>
+      <div class="clearfix"></div>
+    </div>
+    <div id="sensor" class="border">
+      <p>Sensors Value</p>
+      <div id="sensorOption">
+        <div id="sensorOptionBTN" class="commandBTN">OFF</div>
+        <div class="clearfix"></div>
+      </div>
+      <div id="barGraph">
+        <div class="sensor" id="sensor1">
+          <div class="sensorValue"></div>
+          <div class="gate anime2">
+            <div class="inner">
+              <div class="sensorValue"></div>
+            </div>
+          </div>
+        </div>
+        <div class="sensor" id="sensor2">
+          <div class="sensorValue"></div>
+          <div class="gate anime2">
+            <div class="inner">
+              <div class="sensorValue"></div>
+            </div>
+          </div>
+        </div>
+        <div class="sensor" id="sensor3">
+          <div class="sensorValue"></div>
+          <div class="gate anime2">
+            <div class="inner">
+              <div class="sensorValue"></div>
+            </div>
+          </div>
+        </div>
+        <div class="sensor" id="sensor4">
+          <div class="sensorValue"></div>
+          <div class="gate anime2">
+            <div class="inner">
+              <div class="sensorValue"></div>
+            </div>
+          </div>
+        </div>
+        <div class="sensor" id="sensor5">
+          <div class="sensorValue"></div>
+          <div class="gate anime2">
+            <div class="inner">
+              <div class="sensorValue"></div>
+            </div>
+          </div>
+        </div>
+        <div class="sensor" id="sensor6">
+          <div class="sensorValue"></div>
+          <div class="gate anime2">
+            <div class="inner">
+              <div class="sensorValue"></div>
+            </div>
+          </div>
+        </div>
+        <div class="sensor" id="sensor7">
+          <div class="sensorValue"></div>
+          <div class="gate anime2">
+            <div class="inner">
+              <div class="sensorValue"></div>
+            </div>
+          </div>
+        </div>
+        <div class="sensor" id="sensor8">
+          <div class="sensorValue"></div>
+          <div class="gate anime2">
+            <div class="inner">
+              <div class="sensorValue"></div>
+            </div>
+          </div>
+        </div>
+        <div class="clearfix"></div>
+        <div id="sensorLabel">
+          <div class="label">1</div>
+          <div class="label">2</div>
+          <div class="label">3</div>
+          <div class="label">4</div>
+          <div class="label">5</div>
+          <div class="label">6</div>
+          <div class="label">7</div>
+          <div class="label">8</div>
+          <div class="clearfix"></div>
+        </div>
+      </div>
+    </div>
+  </div>
 
 
 
-<!--<div id="spatialContentTemplate" class="contentSpatial">
+  <!--<div id="spatialContentTemplate" class="contentSpatial">
 	<div class="mainArea">
 		<p>Mapping: ConvertYtoX</p>
 		<div class="wrapper spatialWrapper"></div>
@@ -1983,44 +1971,44 @@ Update : 26 July 2014 - 2:28pm
 	</div>
 </div>-->
 
-<div id="selectInputPopup" class="mouseEvent displayNone">
-	<div class="background "></div>
-	<div id="selectInputContainer">
-		<div id="selectInputWrapper">
-			<h3>Choose Input</h3>
-			<div class="wrapper">
-				<div class="left">
-					<input id="radioPopupSensor" type="radio" name="input" value="sensor" checked /> Sensor,
-					<input id="radioPopupSwitch" type="radio" name="input" value="switch"  />Switch
-					<p id="inputPopupLeft">
-						<input type="radio" name="sensor" value="1" checked /> 1 &nbsp;&nbsp;&nbsp;&nbsp;
-						<input type="radio" name="sensor" value="2" /> 2 <br />
-						<input type="radio" name="sensor" value="3" /> 3 &nbsp;&nbsp;&nbsp;&nbsp;
-						<input type="radio" name="sensor" value="4" /> 4 <br />
-						<input type="radio" name="sensor" value="5" /> 5 &nbsp;&nbsp;&nbsp;&nbsp;
-						<input type="radio" name="sensor" value="6" /> 6 <br />
-						<input type="radio" name="sensor" value="7" /> 7 &nbsp;&nbsp;&nbsp;&nbsp;
-						<input type="radio" name="sensor" value="8" /> 8 <br />
-					</p>
-				</div>
-				<div class="right">
-					<input id="radioPopupVariable" type="radio" name="input" value="variable" /> Variable
-					<p id="inputPopupRight">
-						<span>name</span> <input id="inputVariableName" type="text" name="varName" value="" /><br />
-						<span>min</span> <input id="inputVariableMin" type="text" name="minInput" value="0"  /> <br />
-						<span>max</span> <input id="inputVariableMax" type="text" name="maxInput" value="1024" />
-					</p>
-				</div>
-				<div class="clearfix"></div>
-				<div class="bottom">
-					<input id="inputPopupConfirm" class="mouseEvent" type="button" name="" value="Confirm" />
-					<input id="inputPopupCancel" class="mouseEvent" type="button" name="" value="Cancel" />
-				</div>
-			</div>
+  <div id="selectInputPopup" class="mouseEvent displayNone">
+    <div class="background "></div>
+    <div id="selectInputContainer">
+      <div id="selectInputWrapper">
+        <h3>Choose Input</h3>
+        <div class="wrapper">
+          <div class="left">
+            <input id="radioPopupSensor" type="radio" name="input" value="sensor" checked /> Sensor,
+            <input id="radioPopupSwitch" type="radio" name="input" value="switch" />Switch
+            <p id="inputPopupLeft">
+              <input type="radio" name="sensor" value="1" checked /> 1 &nbsp;&nbsp;&nbsp;&nbsp;
+              <input type="radio" name="sensor" value="2" /> 2 <br />
+              <input type="radio" name="sensor" value="3" /> 3 &nbsp;&nbsp;&nbsp;&nbsp;
+              <input type="radio" name="sensor" value="4" /> 4 <br />
+              <input type="radio" name="sensor" value="5" /> 5 &nbsp;&nbsp;&nbsp;&nbsp;
+              <input type="radio" name="sensor" value="6" /> 6 <br />
+              <input type="radio" name="sensor" value="7" /> 7 &nbsp;&nbsp;&nbsp;&nbsp;
+              <input type="radio" name="sensor" value="8" /> 8 <br />
+            </p>
+          </div>
+          <div class="right">
+            <input id="radioPopupVariable" type="radio" name="input" value="variable" /> Variable
+            <p id="inputPopupRight">
+              <span>name</span> <input id="inputVariableName" type="text" name="varName" value="" /><br />
+              <span>min</span> <input id="inputVariableMin" type="text" name="minInput" value="0" /> <br />
+              <span>max</span> <input id="inputVariableMax" type="text" name="maxInput" value="1024" />
+            </p>
+          </div>
+          <div class="clearfix"></div>
+          <div class="bottom">
+            <input id="inputPopupConfirm" class="mouseEvent" type="button" name="" value="Confirm" />
+            <input id="inputPopupCancel" class="mouseEvent" type="button" name="" value="Cancel" />
+          </div>
+        </div>
 
-		</div>
-	</div>
-</div>
+      </div>
+    </div>
+  </div>
 
 </body>
 
