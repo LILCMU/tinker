@@ -45,7 +45,7 @@
 
 <body>
 
-  <div id="versionNO">v1.0.46 - August 10, 2017</div>
+  <div id="versionNO">v1.0.47 - September 2, 2017</div>
 
   <div id="spatialContentTemplate" class="contentSpatial">
     <div class="mainArea">
@@ -419,7 +419,7 @@
           <title name="date">4</title>
         </block>
 
-        <block type="procedures_defreturn" id="24" inline="true" collapsed="true" x="317" y="278">
+        <block type="procedures_defreturn" inline="true" collapsed="true" x="277" y="181">
           <mutation>
             <arg name="start hour"></arg>
             <arg name="start minute"></arg>
@@ -428,96 +428,134 @@
           </mutation>
           <field name="NAME">time between</field>
           <statement name="STACK">
-            <block type="variables_set" id="25" inline="false">
-              <field name="VAR">get hour</field>
-              <value name="VALUE">
-                <block type="clock_date" id="26">
-                  <field name="date">2</field>
-                </block>
-              </value>
-              <next>
-                <block type="variables_set" id="27" inline="false">
-                  <field name="VAR">get min</field>
-                  <value name="VALUE">
-                    <block type="clock_date" id="28">
-                      <field name="date">1</field>
-                    </block>
-                  </value>
-                </block>
-              </next>
-            </block>
-          </statement>
-          <value name="RETURN">
-            <block type="math_andor" id="29" inline="true">
-              <field name="andor">and</field>
-              <value name="left">
-                <block type="math_andor" id="30" inline="true">
-                  <field name="andor">and</field>
+            <block type="control_ifelse" id="588" inline="false">
+              <value name="condition">
+                <block type="math_equal" id="589" inline="true">
+                  <field name="cond">=</field>
                   <value name="left">
-                    <block type="math_equal" id="31" inline="true">
-                      <field name="cond">&gt;=</field>
-                      <value name="left">
-                        <block type="variables_get" id="32">
-                          <field name="VAR">get hour</field>
-                        </block>
-                      </value>
-                      <value name="right">
-                        <block type="variables_get" id="33">
-                          <field name="VAR">start hour</field>
-                        </block>
-                      </value>
+                    <block type="clock_date" id="590">
+                      <field name="date">2</field>
                     </block>
                   </value>
                   <value name="right">
-                    <block type="math_equal" id="34" inline="true">
+                    <block type="variables_get" id="591">
+                      <field name="VAR">start hour</field>
+                    </block>
+                  </value>
+                </block>
+              </value>
+              <statement name="if">
+                <block type="variables_set" id="592" inline="false">
+                  <field name="VAR">is_started</field>
+                  <value name="VALUE">
+                    <block type="math_equal" id="593" inline="true">
                       <field name="cond">&gt;=</field>
                       <value name="left">
-                        <block type="variables_get" id="35">
-                          <field name="VAR">get min</field>
+                        <block type="clock_date" id="594">
+                          <field name="date">1</field>
                         </block>
                       </value>
                       <value name="right">
-                        <block type="variables_get" id="36">
+                        <block type="variables_get" id="595">
                           <field name="VAR">start minute</field>
                         </block>
                       </value>
                     </block>
                   </value>
                 </block>
-              </value>
-              <value name="right">
-                <block type="math_andor" id="37" inline="true">
-                  <field name="andor">and</field>
-                  <value name="left">
-                    <block type="math_equal" id="38" inline="true">
-                      <field name="cond">&lt;=</field>
+              </statement>
+              <statement name="else">
+                <block type="variables_set" id="596" inline="false">
+                  <field name="VAR">is_started</field>
+                  <value name="VALUE">
+                    <block type="math_equal" id="597" inline="true">
+                      <field name="cond">&gt;</field>
                       <value name="left">
-                        <block type="variables_get" id="39">
-                          <field name="VAR">get hour</field>
+                        <block type="clock_date" id="598">
+                          <field name="date">2</field>
                         </block>
                       </value>
                       <value name="right">
-                        <block type="variables_get" id="40">
+                        <block type="variables_get" id="599">
+                          <field name="VAR">start hour</field>
+                        </block>
+                      </value>
+                    </block>
+                  </value>
+                </block>
+              </statement>
+              <next>
+                <block type="control_ifelse" id="600" inline="false">
+                  <value name="condition">
+                    <block type="math_equal" id="601" inline="true">
+                      <field name="cond">=</field>
+                      <value name="left">
+                        <block type="clock_date" id="602">
+                          <field name="date">2</field>
+                        </block>
+                      </value>
+                      <value name="right">
+                        <block type="variables_get" id="603">
                           <field name="VAR">end hour</field>
                         </block>
                       </value>
                     </block>
                   </value>
-                  <value name="right">
-                    <block type="math_equal" id="41" inline="true">
-                      <field name="cond">&lt;=</field>
-                      <value name="left">
-                        <block type="variables_get" id="42">
-                          <field name="VAR">get min</field>
-                        </block>
-                      </value>
-                      <value name="right">
-                        <block type="variables_get" id="43">
-                          <field name="VAR">end minute</field>
+                  <statement name="if">
+                    <block type="variables_set" id="604" inline="false">
+                      <field name="VAR">is_ended</field>
+                      <value name="VALUE">
+                        <block type="math_equal" id="605" inline="true">
+                          <field name="cond">&lt;=</field>
+                          <value name="left">
+                            <block type="clock_date" id="606">
+                              <field name="date">1</field>
+                            </block>
+                          </value>
+                          <value name="right">
+                            <block type="variables_get" id="607">
+                              <field name="VAR">start minute</field>
+                            </block>
+                          </value>
                         </block>
                       </value>
                     </block>
-                  </value>
+                  </statement>
+                  <statement name="else">
+                    <block type="variables_set" id="608" inline="false">
+                      <field name="VAR">is_ended</field>
+                      <value name="VALUE">
+                        <block type="math_equal" id="609" inline="true">
+                          <field name="cond">&lt;</field>
+                          <value name="left">
+                            <block type="clock_date" id="610">
+                              <field name="date">2</field>
+                            </block>
+                          </value>
+                          <value name="right">
+                            <block type="variables_get" id="611">
+                              <field name="VAR">start hour</field>
+                            </block>
+                          </value>
+                        </block>
+                      </value>
+                    </block>
+                  </statement>
+                </block>
+              </next>
+            </block>
+          </statement>
+          <value name="RETURN">
+            <block type="math_andor" id="612" inline="true">
+              <field name="andor">and</field>
+              <value name="left">
+                <block type="variables_get" id="613">
+                  <field name="VAR">is_started</field>
+                </block>
+              </value>
+              <value name="right">
+                <block type="variables_get" id="614">
+                  <field name="VAR">is_ended</field>
                 </block>
               </value>
             </block>

@@ -1,7 +1,11 @@
+##### 1.0.47 - Sep 2, 2017 - Marutpong Chailangka
+- Fixed a incorrect algorithm of the procedure named "time between"
+- Added a new "Import" button and a useful feature, It's allowed a user to import the saved/other xml file (except a main block) into the workspace without clearing entire workspace.
+
 ##### 1.0.46 - Aug 10, 2017 - Marutpong Chailangka
 - Updated UIs
-- Removed - a selection of boards on the top.
-- Updated - Raspberry Pi blocks have moved into a new category.
+- Removed : a selection of boards on the top.
+- Updated : Raspberry Pi blocks have moved into a new category.
 
 ##### 1.0.45 - July 20, 2017 - Arnan Sipitakiat
 - Added a new forever-with-wait block.
@@ -11,7 +15,7 @@
 - Added a function of checking the ws connection.
 
 ##### 1.0.43 - Dec 15, 2016 - Marutpong Chailangka
-- Added GogoBoard status color, changed to yellow when WS connected.
+- Added GoGo Board status color, changed to yellow when WS connected.
 - Added trying to connect other WS port when the connection is error.
 - Updated URL of share feature
 - Fixed issues

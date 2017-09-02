@@ -197,11 +197,13 @@ Code.init = function() {
   BlocklyApps.bindClick('trashButton', Code.trashBlocks);
   BlocklyApps.bindClick('runButton', Code.runJS);
   BlocklyApps.bindClick('loadButton', Code.clickLoadXML);
+  BlocklyApps.bindClick('importButton', Code.clickImportXML);
   BlocklyApps.bindClick('saveButton', Code.saveXML);
   BlocklyApps.bindClick('runStopButton', Code.handleRunStopGoGoBoard);
   BlocklyApps.bindClick('writeButton', Code.writeToGogoBoard);
 
   $('loadXML').addEventListener('change', Code.loadXML, false);
+  $('importXML').addEventListener('change', Code.loadXML, false);
 
   for (var i = 0; i < Code.TABS_.length; i++) {
     var name = Code.TABS_[i];
@@ -420,12 +422,17 @@ Code.clickLoadXML = function(){
 	$('loadXML').click();
 }
 
+Code.clickImportXML = function(){
+	$('importXML').click();
+}
+
 Code.loadXML = function(event) {
   var files = event.target.files;
   // Only allow uploading one file.
   if (files.length != 1) {
     return;
   }
+  var isReplace = (event.target.id=='loadXML');
 
   // FileReader
   var reader = new FileReader();
@@ -433,49 +440,63 @@ Code.loadXML = function(event) {
     var target = event.target;
     // 2 == FileReader.DONE
     if (target.readyState == 2) {
-
-      var mappingElem = "";
-      var conditionElem = "";
-
-      try {
-        var newText = target.result;
-        var mappingText = newText.split('<mapping>')[1];
-        if (mappingText) {
-        	mappingElem = mappingText.split("</mapping>")[0];
-        	newText = newText.split('<mapping>')[0]+mappingText.split("</mapping>")[1];
-        }
-
-        var conditionText = newText.split('<condition>')[1];
-        if (conditionText) {
-        	conditionElem = conditionText.split("</condition>")[0];
-        	newText = newText.split('<condition>')[0]+conditionText.split("</condition>")[1];
-        }
-        var xml = Blockly.Xml.textToDom(newText);
-      } catch (e) {
-      	alert('Error parsing XML:\n' + e);
-        return;
-      }
-
-      // if (mappingElem) {
-      //   console.log('========mapping===========');
-	     //  window.localStorage.setItem('mappingBlock', mappingElem);
-	     //  mapping.loadData();
-      // }
-      // if (conditionElem) {
-      //   console.log('========condition===========');
-	     //  window.localStorage.setItem('conditionBlock', conditionElem);
-	     //  condition.loadData();
-      // }
-
-      if(xml.childElementCount == 0) return;
-      Blockly.mainWorkspace.clear();
-      Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, xml);
+      Code.afterLoadedText(target.result, isReplace);
     }
     // Reset value of input after loading because Chrome will not fire
     // a 'change' event if the same file is loaded again.
     document.getElementById('loadXML').value = '';
   };
   reader.readAsText(files[0]);
+}
+
+Code.afterLoadedText = function(text, isReplace){
+  var mappingElem = "";
+  var conditionElem = "";
+
+  try {
+    var newText = text;
+    var mappingText = newText.split('<mapping>')[1];
+    if (mappingText) {
+      mappingElem = mappingText.split("</mapping>")[0];
+      newText = newText.split('<mapping>')[0]+mappingText.split("</mapping>")[1];
+    }
+
+    var conditionText = newText.split('<condition>')[1];
+    if (conditionText) {
+      conditionElem = conditionText.split("</condition>")[0];
+      newText = newText.split('<condition>')[0]+conditionText.split("</condition>")[1];
+    }
+    var xml = Blockly.Xml.textToDom(newText);
+  } catch (e) {
+    alert('Error parsing XML:\n' + e);
+    return;
+  }
+
+  // if (mappingElem) {
+  //   console.log('========mapping===========');
+   //  window.localStorage.setItem('mappingBlock', mappingElem);
+   //  mapping.loadData();
+  // }
+  // if (conditionElem) {
+  //   console.log('========condition===========');
+   //  window.localStorage.setItem('conditionBlock', conditionElem);
+   //  condition.loadData();
+  // }
+
+  if(xml.childElementCount == 0) return;
+
+  if (isReplace){
+    Blockly.mainWorkspace.clear();
+  } else {
+    for (var index in xml.childNodes) {
+      var element = xml.childNodes[index];
+      // Remove main procedure
+      if (element.innerHTML && element.innerHTML.test(/name="pname">/)) {
+          xml.removeChild(element);
+      }
+    }
+  }
+  Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, xml);
 }
 
 Code.saveXML = function() {
