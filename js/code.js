@@ -234,11 +234,14 @@ if (window.location.pathname.match(/readonly.html$/)) {
 }
 
 Code.trashBlocks = function() {
-	Code.discard();
-	Code.renderContent();
-	var xml = Blockly.Xml.textToDom('<xml><block type="procedure_procedure" x="250" y="50"><title name="pname">main</title></block></xml>');
-	xml.editable = false;
-	Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, xml);
+
+  if (Code.discard()) {
+    Code.renderContent();
+    var xml = Blockly.Xml.textToDom('<xml><block type="procedure_procedure" x="250" y="50"><title name="pname">main</title></block></xml>');
+    xml.editable = false;
+    Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, xml);
+  }
+
 };
 
 /**
@@ -536,12 +539,15 @@ Code.saveXML = function() {
  * Discard all blocks from the workspace.
  */
 Code.discard = function() {
+  var result = false;
   var count = Blockly.mainWorkspace.getAllBlocks().length;
   if (count < 2 ||
       window.confirm(BlocklyApps.getMsg('Code_discard').replace('%1', count))) {
     Blockly.mainWorkspace.clear();
     window.location.hash = '';
+    result = true;
   }
+  return result;
 };
 
 
