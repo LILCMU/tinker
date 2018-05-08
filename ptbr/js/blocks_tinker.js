@@ -85,7 +85,7 @@ Blockly.Blocks['display_number'] = {
 //        .appendField(new Blockly.FieldTextInput("text"), "text")
 //        .appendField("\"");
     this.appendDummyInput()
-        .appendField("mostra número ");
+        .appendField("mostre número ");
     this.appendValueInput("value");
 //        .setCheck("Number");
     
@@ -506,7 +506,7 @@ Blockly.Blocks.motor_action_turn_off = {
   helpUrl: 'http://www.example.com/',
   init: function() {
     this.setColour(316);
-    this.appendDummyInput().appendField("desligar")
+    this.appendDummyInput().appendField("desligue")
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setTooltip('Turns off selected motor(s).');
@@ -736,7 +736,7 @@ Blockly.Blocks.control_repeat = {
   helpUrl: 'http://www.example.com/',
   init: function() {
     this.setColour(120);
-    this.appendDummyInput().appendField("repite");
+    this.appendDummyInput().appendField("repita");
      this.appendValueInput( "times", Number);
     var input = this.appendDummyInput();
     input.appendField("vez(es)");
@@ -779,7 +779,7 @@ Blockly.Blocks.control_forever = {
     this.setColour(120);
     this.appendDummyInput().appendField("sempre");
     var input =  this.appendStatementInput( "do", null);
-    input.appendField("então");
+    input.appendField("");
 
     //input = this.appendDummyInput();
     //input.appendField("forever");
