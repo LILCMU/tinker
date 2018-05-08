@@ -237,7 +237,7 @@ Code.trashBlocks = function() {
 
   if (Code.discard()) {
     Code.renderContent();
-    var xml = Blockly.Xml.textToDom('<xml><block type="procedure_procedure" x="250" y="50"><title name="pname">main</title></block></xml>');
+    var xml = Blockly.Xml.textToDom('<xml><block type="procedure_procedure" x="250" y="50"><title name="pname">principal</title></block></xml>');
     xml.editable = false;
     Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, xml);
   }

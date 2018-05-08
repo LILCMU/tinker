@@ -5,7 +5,7 @@ Blockly.Blocks.action_beep = {
   helpUrl: 'http://www.example.com/',
   init: function() {
     this.setColour(290);
-    this.appendDummyInput().appendField("beep");
+    this.appendDummyInput().appendField("bipe");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setTooltip('Causes the GoGo to beep.');
@@ -85,7 +85,7 @@ Blockly.Blocks['display_number'] = {
 //        .appendField(new Blockly.FieldTextInput("text"), "text")
 //        .appendField("\"");
     this.appendDummyInput()
-        .appendField("show number  ");
+        .appendField("mostra número ");
     this.appendValueInput("value");
 //        .setCheck("Number");
     
@@ -312,10 +312,10 @@ Blockly.Blocks['action_wait'] = {
     this.setHelpUrl('http://www.example.com/');
     this.setColour(290);
     this.appendDummyInput()
-        .appendField("wait");
+        .appendField("espere");
     this.appendValueInput("NAME", Number);
     this.appendDummyInput()
-        .appendField("1/10 second(s)");
+        .appendField("1/10 segundo(s)");
     this.setInputsInline(true);
     this.setPreviousStatement(true);
     this.setNextStatement(true);
@@ -407,7 +407,7 @@ Blockly.Blocks.action_motor = {
   helpUrl: 'http://www.example.com/',
   init: function() {
     this.setColour(310);
-    this.appendDummyInput().appendField("talk to motor")
+    this.appendDummyInput().appendField("fale com porta de saída")
 
     .appendField(new Blockly.FieldCheckbox("TRUE"), "a").appendField("A ")
     .appendField(new Blockly.FieldCheckbox("FALSE"), "b").appendField("B ")
@@ -494,7 +494,7 @@ Blockly.Blocks.motor_action_turn_on = {
   helpUrl: 'http://www.example.com/',
   init: function() {
     this.setColour(316);
-    this.appendDummyInput().appendField("liga")
+    this.appendDummyInput().appendField("ligue")
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setTooltip('Turns on selected motor(s).');
@@ -506,7 +506,7 @@ Blockly.Blocks.motor_action_turn_off = {
   helpUrl: 'http://www.example.com/',
   init: function() {
     this.setColour(316);
-    this.appendDummyInput().appendField("desliga")
+    this.appendDummyInput().appendField("desligar")
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setTooltip('Turns off selected motor(s).');
@@ -554,7 +554,7 @@ Blockly.Blocks.motor_action_thisway = {
   helpUrl: 'http://www.example.com/',
   init: function() {
     this.setColour(316);
-    this.appendDummyInput().appendField(new Blockly.FieldDropdown([["turn Clockwise", "cw"], ["turn Counter-Clockwise", "ccw"]]), "clockwise");
+    this.appendDummyInput().appendField(new Blockly.FieldDropdown([["direção horária", "cw"], ["direção anti-horária", "ccw"]]), "clockwise");
     // this.appendValueInput( "right", "motor");
     //this.setOutput(true, "motor");
     this.setPreviousStatement(true, null);
@@ -568,7 +568,7 @@ Blockly.Blocks.motor_action_rd = {
   helpUrl: 'http://www.example.com/',
   init: function() {
     this.setColour(316);
-    this.appendDummyInput().appendField("muda de direção");
+    this.appendDummyInput().appendField("mude de direção");
     // this.appendValueInput( "right", "motor");
     //this.setOutput(true, "motor");
     this.setPreviousStatement(true, null);
@@ -676,9 +676,9 @@ Blockly.Blocks.control_if = {
   helpUrl: 'http://www.example.com/',
   init: function() {
     this.setColour(120);
-    this.appendValueInput( "condition" ).setCheck(Boolean).appendField("if");
+    this.appendValueInput( "condition" ).setCheck(Boolean).appendField("se");
     var input =  this.appendStatementInput( "statement", null);
-    input.appendField("do");
+    input.appendField("então");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setTooltip('If input expression is true, then do some statements.');
@@ -691,11 +691,11 @@ Blockly.Blocks.control_ifelse = {
   init: function() {
     this.setColour(120);
     var input =  this.appendValueInput( "condition" ).setCheck(Boolean);
-    input.appendField("if");
+    input.appendField("se");
     input =  this.appendStatementInput( "if", null);
-    input.appendField("do");
+    input.appendField("então");
     input =  this.appendStatementInput( "else", null);
-    input.appendField("else do");
+    input.appendField("senão");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setTooltip('If a value is true, then do the first block of statements.\n' +
@@ -736,12 +736,12 @@ Blockly.Blocks.control_repeat = {
   helpUrl: 'http://www.example.com/',
   init: function() {
     this.setColour(120);
-    this.appendDummyInput().appendField("repita");
+    this.appendDummyInput().appendField("repite");
      this.appendValueInput( "times", Number);
     var input = this.appendDummyInput();
-    input.appendField("time(s)");
+    input.appendField("vez(es)");
     input =  this.appendStatementInput( "do", null);
-    input.appendField("do");
+    input.appendField("");
     this.setInputsInline(true);
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
@@ -777,9 +777,9 @@ Blockly.Blocks.control_forever = {
   helpUrl: 'http://www.example.com/',
   init: function() {
     this.setColour(120);
-    this.appendDummyInput().appendField("forever");
+    this.appendDummyInput().appendField("sempre");
     var input =  this.appendStatementInput( "do", null);
-    input.appendField("do");
+    input.appendField("então");
 
     //input = this.appendDummyInput();
     //input.appendField("forever");
@@ -1808,11 +1808,11 @@ Blockly.Blocks.procedure_procedure = {
   helpUrl: 'http://www.example.com/',
   init: function() {
     this.setColour(210);
-    this.appendDummyInput().appendField("to")
-    .appendField(new Blockly.FieldTextInput("main"), "pname");
+    this.appendDummyInput().appendField("aprenda")
+    .appendField(new Blockly.FieldTextInput("principal"), "pname");
      this.appendStatementInput( "statement", null);
     var input = this.appendDummyInput();
-    input.appendField("                   end");
+    input.appendField("                   fim");
     this.setTooltip('Main procedure.');
     this.setDeletable(false);
   }
