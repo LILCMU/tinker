@@ -40,6 +40,23 @@
     });
   </script>
 
+  <style>
+    #new-version-alert {
+        position: absolute;
+        z-index: 6001;
+        top: 0;
+        left: 0;
+        right: 0;
+        color: #d35400;
+        background: #fde073;
+        text-align: center;
+        line-height: 2.5;
+        overflow: hidden; 
+        -webkit-box-shadow: 0 0 10px black;
+        -moz-box-shadow:    0 0 10px black;
+        box-shadow:         0 0 10px black;
+    }
+  </style>
 
 </head>
 
@@ -2048,6 +2065,16 @@
     </div>
   </div>
 
+  <div id="new-version-alert">
+    Check out the <b>new version</b> of Tinker and GoGo Widget at <a href="https://code.gogoboard.org">code.gogoboard.org</a>. <a href="https://code.gogoboard.org">Try it!</a>   <a id="new-version-alert-close" title="Close">[close]</a>
+  </div>
+  <script>
+      close = document.getElementById("new-version-alert-close");
+      close.addEventListener('click', function() {
+        note = document.getElementById("new-version-alert");
+        note.style.display = 'none';
+      }, false);
+     </script>
 </body>
 
 
